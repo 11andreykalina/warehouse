@@ -5,7 +5,7 @@ export function AuthForm() {
   const [badgeNumber, setBadgeNumber] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event: React.SubmitEvent) => {
+  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (badgeNumber === mockUser.badgeNumber && password === "123456") {
