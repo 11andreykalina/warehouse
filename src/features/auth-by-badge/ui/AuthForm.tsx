@@ -1,7 +1,13 @@
 import { useState } from "react";
-import { mockUser } from '@/shared/api/mock/users.mock';
+import { useNavigate } from "react-router-dom";
+
+import { mockUser } from "@/shared/api/mock/users.mock";
+
+import { setAuthenticated } from "@/shared/lib/auth";
 
 export function AuthForm() {
+  const navigate = useNavigate();
+
   const [badgeNumber, setBadgeNumber] = useState("");
   const [password, setPassword] = useState("");
 
@@ -9,31 +15,31 @@ export function AuthForm() {
     event.preventDefault();
 
     if (badgeNumber === mockUser.badgeNumber && password === "123456") {
-        console.log("Авторизация прошла успешно!");
-         return;
+      setAuthenticated();
+      navigate("/");
+      return;
     }
-   console.log("Неверный номер жетона или пароль.");
+    console.log("Неверный номер жетона или пароль.");
   };
 
-
-return (
+  return (
     <form onSubmit={handleSubmit}>
-        <div>Exit</div>
+      <div>Exit</div>
 
-        <input
-            type="text"
-            placeholder="Badge Number"
-            value={badgeNumber}
-            onChange={(event) => setBadgeNumber(event.target.value)}
-        />
-        <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-        />
+      <input
+        type="text"
+        placeholder="Номер жетона"
+        value={badgeNumber}
+        onChange={(event) => setBadgeNumber(event.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Пароль"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+      />
 
-        <button type="submit">Войти</button>
+      <button type="submit">Войти</button>
     </form>
-);
+  );
 }
