@@ -12,7 +12,7 @@ export const mockUser: User = {
     },
 
     service: {
-        rank: 'старший летенант полиции',
+        rank: 'старший лейтенант полиции',
         position: 'эксперт-криминалист',
         department: 'ОМВД России',
         serviceStartDate: '2021-09-01',

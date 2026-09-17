@@ -4,7 +4,7 @@ export function AuthForm() {
   const [badgeNumber, setBadgeNumber] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     console.log("Badge Number:", badgeNumber, "Password:", password);
