@@ -1,13 +1,18 @@
 import { useState } from "react";
+import { mockUser } from '@/shared/api/mock/users.mock';
 
 export function AuthForm() {
   const [badgeNumber, setBadgeNumber] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event: React.ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.SubmitEvent) => {
     event.preventDefault();
 
-    console.log("Badge Number:", badgeNumber, "Password:", password);
+    if (badgeNumber === mockUser.badgeNumber && password === "123456") {
+        console.log("Авторизация прошла успешно!");
+         return;
+    }
+   console.log("Неверный номер жетона или пароль.");
   };
 
 
