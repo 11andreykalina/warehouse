@@ -1,0 +1,1 @@
+export type { Outfit, OutfitSeason } from './model/types';

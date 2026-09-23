@@ -2,83 +2,158 @@ import type { Product } from '@/entities/product';
 
 export const mockProducts: Product[] = [
     {
-        id: 'cap-001',
-        name: 'Кепка форменная',
-        description: 'Форменная кепка для летнего периода.',
-        image: '/images/products/cap.jpg',
+        id: 'cap-summer-001',
+        name: 'Кепи летнее нового образца',
+        description:
+            'Летнее форменное кепи темно-синего цвета нового образца.',
+        image: '/images/products/cap-summer.jpg',
         categoryId: 'headwear',
         subsCategoryId: 'caps',
         season: 'summer',
         avialableSizes: ['56', '57', '58', '59', '60'],
     },
+
     {
-        id: 'hat-001',
-        name: 'Шапка зимняя',
-        description: 'Зимний форменный головной убор.',
-        image: '/images/products/winter-hat.jpg',
-        categoryId: 'headwear',
-        subsCategoryId: 'hats',
-        season: 'winter',
-        avialableSizes: ['56', '57', '58', '59', '60'],
-    },
-    {
-        id: 'furazhka-001',
-        name: 'Фуражка форменная',
-        description: 'Форменная фуражка.',
-        image: '/images/products/furazhka.jpg',
-        categoryId: 'headwear',
-        subsCategoryId: 'furazhki',
+        id: 'polo-dark-blue-001',
+        name: 'Поло форменное темно-синее',
+        description:
+            'Форменное поло темно-синего цвета для летнего периода.',
+        image: '/images/products/polo-dark-blue.jpg',
+        categoryId: 'uniform',
+        subsCategoryId: 'polo',
         season: 'summer',
-        avialableSizes: ['56', '57', '58', '59', '60'],
+        avialableSizes: ['46-3', '48-3', '50-3', '52-3', '54-3'],
     },
+
     {
-        id: 'pilotka-001',
-        name: 'Пилотка форменная',
-        description: 'Форменная пилотка.',
-        image: '/images/products/pilotka.jpg',
-        categoryId: 'headwear',
-        subsCategoryId: 'pilotki',
-        season: 'summer',
-        avialableSizes: ['56', '57', '58', '59', '60'],
-    },
-    {
-        id: 'balaclava-001',
-        name: 'Балаклава',
-        description: 'Утеплённый головной убор.',
-        image: '/images/products/balaclava.jpg',
-        categoryId: 'headwear',
-        subsCategoryId: 'balaclavas',
-        season: 'winter',
-        avialableSizes: ['S', 'M', 'L', 'XL'],
-    },
-    {
-        id: 'winter-outerwear-001',
-        name: 'Куртка зимняя',
-        description: 'Форменная куртка для зимнего периода.',
-        image: '/images/products/winter-jacket.jpg',
-        categoryId: 'outerwear',
-        subsCategoryId: 'winter-outerwear',
-        season: 'winter',
-        avialableSizes: ['48-3', '50-3', '52-3', '54-3'],
-    },
-    {
-        id: 'demi-season-outerwear-001',
-        name: 'Куртка демисезонная',
-        description: 'Форменная куртка для демисезонного периода.',
-        image: '/images/products/demi-season-jacket.jpg',
-        categoryId: 'outerwear',
-        subsCategoryId: 'demi-season-outerwear',
-        season: 'demi-season',
-        avialableSizes: ['48-3', '50-3', '52-3', '54-3'],
-    },
-    {
-        id: 'summer-outerwear-001',
-        name: 'Куртка летняя',
-        description: 'Форменная куртка для летнего периода.',
-        image: '/images/products/summer-jacket.jpg',
+        id: 'summer-lightweight-jacket-001',
+        name: 'Куртка повседневного облегченного костюма',
+        description:
+            'Облегченная куртка повседневного костюма темно-синего цвета.',
+        image: '/images/products/summer-lightweight-jacket.jpg',
         categoryId: 'outerwear',
         subsCategoryId: 'summer-outerwear',
         season: 'summer',
-        avialableSizes: ['48-3', '50-3', '52-3', '54-3'],
+        avialableSizes: ['46-3', '48-3', '50-3', '52-3', '54-3'],
+    },
+
+    {
+        id: 'summer-suit-jacket-001',
+        name: 'Куртка летнего костюма',
+        description:
+            'Куртка летнего костюма темно-синего цвета с длинными рукавами.',
+        image: '/images/products/summer-suit-jacket.jpg',
+        categoryId: 'outerwear',
+        subsCategoryId: 'summer-outerwear',
+        season: 'summer',
+        avialableSizes: ['46-3', '48-3', '50-3', '52-3', '54-3'],
+    },
+
+    {
+        id: 'lightweight-trousers-001',
+        name: 'Брюки повседневного облегченного костюма',
+        description:
+            'Брюки повседневного облегченного костюма темно-синего цвета.',
+        image: '/images/products/lightweight-trousers.jpg',
+        categoryId: 'uniform',
+        subsCategoryId: 'trousers',
+        season: 'summer',
+        avialableSizes: ['46-3', '48-3', '50-3', '52-3', '54-3'],
+    },
+
+    {
+        id: 'summer-suit-trousers-001',
+        name: 'Брюки летнего костюма',
+        description:
+            'Брюки летнего костюма темно-синего цвета.',
+        image: '/images/products/summer-suit-trousers.jpg',
+        categoryId: 'uniform',
+        subsCategoryId: 'trousers',
+        season: 'summer',
+        avialableSizes: ['46-3', '48-3', '50-3', '52-3', '54-3'],
+    },
+
+    {
+        id: 'tshirt-dark-blue-001',
+        name: 'Футболка темно-синяя',
+        description:
+            'Футболка темно-синего цвета для ношения под форменной одеждой.',
+        image: '/images/products/tshirt-dark-blue.jpg',
+        categoryId: 'uniform',
+        subsCategoryId: 'tshirts',
+        season: 'summer',
+        avialableSizes: ['46-3', '48-3', '50-3', '52-3', '54-3'],
+    },
+
+    {
+    id: 'tshirt-white-001',
+    name: 'Футболка белая',
+    description:
+        'Футболка белого цвета для летнего периода.',
+    image: '/images/products/tshirt-white.jpg',
+    categoryId: 'uniform',
+    subsCategoryId: 'tshirts',
+    season: 'summer',
+    avialableSizes: ['46-3', '48-3', '50-3', '52-3', '54-3'],
+},
+
+    {
+        id: 'trouser-belt-001',
+        name: 'Ремень брючный',
+        description:
+            'Брючный ремень черного цвета.',
+        image: '/images/products/trouser-belt.jpg',
+        categoryId: 'accessories',
+        subsCategoryId: 'belts',
+        season: 'summer',
+        avialableSizes: ['S', 'M', 'L', 'XL'],
+    },
+
+    {
+        id: 'waist-belt-001',
+        name: 'Ремень поясной кожаный',
+        description:
+            'Поясной кожаный ремень черного цвета.',
+        image: '/images/products/waist-belt.jpg',
+        categoryId: 'equipment',
+        subsCategoryId: 'belts',
+        season: 'summer',
+        avialableSizes: ['S', 'M', 'L', 'XL'],
+    },
+
+    {
+        id: 'black-socks-001',
+        name: 'Носки черные',
+        description:
+            'Форменные носки черного цвета.',
+        image: '/images/products/black-socks.jpg',
+        categoryId: 'accessories',
+        subsCategoryId: 'socks',
+        season: 'summer',
+        avialableSizes: ['25', '27', '29'],
+    },
+
+    {
+        id: 'black-shoes-001',
+        name: 'Полуботинки черные',
+        description:
+            'Форменные полуботинки черного цвета.',
+        image: '/images/products/black-shoes.jpg',
+        categoryId: 'shoes',
+        subsCategoryId: 'low-shoes',
+        season: 'summer',
+        avialableSizes: ['39', '40', '41', '42', '43', '44', '45'],
+    },
+
+    {
+        id: 'lightweight-boots-001',
+        name: 'Ботинки с высокими берцами облегченные',
+        description:
+            'Облегченные ботинки с высокими берцами черного цвета.',
+        image: '/images/products/lightweight-boots.jpg',
+        categoryId: 'shoes',
+        subsCategoryId: 'boots',
+        season: 'summer',
+        avialableSizes: ['39', '40', '41', '42', '43', '44', '45'],
     },
 ];
