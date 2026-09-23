@@ -34,4 +34,15 @@ export const mockTrousers: Product[] = [
         season: 'summer',
         avialableSizes: ['46-3', '48-3', '50-3', '52-3', '54-3'],
     },
+    {
+        id: 'trousers-tactical-001',  
+        name: 'Брюки костюма летнего тактического',
+        description:
+            'Брюки костюма летнего тактического',
+        image: '/images/products/trousers/tactical.jpg',
+        categoryId: 'uniform',
+        subsCategoryId: 'trousers',
+        season: 'winter',
+        avialableSizes: ['46-3', '48-3', '50-3', '52-3', '54-3'],
+    }
 ];

@@ -3,9 +3,9 @@ import type { Product } from '@/entities/product';
 export const mockUpperwear: Product[] = [
     {
         id: 'upperwear-polo-dark-001',
-        name: 'Поло тёмно-синее',
+        name: 'Рубашка типа «поло» тёмно-синего цвета',
         description:
-            'Форменное поло тёмно-синего цвета.',
+            'Рубашка типа «поло» тёмно-синего цвета',
         image: '/images/products/upperwear/polo-dark.jpg',
         categoryId: 'uniform',
         subsCategoryId: 'polo',
@@ -14,9 +14,9 @@ export const mockUpperwear: Product[] = [
     },
     {
         id: 'upperwear-polo-light-001',
-        name: 'Поло светлое',
+        name: 'Рубашка типа «поло» белого цвета',
         description:
-            'Форменное поло светлого цвета.',
+            'Рубашка типа «поло» белого цвета',
         image: '/images/products/upperwear/polo-light.jpg',
         categoryId: 'uniform',
         subsCategoryId: 'polo',
@@ -25,9 +25,9 @@ export const mockUpperwear: Product[] = [
     },
     {
         id: 'upperwear-jacket-long-sleeve-001',
-        name: 'Куртка с длинным рукавом',
+        name: 'Куртка костюма летнего',
         description:
-            'Форменная куртка с длинным рукавом.',
+            'Куртка костюма летнего',
         image: '/images/products/upperwear/jacket-long-sleeve.jpg',
         categoryId: 'outerwear',
         subsCategoryId: 'summer-outerwear',
@@ -36,9 +36,9 @@ export const mockUpperwear: Product[] = [
     },
     {
         id: 'upperwear-jacket-short-sleeve-001',
-        name: 'Куртка с коротким рукавом',
+        name: 'Куртка костюма повседневного облегчённого',
         description:
-            'Форменная куртка с коротким рукавом.',
+            'Куртка костюма повседневного облегчённого',
         image: '/images/products/upperwear/jacket-short-sleeve.jpg',
         categoryId: 'outerwear',
         subsCategoryId: 'summer-outerwear',

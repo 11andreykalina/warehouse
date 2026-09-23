@@ -3,9 +3,9 @@ import type { Product } from '@/entities/product';
 export const mockHeadwear: Product[] = [
     {
         id: 'headwear-kepi-summer-001',
-        name: 'Кепка летняя нового образца',
+        name: 'Кепи летнее тёмно-синего цвета',
         description:
-            'Летняя форменная кепка тёмно-синего цвета нового образца.',
+            'Кепи летнее тёмно-синего цвета',
         image: '/images/products/headwear/kepi-summer.jpg',
         categoryId: 'headwear',
         subsCategoryId: 'caps',
@@ -14,8 +14,8 @@ export const mockHeadwear: Product[] = [
     },
     {
         id: 'headwear-furazhka-001',
-        name: 'Фуражка форменная',
-        description: 'Форменная фуражка.',
+        name: 'Фуражка шерстяная тёмно-синего цвета',
+        description: 'Фуражка шерстяная тёмно-синего цвета',
         image: '/images/products/headwear/furazhka.jpg',
         categoryId: 'headwear',
         subsCategoryId: 'furazhki',
