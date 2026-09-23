@@ -1,1 +1,1 @@
-export type { Outfit, OutfitSeason } from './model/types';
+export type { Outfit, OutfitSeason, OutfitPurpose,} from './model/types';

@@ -1,13 +1,12 @@
-export type OutfitSeason =
-    | 'summer'
-    | 'demi-season'
-    | 'winter';
+export type OutfitSeason = 'summer' | 'winter' | 'demi-season';
+
+export type OutfitPurpose = 'dress' | 'daily' | 'special';
 
 export interface Outfit {
     id: string;
     name: string;
     image: string;
     season: OutfitSeason;
-    variant?: string;
-    products: string[];
+    purpose: OutfitPurpose;
+    productIds: string[];
 }
