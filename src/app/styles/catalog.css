@@ -2,6 +2,7 @@
 .product-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   gap: 16px;
 }
 
@@ -49,6 +50,7 @@
 
 .product-card {
   display: flex;
+  min-height: 100%;
   flex-direction: column;
   overflow: hidden;
 }
@@ -71,6 +73,11 @@
   background: var(--color-surface-muted);
 }
 
+.product-card__image {
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+}
+
 .product-card__image img,
 .product-page__image img,
 .outfit-card__image img,
@@ -82,11 +89,20 @@
   object-fit: cover;
 }
 
+.product-card__image img {
+  object-fit: contain;
+}
+
 .product-card__image-content,
 .product-page__image-content,
 .outfit-card__image-content,
 .wardrobe-item-card__image-content {
   min-height: inherit;
+}
+
+.product-card__image-content {
+  width: 100%;
+  height: 100%;
 }
 
 .image-fallback {
@@ -146,21 +162,29 @@
 .product-card__content {
   display: flex;
   flex: 1;
+  min-width: 0;
   flex-direction: column;
   gap: 12px;
   padding: 16px;
 }
 
 .product-card__name {
+  display: -webkit-box;
+  min-height: calc(1.45em * 2);
   margin: 0;
+  overflow: hidden;
   color: var(--color-ink);
   font-size: 15px;
   font-weight: 680;
   line-height: 1.45;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .product-card__description {
   display: -webkit-box;
+  min-height: calc(1.5em * 2);
   margin: 0;
   overflow: hidden;
   color: var(--color-muted);
@@ -173,7 +197,9 @@
 
 .product-card__sizes {
   display: flex;
+  min-height: 47px;
   flex-wrap: wrap;
+  align-content: flex-start;
   gap: 5px;
   margin-top: auto;
 }
@@ -188,6 +214,11 @@
 
 .product-card__action {
   width: 100%;
+}
+
+.product-card__content--action {
+  flex: 0 0 auto;
+  padding-top: 0;
 }
 
 .product-page {
@@ -287,16 +318,16 @@
     font-size: 13px;
   }
 
-  .product-card__image {
-    min-height: 150px;
-  }
-
   .product-card__content {
     padding: 12px;
   }
 
   .product-card__name {
     font-size: 13px;
+  }
+
+  .product-card__content--action {
+    padding-top: 0;
   }
 
   .product-page {

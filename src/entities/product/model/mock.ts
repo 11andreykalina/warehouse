@@ -12,6 +12,28 @@ export const mockProducts: Product[] = [
     availableSizes: ['56', '57', '58', '59', '60'],
   },
   {
+    id: 'cap-wool-001',
+    name: 'Фуражка шерстяная темно-синего цвета',
+    description:
+      'В приказе № 777 указана для повседневной формы одежды. Для отдельных категорий предусмотрена выходная фуражка стального цвета.',
+    image: '/images/products/peaked-cap-wool.jpg',
+    categoryId: 'headwear',
+    subsCategoryId: 'caps',
+    season: 'all-season',
+    availableSizes: ['56', '57', '58', '59', '60'],
+  },
+  {
+    id: 'ushanka-winter-001',
+    name: 'Шапка-ушанка меховая из овчины темно-синего цвета',
+    description:
+      'Для высшего начальствующего состава и полковников в приказе указан вариант из каракуля серого цвета.',
+    image: '/images/products/ushanka-winter.jpg',
+    categoryId: 'headwear',
+    subsCategoryId: 'caps',
+    season: 'winter',
+    availableSizes: ['56', '57', '58', '59', '60'],
+  },
+  {
     id: 'polo-dark-blue-001',
     name: 'Поло форменное темно-синее',
     description: 'Форменное поло темно-синего цвета для летнего периода.',

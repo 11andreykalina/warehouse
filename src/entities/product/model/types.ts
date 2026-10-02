@@ -1,4 +1,4 @@
-export type ProductSeason = 'summer' | 'demi-season' | 'winter'
+export type ProductSeason = 'all-season' | 'summer' | 'demi-season' | 'winter';
 
 export interface Product {
     id: string;

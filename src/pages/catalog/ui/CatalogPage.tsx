@@ -18,7 +18,8 @@ export function CatalogPage() {
     () =>
       mockProducts.filter((product) => {
         const categoryMatches = selectedCategory ? product.categoryId === selectedCategory : true;
-        const seasonMatches = season === 'all' || product.season === season;
+        const seasonMatches =
+          season === 'all' || product.season === season || product.season === 'all-season';
 
         return categoryMatches && seasonMatches;
       }),
