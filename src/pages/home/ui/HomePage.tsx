@@ -11,6 +11,7 @@ export function HomePage() {
   return (
     <div className="page-stack">
       <section className="hero">
+        <img className="hero__emblem" src="/images/mvd-emblem.svg" alt="" aria-hidden="true" />
         <div className="hero__content">
           <p className="eyebrow">Склад форменного имущества</p>
           <h1>Всё необходимое для службы — в одном месте</h1>
