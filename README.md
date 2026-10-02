@@ -1,75 +1,35 @@
-# React + TypeScript + Vite
+# Склад форменного имущества
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Адаптивный MVP-интерфейс для просмотра каталога форменного имущества и отправки заявок на получение. Это прототип на mock-данных, а не подключённая к складу система: сервер, реальные остатки и учёт выдачи пока не настроены.
 
-Currently, two official plugins are available:
+## Возможности
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Главная страница с категориями и примерами позиций из каталога.
+- Каталог с фильтрами по категории и сезону, поиск по названию и описанию.
+- Страница позиции с выбором одного из указанных размеров.
+- Заявка с изменением количества; после отправки она сохраняется в истории в этом браузере.
+- Демо-профиль и экран демонстрационного входа.
+- Адаптивная навигация и понятные пустые состояния для истории заявок и выданного имущества, для которых пока нет серверных данных.
 
-## React Compiler
+## Структура
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Код организован по слоям Feature-Sliced Design: `app`, `pages`, `widgets`, `features`, `entities`, `shared`. Каждый срез в `entities`, `features`, `widgets` и `pages` предоставляет публичный API через свой `index.ts`; потребители не импортируют внутренние файлы другого среза. Mock-данные и состояние принадлежат срезам соответствующих сущностей в `src/entities/*/model`; состояние демо-входа относится к feature `auth-by-badge`. Правила направления зависимостей и импорта через публичные API проверяются командой `npm run check:fsd`.
 
-## Expanding the ESLint configuration
+Фотографии в исходных данных ссылаются на `/images`, но сами файлы изображений не включены; интерфейс показывает явную заглушку, пока изображения не добавлены. Заявки сохраняются в `localStorage` и не отправляются на сервер.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Запуск
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```sh
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Демо-вход: номер жетона `123456`, пароль `123456`. Это локальная демонстрационная проверка, не production-аутентификация.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Проверки
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```sh
+npm run build
+npm run lint
+npm run check:fsd
 ```

@@ -1,0 +1,148 @@
+.button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 680;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.button--primary {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.button--primary:hover:not(:disabled) {
+  background: var(--color-accent-dark);
+}
+
+.button--secondary {
+  border-color: var(--color-line);
+  background: #fff;
+  color: var(--color-ink);
+}
+
+.button--secondary:hover:not(:disabled) {
+  border-color: #b9c5b7;
+  background: #fafbf9;
+}
+
+.button--text {
+  min-height: 36px;
+  padding: 6px 9px;
+  background: transparent;
+  color: var(--color-accent);
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-line);
+  border-radius: 11px;
+  background: #fff;
+  color: var(--color-ink);
+}
+
+.input::placeholder {
+  color: #9a9f97;
+}
+
+.filter-row,
+.size-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  min-height: 38px;
+  padding: 8px 13px;
+  border: 1px solid var(--color-line);
+  border-radius: 99px;
+  background: #fff;
+  color: #535a51;
+  cursor: pointer;
+  font-size: 13px;
+  transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+}
+
+.chip:hover,
+.chip--active {
+  border-color: #bacbb9;
+  background: var(--color-accent-soft);
+  color: var(--color-accent-dark);
+}
+
+.search-box {
+  position: relative;
+  max-width: 560px;
+}
+
+.empty-state {
+  padding: 26px;
+  border: 1px dashed #cdd2c9;
+  border-radius: var(--radius-card);
+  background: rgb(255 255 255 / 65%);
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+.empty-state h2,
+.empty-state h3 {
+  margin: 0 0 8px;
+  color: var(--color-ink);
+  font-size: 18px;
+}
+
+.empty-state p {
+  margin: 0;
+}
+
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #4d554b;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.add-to-request {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+}
+
+.add-to-request__confirmation {
+  color: var(--color-accent);
+  font-size: 12px;
+}
+
+.form-error {
+  margin: 0;
+  color: #a33d32;
+  font-size: 13px;
+}

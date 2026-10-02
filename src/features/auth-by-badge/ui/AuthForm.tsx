@@ -1,45 +1,51 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { mockUser } from "@/shared/api/mock/users.mock";
-
-import { setAuthenticated } from "@/shared/lib/auth";
+import { mockUser } from '@/entities/user';
+import { Button, Input } from '@/shared/ui';
+import { setAuthenticated } from '../model/auth';
 
 export function AuthForm() {
   const navigate = useNavigate();
+  const [badgeNumber, setBadgeNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const [badgeNumber, setBadgeNumber] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (badgeNumber === mockUser.badgeNumber && password === "123456") {
+    if (badgeNumber === mockUser.badgeNumber && password === '123456') {
       setAuthenticated();
-      navigate("/");
+      navigate('/');
       return;
     }
-    console.log("Неверный номер жетона или пароль.");
+
+    setError('Неверный номер жетона или пароль.');
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>Exit</div>
-
-      <input
-        type="text"
-        placeholder="Номер жетона"
-        value={badgeNumber}
-        onChange={(event) => setBadgeNumber(event.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Пароль"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
-
-      <button type="submit">Войти</button>
+    <form onSubmit={handleSubmit} className="form-stack">
+      <label className="form-field">
+        <span>Номер жетона</span>
+        <Input
+          autoComplete="username"
+          required
+          value={badgeNumber}
+          onChange={(event) => setBadgeNumber(event.target.value)}
+        />
+      </label>
+      <label className="form-field">
+        <span>Пароль</span>
+        <Input
+          type="password"
+          autoComplete="current-password"
+          required
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
+      </label>
+      {error ? <p className="form-error" role="alert">{error}</p> : null}
+      <Button type="submit">Войти</Button>
     </form>
   );
 }

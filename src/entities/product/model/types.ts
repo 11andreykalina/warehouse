@@ -8,5 +8,5 @@ export interface Product {
     categoryId: string;
     subsCategoryId: string;
     season: ProductSeason;
-    avialableSizes: string[];
+    availableSizes: string[];
 }

@@ -1,1 +1,3 @@
-export type { Product } from './model/types';
+export type { Product, ProductSeason } from './model/types';
+export { mockProducts } from './model/mock';
+export { ProductCard } from './ui/ProductCard';
