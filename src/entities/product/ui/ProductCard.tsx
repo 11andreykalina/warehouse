@@ -1,12 +1,16 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import type { Product } from '../model/types';
 import { ImageWithFallback } from '@/shared/ui';
 
 export function ProductCard({ product, categoryName }: { product: Product; categoryName: string }) {
+  const location = useLocation();
+  const returnTo = `${location.pathname}${location.search}${location.hash}`;
+  const state = { returnTo };
+
   return (
     <article className="product-card">
-      <Link to={`/product/${product.id}`} className="product-card__link">
+      <Link to={`/product/${product.id}`} state={state} className="product-card__link">
         <div className="product-card__image">
           <ImageWithFallback
             src={product.image}
@@ -28,7 +32,7 @@ export function ProductCard({ product, categoryName }: { product: Product; categ
         </div>
       </Link>
       <div className="product-card__content product-card__content--action">
-        <Link className="button button--secondary product-card__action" to={`/product/${product.id}`}>
+        <Link className="button button--secondary product-card__action" to={`/product/${product.id}`} state={state}>
           Выбрать размер
         </Link>
       </div>

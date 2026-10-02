@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 import { getAuthenticated, logout } from '@/features/auth-by-badge';
+import { ThemeToggle } from '@/features/theme-toggle';
 import { useCartItems } from '@/entities/cart';
 
 export function AppHeader() {
@@ -20,7 +21,7 @@ export function AppHeader() {
     <header className="app-header">
       <Link to="/" className="app-header__brand">
         <span className="app-header__mark" aria-hidden="true">
-          СФ
+          МВД
         </span>
         <span>Склад формы</span>
       </Link>
@@ -44,6 +45,7 @@ export function AppHeader() {
           <NavLink to="/login">Войти</NavLink>
         )}
       </nav>
+      <ThemeToggle />
     </header>
   );
 }

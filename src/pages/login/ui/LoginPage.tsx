@@ -1,8 +1,12 @@
 import { AuthForm } from '@/features/auth-by-badge';
+import { ThemeToggle } from '@/features/theme-toggle';
 
 export function LoginPage() {
   return (
     <main className="page-shell">
+      <div className="login-page__theme">
+        <ThemeToggle />
+      </div>
       <section className="login-card">
         <p className="eyebrow">Демо-режим</p>
         <h1>Вход в систему</h1>

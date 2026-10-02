@@ -5,7 +5,7 @@ export const mockProducts: Product[] = [
     id: 'cap-summer-001',
     name: 'Кепи летнее нового образца',
     description: 'Летнее форменное кепи темно-синего цвета нового образца.',
-    image: '/images/products/cap-summer.jpg',
+    image: '/images/products/cap-summer.png',
     categoryId: 'headwear',
     subsCategoryId: 'caps',
     season: 'summer',

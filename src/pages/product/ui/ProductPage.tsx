@@ -1,11 +1,26 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import { mockCategories } from '@/entities/category';
 import { mockProducts, type Product } from '@/entities/product';
 import { AddToCartButton } from '@/features/add-to-cart';
 import { ProductSizeSelector } from '@/features/select-product-size';
 import { ImageWithFallback } from '@/shared/ui';
+
+function getReturnTo(state: unknown) {
+  if (
+    typeof state === 'object' &&
+    state !== null &&
+    'returnTo' in state &&
+    typeof state.returnTo === 'string' &&
+    state.returnTo.startsWith('/') &&
+    !state.returnTo.startsWith('//')
+  ) {
+    return state.returnTo;
+  }
+
+  return '/catalog';
+}
 
 function ProductDetails({ product }: { product: Product }) {
   const [selectedSize, setSelectedSize] = useState('');
@@ -43,6 +58,7 @@ function ProductDetails({ product }: { product: Product }) {
 }
 
 export function ProductPage() {
+  const location = useLocation();
   const { id } = useParams();
   const product = mockProducts.find((item) => item.id === id);
 
@@ -58,5 +74,12 @@ export function ProductPage() {
     );
   }
 
-  return <ProductDetails key={product.id} product={product} />;
+  return (
+    <div className="page-stack">
+      <Link className="button button--secondary" to={getReturnTo(location.state)}>
+        ← Назад
+      </Link>
+      <ProductDetails key={product.id} product={product} />
+    </div>
+  );
 }

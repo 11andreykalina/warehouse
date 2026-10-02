@@ -23,23 +23,23 @@
 }
 
 .button--primary {
-  background: var(--color-accent);
-  color: #fff;
+  background: var(--color-action);
+  color: var(--color-accent-contrast);
 }
 
 .button--primary:hover:not(:disabled) {
-  background: var(--color-accent-dark);
+  background: var(--color-action-hover);
 }
 
 .button--secondary {
   border-color: var(--color-line);
-  background: #fff;
+  background: var(--color-paper);
   color: var(--color-ink);
 }
 
 .button--secondary:hover:not(:disabled) {
-  border-color: #b9c5b7;
-  background: #fafbf9;
+  border-color: var(--color-outline);
+  background: var(--color-surface-muted);
 }
 
 .button--text {
@@ -55,12 +55,12 @@
   padding: 12px 14px;
   border: 1px solid var(--color-line);
   border-radius: 11px;
-  background: #fff;
+  background: var(--color-paper);
   color: var(--color-ink);
 }
 
 .input::placeholder {
-  color: #9a9f97;
+  color: var(--color-muted);
 }
 
 .filter-row,
@@ -75,8 +75,8 @@
   padding: 8px 13px;
   border: 1px solid var(--color-line);
   border-radius: 99px;
-  background: #fff;
-  color: #535a51;
+  background: var(--color-paper);
+  color: var(--color-muted);
   cursor: pointer;
   font-size: 13px;
   transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
@@ -84,9 +84,9 @@
 
 .chip:hover,
 .chip--active {
-  border-color: #bacbb9;
+  border-color: var(--color-outline);
   background: var(--color-accent-soft);
-  color: var(--color-accent-dark);
+  color: var(--color-accent);
 }
 
 .search-box {
@@ -96,9 +96,9 @@
 
 .empty-state {
   padding: 26px;
-  border: 1px dashed #cdd2c9;
+  border: 1px dashed var(--color-line);
   border-radius: var(--radius-card);
-  background: rgb(255 255 255 / 65%);
+  background: color-mix(in srgb, var(--color-paper) 72%, transparent);
   color: var(--color-muted);
   line-height: 1.6;
 }
@@ -124,7 +124,7 @@
   display: flex;
   flex-direction: column;
   gap: 7px;
-  color: #4d554b;
+  color: var(--color-ink);
   font-size: 13px;
   font-weight: 650;
 }
@@ -143,6 +143,6 @@
 
 .form-error {
   margin: 0;
-  color: #a33d32;
+  color: var(--color-highlight);
   font-size: 13px;
 }

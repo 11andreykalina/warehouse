@@ -1,23 +1,54 @@
 :root {
   font-family: Inter, "Segoe UI", Arial, sans-serif;
-  color: #20241f;
-  background: #f5f5f1;
+  color: var(--color-ink);
+  background: var(--color-canvas);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-optical-sizing: auto;
 
-  --color-ink: #20241f;
-  --color-muted: #747970;
+  --color-ink: #17243a;
+  --color-muted: #68758a;
   --color-paper: #fff;
-  --color-canvas: #f5f5f1;
-  --color-line: #e3e5df;
-  --color-accent: #365840;
-  --color-accent-dark: #284531;
-  --color-accent-soft: #edf2eb;
+  --color-canvas: #f3f5f8;
+  --color-line: #e0e5ec;
+  --color-accent: #17345d;
+  --color-accent-dark: #102545;
+  --color-accent-soft: #e9eef6;
+  --color-accent-contrast: #fff;
+  --color-brand-deep: #102545;
+  --color-action: #17345d;
+  --color-action-hover: #102545;
+  --color-highlight: #bd2738;
+  --color-highlight-soft: #f9e9ec;
+  --color-surface-muted: #f0f3f7;
+  --color-surface-raised: #fff;
+  --color-outline: #8ca7ca;
   --radius-card: 18px;
-  --shadow-card: 0 8px 24px rgb(35 44 34 / 5%);
+  --shadow-card: 0 12px 32px rgb(20 40 70 / 7%);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-ink: #e8edf5;
+  --color-muted: #a8b4c5;
+  --color-paper: #182439;
+  --color-canvas: #101a2b;
+  --color-line: #2d3b51;
+  --color-accent: #8eafe0;
+  --color-accent-dark: #b0c8eb;
+  --color-accent-soft: #26364d;
+  --color-accent-contrast: #fff;
+  --color-brand-deep: #0b1423;
+  --color-action: #466a9c;
+  --color-action-hover: #577cae;
+  --color-highlight: #ed7180;
+  --color-highlight-soft: #482b37;
+  --color-surface-muted: #202d42;
+  --color-surface-raised: #1c2a40;
+  --color-outline: #7394c3;
+  --shadow-card: 0 14px 36px rgb(0 0 0 / 22%);
 }
 
 * {
@@ -34,6 +65,9 @@ body,
 
 body {
   min-height: 100vh;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  transition: background-color 180ms ease, color 180ms ease;
 }
 
 button,
@@ -54,7 +88,7 @@ a {
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
-  outline: 3px solid #9bbda0;
+  outline: 3px solid var(--color-outline);
   outline-offset: 3px;
 }
 
