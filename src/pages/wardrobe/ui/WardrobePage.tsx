@@ -1,17 +1,15 @@
+import { Stack } from '@mui/material';
+
 import { WardrobeOverview } from '@/widgets/wardrobe-overview';
+import { PageStack, SectionHeading } from '@/shared/ui';
 
 export function WardrobePage() {
   return (
-    <div className="page-stack">
-      <section className="section-block">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">Выданное имущество</p>
-            <h1>Мой гардероб</h1>
-          </div>
-        </div>
+    <PageStack>
+      <Stack component="section" spacing={2.5}>
+        <SectionHeading eyebrow="Выданное имущество" title="Мой гардероб" />
         <WardrobeOverview />
-      </section>
-    </div>
+      </Stack>
+    </PageStack>
   );
 }

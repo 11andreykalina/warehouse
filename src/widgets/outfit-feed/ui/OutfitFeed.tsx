@@ -1,11 +1,12 @@
+import { FeedGrid } from '@/shared/ui';
 import { OutfitCard, mockOutfits } from '@/entities/outfit';
 
 export function OutfitFeed() {
   return (
-    <div className="product-grid">
+    <FeedGrid>
       {mockOutfits.map((outfit) => (
         <OutfitCard key={outfit.id} outfit={outfit} />
       ))}
-    </div>
+    </FeedGrid>
   );
 }

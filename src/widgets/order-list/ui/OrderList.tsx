@@ -1,20 +1,20 @@
+import { Stack } from '@mui/material';
+
 import { OrderCard, useOrders } from '@/entities/order';
 import { mockProducts } from '@/entities/product';
+import { EmptyState } from '@/shared/ui';
 
 export function OrderList() {
   const orders = useOrders();
 
   if (orders.length === 0) {
     return (
-      <div className="empty-state">
-        <h2>Заявок пока нет</h2>
-        <p>Отправленные заявки появятся здесь.</p>
-      </div>
+      <EmptyState title="Заявок пока нет" description="Отправленные заявки появятся здесь." />
     );
   }
 
   return (
-    <div className="stack-list">
+    <Stack spacing={1.5}>
       {orders.map((order) => (
         <OrderCard
           key={order.id}
@@ -22,6 +22,6 @@ export function OrderList() {
           productName={(productId) => mockProducts.find((product) => product.id === productId)?.name}
         />
       ))}
-    </div>
+    </Stack>
   );
 }

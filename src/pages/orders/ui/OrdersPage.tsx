@@ -1,6 +1,8 @@
 import { useLocation } from 'react-router-dom';
+import { Alert, Stack } from '@mui/material';
 
 import { OrderList } from '@/widgets/order-list';
+import { PageStack, SectionHeading } from '@/shared/ui';
 
 export function OrdersPage() {
   const location = useLocation();
@@ -14,21 +16,16 @@ export function OrdersPage() {
       : undefined;
 
   return (
-    <div className="page-stack">
-      <section className="section-block">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">История обращений</p>
-            <h1>Мои заявки</h1>
-          </div>
-        </div>
+    <PageStack>
+      <Stack component="section" spacing={2.5}>
+        <SectionHeading eyebrow="История обращений" title="Мои заявки" />
         {submittedOrderId ? (
-          <div className="section-notice" role="status">
+          <Alert severity="success" role="status">
             Заявка создана. Её номер: {submittedOrderId.slice(-8)}.
-          </div>
+          </Alert>
         ) : null}
         <OrderList />
-      </section>
-    </div>
+      </Stack>
+    </PageStack>
   );
 }

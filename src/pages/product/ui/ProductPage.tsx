@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 
 import { mockCategories } from '@/entities/category';
 import { mockProducts, type Product } from '@/entities/product';
 import { AddToCartButton } from '@/features/add-to-cart';
 import { ProductSizeSelector } from '@/features/select-product-size';
-import { ImageWithFallback } from '@/shared/ui';
+import { EmptyState, ImageWithFallback, PageStack } from '@/shared/ui';
+import { productBackButtonSx, productDescriptionSx, productDetailsSx, productImageFrameSx, productPageSx, productTitleSx } from './ProductPage.styles';
 
 function getReturnTo(state: unknown) {
   if (
@@ -27,21 +30,21 @@ function ProductDetails({ product }: { product: Product }) {
   const category = mockCategories.find((item) => item.id === product.categoryId)?.name ?? 'Форменное имущество';
 
   return (
-    <article className="product-page">
-      <div className="product-page__image">
+    <Paper component="article" sx={productPageSx}>
+      <Box sx={productImageFrameSx}>
         <ImageWithFallback
           src={product.image}
           alt={product.name}
           category={category}
-          className="product-page__image-content"
+          sx={productImageFrameSx}
         />
-      </div>
-      <div className="product-page__content">
-        <div>
-          <p className="eyebrow">{category}</p>
-          <h1>{product.name}</h1>
-        </div>
-        <p className="product-page__description">{product.description}</p>
+      </Box>
+      <Stack sx={productDetailsSx}>
+        <Stack spacing={0.5}>
+          <Typography variant="overline" color="primary.main">{category}</Typography>
+          <Typography component="h1" sx={productTitleSx}>{product.name}</Typography>
+        </Stack>
+        <Typography sx={productDescriptionSx}>{product.description}</Typography>
         {product.availableSizes.length > 0 ? (
           <ProductSizeSelector
             sizes={product.availableSizes}
@@ -49,11 +52,11 @@ function ProductDetails({ product }: { product: Product }) {
             onSelect={setSelectedSize}
           />
         ) : (
-          <p className="form-error">Для этой позиции пока не указаны размеры.</p>
+          <Typography color="error.main">Для этой позиции пока не указаны размеры.</Typography>
         )}
         <AddToCartButton productId={product.id} size={selectedSize} disabled={!selectedSize} />
-      </div>
-    </article>
+      </Stack>
+    </Paper>
   );
 }
 
@@ -64,22 +67,19 @@ export function ProductPage() {
 
   if (!product) {
     return (
-      <div className="empty-state">
-        <h2>Позиция не найдена</h2>
-        <p>Возможно, её больше нет в каталоге.</p>
-        <Link className="button button--secondary" to="/catalog">
-          Вернуться в каталог
-        </Link>
-      </div>
+      <Stack spacing={2}>
+        <EmptyState title="Позиция не найдена" description="Возможно, её больше нет в каталоге." />
+        <Button component={Link} to="/catalog" variant="outlined" sx={productBackButtonSx}>Вернуться в каталог</Button>
+      </Stack>
     );
   }
 
   return (
-    <div className="page-stack">
-      <Link className="button button--secondary" to={getReturnTo(location.state)}>
-        ← Назад
-      </Link>
+    <PageStack>
+      <Button component={Link} to={getReturnTo(location.state)} variant="outlined" startIcon={<ArrowBackIcon />} sx={productBackButtonSx}>
+        Назад
+      </Button>
       <ProductDetails key={product.id} product={product} />
-    </div>
+    </PageStack>
   );
 }

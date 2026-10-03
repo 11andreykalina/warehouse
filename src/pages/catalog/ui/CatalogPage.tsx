@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Stack, Typography } from '@mui/material';
 
 import { CategoryFilter } from '@/features/filter-by-category';
 import { SeasonFilter } from '@/features/filter-by-season';
 import { mockCategories } from '@/entities/category';
 import { mockProducts } from '@/entities/product';
+import { EmptyState, PageStack, SectionHeading } from '@/shared/ui';
 import { ProductFeed } from '@/widgets/product-feed';
 
 type Season = 'all' | 'summer' | 'demi-season' | 'winter';
@@ -31,30 +33,21 @@ export function CatalogPage() {
   };
 
   return (
-    <div className="page-stack">
-      <section className="section-block">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">Каталог</p>
-            <h1>Форменное имущество</h1>
-            <p>Выберите категорию, сезон и размер позиции.</p>
-          </div>
-        </div>
+    <PageStack>
+      <Stack component="section" spacing={2.5}>
+        <SectionHeading eyebrow="Каталог" title="Форменное имущество" description="Выберите категорию, сезон и размер позиции." />
         <CategoryFilter categories={mockCategories} selected={selectedCategory} onSelect={handleSelectCategory} />
         <SeasonFilter selected={season} onSelect={setSeason} />
-      </section>
+      </Stack>
 
-      <section className="section-block">
-        <p className="search-results-count">Найдено позиций: {filteredProducts.length}</p>
+      <Stack component="section" spacing={2}>
+        <Typography variant="body2" color="text.secondary">Найдено позиций: {filteredProducts.length}</Typography>
         {filteredProducts.length > 0 ? (
           <ProductFeed products={filteredProducts} />
         ) : (
-          <div className="empty-state">
-            <h2>Позиции не найдены</h2>
-            <p>Попробуйте выбрать другую категорию или сезон.</p>
-          </div>
+          <EmptyState title="Позиции не найдены" description="Попробуйте выбрать другую категорию или сезон." />
         )}
-      </section>
-    </div>
+      </Stack>
+    </PageStack>
   );
 }

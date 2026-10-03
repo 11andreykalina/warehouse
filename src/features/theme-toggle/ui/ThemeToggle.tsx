@@ -1,21 +1,19 @@
+import DarkModeOutlined from '@mui/icons-material/DarkModeOutlined';
+import LightModeOutlined from '@mui/icons-material/LightModeOutlined';
+import { IconButton, Tooltip } from '@mui/material';
+
 import { useTheme } from '../model/useTheme';
+import { themeToggleSx } from './ThemeToggle.styles';
 
 export function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
   const nextTheme = theme === 'light' ? 'dark' : 'light';
 
   return (
-    <button
-      className="theme-toggle"
-      type="button"
-      onClick={toggleTheme}
-      aria-label={`Включить ${nextTheme === 'dark' ? 'тёмную' : 'светлую'} тему`}
-      title={`Включить ${nextTheme === 'dark' ? 'тёмную' : 'светлую'} тему`}
-    >
-      <span className="theme-toggle__icon" aria-hidden="true">
-        {theme === 'light' ? '☾' : '☀'}
-      </span>
-      <span>{theme === 'light' ? 'Светлая' : 'Тёмная'}</span>
-    </button>
+    <Tooltip title={`Включить ${nextTheme === 'dark' ? 'тёмную' : 'светлую'} тему`}>
+      <IconButton aria-label={`Включить ${nextTheme === 'dark' ? 'тёмную' : 'светлую'} тему`} onClick={toggleTheme} sx={themeToggleSx}>
+        {theme === 'light' ? <DarkModeOutlined /> : <LightModeOutlined />}
+      </IconButton>
+    </Tooltip>
   );
 }

@@ -1,3 +1,7 @@
+import { Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+
+import { sizeSelectorSx, sizeToggleGroupSx } from './ProductSizeSelector.styles';
+
 export function ProductSizeSelector({
   sizes,
   selected,
@@ -8,23 +12,25 @@ export function ProductSizeSelector({
   onSelect: (size: string) => void;
 }) {
   return (
-    <div className="size-selector">
-      <p className="size-selector__label" id="size-selector-label">
+    <Stack spacing={1.25} sx={sizeSelectorSx}>
+      <Typography component="p" variant="subtitle2" id="size-selector-label">
         Выберите размер
-      </p>
-      <div className="size-picker" role="group" aria-labelledby="size-selector-label">
+      </Typography>
+      <ToggleButtonGroup
+        exclusive
+        value={selected}
+        aria-labelledby="size-selector-label"
+        onChange={(_, value: string | null) => {
+          if (value !== null) onSelect(value);
+        }}
+        sx={sizeToggleGroupSx}
+      >
         {sizes.map((size) => (
-          <button
-            key={size}
-            type="button"
-            className={selected === size ? 'chip chip--active' : 'chip'}
-            aria-pressed={selected === size}
-            onClick={() => onSelect(size)}
-          >
+          <ToggleButton key={size} value={size}>
             {size}
-          </button>
+          </ToggleButton>
         ))}
-      </div>
-    </div>
+      </ToggleButtonGroup>
+    </Stack>
   );
 }

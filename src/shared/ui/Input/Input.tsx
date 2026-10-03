@@ -1,7 +1,10 @@
-import type { InputHTMLAttributes } from 'react';
+import { TextField } from '@mui/material';
+import type { TextFieldProps } from '@mui/material';
 
-type InputProps = InputHTMLAttributes<HTMLInputElement>;
+import { inputSx } from './Input.styles';
 
-export function Input({ className = '', ...props }: InputProps) {
-  return <input className={`input ${className}`.trim()} {...props} />;
+type InputProps = Omit<TextFieldProps, 'variant' | 'sx'>;
+
+export function Input(props: InputProps) {
+  return <TextField fullWidth size="small" variant="outlined" sx={inputSx} {...props} />;
 }

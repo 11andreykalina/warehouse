@@ -1,4 +1,7 @@
+import { Box, Paper, Stack, Typography } from '@mui/material';
+
 import type { User } from '../model/types';
+import { profileCardSx, profileFactsSx } from './UserCard.styles';
 
 export function UserCard({ user }: { user: User }) {
   const fullName = [user.identity.lastName, user.identity.firstName, user.identity.middleName]
@@ -6,38 +9,20 @@ export function UserCard({ user }: { user: User }) {
     .join(' ');
 
   return (
-    <article className="profile-card">
-      <div className="profile-card__identity">
-        <p className="eyebrow">Демо-профиль</p>
-        <h2>{fullName}</h2>
-        <p>{user.service.position}</p>
-      </div>
-      <dl className="profile-card__facts">
-        <div>
-          <dt>Номер жетона</dt>
-          <dd>{user.badgeNumber}</dd>
-        </div>
-        <div>
-          <dt>Подразделение</dt>
-          <dd>{user.service.department}</dd>
-        </div>
-        <div>
-          <dt>Звание</dt>
-          <dd>{user.service.rank ?? 'Не указано'}</dd>
-        </div>
-        <div>
-          <dt>Размер одежды</dt>
-          <dd>{user.measurements.clothingSize ?? 'Не указан'}</dd>
-        </div>
-        <div>
-          <dt>Размер обуви</dt>
-          <dd>{user.measurements.shoeSize ?? 'Не указан'}</dd>
-        </div>
-        <div>
-          <dt>Размер головного убора</dt>
-          <dd>{user.measurements.headSize ?? 'Не указан'}</dd>
-        </div>
-      </dl>
-    </article>
+    <Paper component="article" sx={profileCardSx}>
+      <Stack spacing={0.5}>
+        <Typography variant="overline" color="primary.main">Демо-профиль</Typography>
+        <Typography variant="h5">{fullName}</Typography>
+        <Typography color="text.secondary">{user.service.position}</Typography>
+      </Stack>
+      <Box component="dl" sx={profileFactsSx}>
+        <Box><Typography component="dt">Номер жетона</Typography><Typography component="dd">{user.badgeNumber}</Typography></Box>
+        <Box><Typography component="dt">Подразделение</Typography><Typography component="dd">{user.service.department}</Typography></Box>
+        <Box><Typography component="dt">Звание</Typography><Typography component="dd">{user.service.rank ?? 'Не указано'}</Typography></Box>
+        <Box><Typography component="dt">Размер одежды</Typography><Typography component="dd">{user.measurements.clothingSize ?? 'Не указан'}</Typography></Box>
+        <Box><Typography component="dt">Размер обуви</Typography><Typography component="dd">{user.measurements.shoeSize ?? 'Не указан'}</Typography></Box>
+        <Box><Typography component="dt">Размер головного убора</Typography><Typography component="dd">{user.measurements.headSize ?? 'Не указан'}</Typography></Box>
+      </Box>
+    </Paper>
   );
 }

@@ -1,10 +1,11 @@
+import { FeedGrid } from '@/shared/ui';
 import { mockCategories } from '@/entities/category';
 import type { Product } from '@/entities/product';
 import { ProductCard } from '@/entities/product';
 
 export function ProductFeed({ products }: { products: Product[] }) {
   return (
-    <div className="product-grid">
+    <FeedGrid>
       {products.map((product) => (
         <ProductCard
           key={product.id}
@@ -15,6 +16,6 @@ export function ProductFeed({ products }: { products: Product[] }) {
           }
         />
       ))}
-    </div>
+    </FeedGrid>
   );
 }

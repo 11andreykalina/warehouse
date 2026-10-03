@@ -1,7 +1,19 @@
 import { Link, useLocation } from 'react-router-dom';
+import { Box, Button, Card, CardActionArea, CardContent, Chip, Stack, Typography } from '@mui/material';
 
 import type { Product } from '../model/types';
 import { ImageWithFallback } from '@/shared/ui';
+import {
+  productActionAreaSx,
+  productCardActionSx,
+  productCardSx,
+  productContentSx,
+  productDescriptionSx,
+  productImageFrameSx,
+  productImageSx,
+  productNameSx,
+  productSizesSx,
+} from './ProductCard.styles';
 
 export function ProductCard({ product, categoryName }: { product: Product; categoryName: string }) {
   const location = useLocation();
@@ -9,33 +21,32 @@ export function ProductCard({ product, categoryName }: { product: Product; categ
   const state = { returnTo };
 
   return (
-    <article className="product-card">
-      <Link to={`/product/${product.id}`} state={state} className="product-card__link">
-        <div className="product-card__image">
+    <Card component="article" sx={productCardSx}>
+      <CardActionArea component={Link} to={`/product/${product.id}`} state={state} sx={productActionAreaSx}>
+        <Box sx={productImageFrameSx}>
           <ImageWithFallback
             src={product.image}
             alt={product.name}
             category={categoryName}
-            className="product-card__image-content"
+            sx={productImageFrameSx}
+            imageSx={productImageSx}
           />
-        </div>
-        <div className="product-card__content">
-          <h3 className="product-card__name">{product.name}</h3>
-          <p className="product-card__description">{product.description}</p>
-          <div className="product-card__sizes" aria-label={`Доступные размеры: ${product.availableSizes.join(', ')}`}>
+        </Box>
+        <CardContent sx={productContentSx}>
+          <Typography component="h3" variant="subtitle1" sx={productNameSx}>{product.name}</Typography>
+          <Typography variant="body2" color="text.secondary" sx={productDescriptionSx}>{product.description}</Typography>
+          <Stack direction="row" aria-label={`Доступные размеры: ${product.availableSizes.join(', ')}`} sx={productSizesSx}>
             {product.availableSizes.map((size) => (
-              <span key={size} className="product-card__size">
-                {size}
-              </span>
+              <Chip key={size} label={size} size="small" variant="outlined" />
             ))}
-          </div>
-        </div>
-      </Link>
-      <div className="product-card__content product-card__content--action">
-        <Link className="button button--secondary product-card__action" to={`/product/${product.id}`} state={state}>
+          </Stack>
+        </CardContent>
+      </CardActionArea>
+      <Box sx={productCardActionSx}>
+        <Button component={Link} to={`/product/${product.id}`} state={state} variant="outlined" fullWidth>
           Выбрать размер
-        </Link>
-      </div>
-    </article>
+        </Button>
+      </Box>
+    </Card>
   );
 }

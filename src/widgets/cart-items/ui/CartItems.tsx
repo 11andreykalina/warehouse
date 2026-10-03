@@ -1,22 +1,37 @@
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { Box, IconButton, Paper, Stack, Typography } from '@mui/material';
+
 import { mockCategories } from '@/entities/category';
 import { mockProducts } from '@/entities/product';
 import { removeFromCart, updateCartItemQuantity, useCartItems } from '@/entities/cart';
 import { Button, ImageWithFallback } from '@/shared/ui';
+import {
+  cartItemActionsSx,
+  cartItemDetailsSx,
+  cartItemImageSx,
+  cartItemSx,
+  cartListSx,
+  cartProductNameSx,
+  cartQuantitySx,
+  emptyCartSx,
+  quantityControlSx,
+} from './CartItems.styles';
 
 export function CartItems() {
   const items = useCartItems();
 
   if (items.length === 0) {
     return (
-      <div className="empty-state">
-        <h2>Заявка пока пуста</h2>
-        <p>Добавьте позиции из каталога, чтобы отправить заявку на получение.</p>
-      </div>
+      <Paper sx={emptyCartSx}>
+        <Typography variant="h6" gutterBottom>Заявка пока пуста</Typography>
+        <Typography color="text.secondary">Добавьте позиции из каталога, чтобы отправить заявку на получение.</Typography>
+      </Paper>
     );
   }
 
   return (
-    <div className="stack-list">
+    <Stack sx={cartListSx}>
       {items.map((item) => {
         const product = mockProducts.find((entry) => entry.id === item.productId);
         const category = product
@@ -24,44 +39,44 @@ export function CartItems() {
           : 'Позиция каталога';
 
         return (
-          <div key={`${item.productId}-${item.size}`} className="cart-item">
-            <div className="cart-item__image">
+          <Paper key={`${item.productId}-${item.size}`} sx={cartItemSx}>
+            <Box sx={cartItemImageSx}>
               <ImageWithFallback
                 src={product?.image ?? ''}
                 alt={product?.name ?? 'Позиция больше недоступна'}
                 category={category}
-                className="cart-item__image-content"
+                sx={cartItemImageSx}
               />
-            </div>
-            <div className="cart-item__details">
-              <strong>{product?.name ?? 'Позиция больше недоступна в каталоге'}</strong>
-              <small>Размер: {item.size}</small>
-            </div>
-            <div className="cart-item__actions">
-              <div className="quantity-control" aria-label={`Количество: ${item.quantity}`}>
-                <button
-                  type="button"
+            </Box>
+            <Stack sx={cartItemDetailsSx}>
+              <Typography sx={cartProductNameSx}>{product?.name ?? 'Позиция больше недоступна в каталоге'}</Typography>
+              <Typography variant="body2" color="text.secondary">Размер: {item.size}</Typography>
+            </Stack>
+            <Box sx={cartItemActionsSx}>
+              <Stack direction="row" spacing={0.5} aria-label={`Количество: ${item.quantity}`} sx={quantityControlSx}>
+                <IconButton
+                  size="small"
                   aria-label={`Уменьшить количество позиции ${product?.name ?? item.productId}`}
                   onClick={() => updateCartItemQuantity(item.productId, item.size, item.quantity - 1)}
                 >
-                  −
-                </button>
-                <span aria-live="polite">{item.quantity}</span>
-                <button
-                  type="button"
+                  <RemoveIcon fontSize="small" />
+                </IconButton>
+                <Typography aria-live="polite" sx={cartQuantitySx}>{item.quantity}</Typography>
+                <IconButton
+                  size="small"
                   aria-label={`Увеличить количество позиции ${product?.name ?? item.productId}`}
                   onClick={() => updateCartItemQuantity(item.productId, item.size, item.quantity + 1)}
                 >
-                  +
-                </button>
-              </div>
+                  <AddIcon fontSize="small" />
+                </IconButton>
+              </Stack>
               <Button type="button" variant="text" onClick={() => removeFromCart(item.productId, item.size)}>
                 Удалить
               </Button>
-            </div>
-          </div>
+            </Box>
+          </Paper>
         );
       })}
-    </div>
+    </Stack>
   );
 }

@@ -1,12 +1,24 @@
 import { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { AppBar, Badge, Box, Button, Toolbar, Typography } from '@mui/material';
 
 import { getAuthenticated, logout } from '@/features/auth-by-badge';
 import { ThemeToggle } from '@/features/theme-toggle';
 import { useCartItems } from '@/entities/cart';
+import { appBarSx, brandMarkSx, brandSx, brandTextSx, cartBadgeSx, navButtonSx, navSx, toolbarSx } from './AppHeader.styles';
+
+const navigationItems = [
+  { path: '/', label: 'Главная' },
+  { path: '/catalog', label: 'Каталог' },
+  { path: '/search', label: 'Поиск' },
+  { path: '/wardrobe', label: 'Мой гардероб' },
+  { path: '/orders', label: 'Мои заявки' },
+  { path: '/profile', label: 'Профиль' },
+];
 
 export function AppHeader() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [authenticated, setAuthenticated] = useState(getAuthenticated);
   const cartItems = useCartItems();
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -18,34 +30,41 @@ export function AppHeader() {
   };
 
   return (
-    <header className="app-header">
-      <Link to="/" className="app-header__brand">
-        <span className="app-header__mark" aria-hidden="true">
+    <AppBar sx={appBarSx}>
+      <Toolbar sx={toolbarSx}>
+        <Box component={Link} to="/" sx={brandSx}>
+        <Box component="span" aria-hidden="true" sx={brandMarkSx}>
           МВД
-        </span>
-        <span>Склад формы</span>
-      </Link>
-      <nav className="app-header__nav" aria-label="Основная навигация">
-        <NavLink to="/" end>
-          Главная
-        </NavLink>
-        <NavLink to="/catalog">Каталог</NavLink>
-        <NavLink to="/search">Поиск</NavLink>
-        <NavLink to="/wardrobe">Мой гардероб</NavLink>
-        <NavLink to="/orders">Мои заявки</NavLink>
-        <NavLink to="/profile">Профиль</NavLink>
-        <NavLink to="/cart">
-          Заявка <span className="app-header__cart-count">{cartCount}</span>
-        </NavLink>
+        </Box>
+          <Typography component="span" sx={brandTextSx}>Склад формы</Typography>
+        </Box>
+        <Box component="nav" aria-label="Основная навигация" sx={navSx}>
+          {navigationItems.map(({ path, label }) => (
+            <Button
+              key={path}
+              component={Link}
+              to={path}
+              aria-current={location.pathname === path ? 'page' : undefined}
+              sx={navButtonSx}
+            >
+              {label}
+            </Button>
+          ))}
+          <Button component={Link} to="/cart" sx={navButtonSx}>
+            <Badge badgeContent={cartCount} color="secondary" sx={cartBadgeSx}>Заявка</Badge>
+          </Button>
         {authenticated ? (
-          <button className="app-header__logout" type="button" onClick={handleLogout}>
+          <Button color="inherit" onClick={handleLogout} sx={navButtonSx}>
             Выйти
-          </button>
+          </Button>
         ) : (
-          <NavLink to="/login">Войти</NavLink>
+          <Button component={Link} to="/login" sx={navButtonSx}>
+            Войти
+          </Button>
         )}
-      </nav>
-      <ThemeToggle />
-    </header>
+        </Box>
+        <ThemeToggle />
+      </Toolbar>
+    </AppBar>
   );
 }

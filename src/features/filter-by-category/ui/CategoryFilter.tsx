@@ -1,4 +1,7 @@
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+
 import type { Category } from '@/entities/category';
+import { categoryToggleGroupSx } from './CategoryFilter.styles';
 
 export function CategoryFilter({
   categories,
@@ -10,20 +13,23 @@ export function CategoryFilter({
   onSelect: (id: string | null) => void;
 }) {
   return (
-    <div className="filter-row">
-      <button className={selected === null ? 'chip chip--active' : 'chip'} type="button" onClick={() => onSelect(null)}>
-        Все
-      </button>
-      {categories.map((category) => (
-        <button
-          key={category.id}
-          className={selected === category.id ? 'chip chip--active' : 'chip'}
-          type="button"
-          onClick={() => onSelect(category.id)}
-        >
-          {category.name}
-        </button>
-      ))}
-    </div>
+    <Box>
+      <ToggleButtonGroup
+        aria-label="Фильтр по категории"
+        exclusive
+        value={selected ?? ''}
+        onChange={(_, value: string | null) => {
+          if (value !== null) onSelect(value || null);
+        }}
+        sx={categoryToggleGroupSx}
+      >
+        <ToggleButton value="">Все</ToggleButton>
+        {categories.map((category) => (
+          <ToggleButton key={category.id} value={category.id}>
+            {category.name}
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
+    </Box>
   );
 }

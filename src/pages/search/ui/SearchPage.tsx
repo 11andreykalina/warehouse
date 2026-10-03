@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
+import { Stack, Typography } from '@mui/material';
 
 import { SearchProducts } from '@/features/search-products';
 import { mockProducts } from '@/entities/product';
+import { EmptyState, PageStack, SectionHeading } from '@/shared/ui';
 import { ProductFeed } from '@/widgets/product-feed';
 
 export function SearchPage() {
@@ -19,29 +21,21 @@ export function SearchPage() {
   }, [normalizedQuery]);
 
   return (
-    <div className="page-stack">
-      <section className="section-block">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">Поиск по каталогу</p>
-            <h1>Найдите нужную позицию</h1>
-          </div>
-        </div>
+    <PageStack>
+      <Stack component="section" spacing={2.5}>
+        <SectionHeading eyebrow="Поиск по каталогу" title="Найдите нужную позицию" />
         <SearchProducts value={query} onChange={setQuery} />
-      </section>
-      <section className="section-block">
-        <p className="search-results-count">
+      </Stack>
+      <Stack component="section" spacing={2}>
+        <Typography variant="body2" color="text.secondary">
           {normalizedQuery ? `Найдено позиций: ${results.length}` : `В каталоге позиций: ${results.length}`}
-        </p>
+        </Typography>
         {results.length > 0 ? (
           <ProductFeed products={results} />
         ) : (
-          <div className="empty-state">
-            <h2>Ничего не найдено</h2>
-            <p>Проверьте запрос или попробуйте другое название.</p>
-          </div>
+          <EmptyState title="Ничего не найдено" description="Проверьте запрос или попробуйте другое название." />
         )}
-      </section>
-    </div>
+      </Stack>
+    </PageStack>
   );
 }

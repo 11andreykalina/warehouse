@@ -1,51 +1,58 @@
 import { Link } from 'react-router-dom';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 import { mockProducts } from '@/entities/product';
+import { PageStack, SectionHeading } from '@/shared/ui';
 import { CategoryNavigation } from '@/widgets/category-navigation';
 import { OutfitFeed } from '@/widgets/outfit-feed';
 import { ProductFeed } from '@/widgets/product-feed';
+import {
+  heroContentSx,
+  heroDescriptionSx,
+  heroEmblemSx,
+  heroEyebrowSx,
+  heroSx,
+  heroTitleSx,
+  heroButtonSx,
+  homeSectionSx,
+  homeStackSx,
+  sectionLinkSx,
+} from './HomePage.styles';
 
 export function HomePage() {
   const featured = mockProducts.slice(0, 4);
 
   return (
-    <div className="page-stack">
-      <section className="hero">
-        <img className="hero__emblem" src="/images/mvd-emblem.svg" alt="" aria-hidden="true" />
-        <div className="hero__content">
-          <p className="eyebrow">Склад форменного имущества</p>
-          <h1>Всё необходимое для службы — в одном месте</h1>
-          <p>Посмотрите каталог, выберите свой размер и отправьте заявку на получение имущества.</p>
-          <Link className="button button--primary" to="/catalog">
+    <PageStack sx={homeStackSx}>
+      <Box component="section" sx={heroSx}>
+        <Box component="img" src="/images/mvd-emblem.svg" alt="" aria-hidden="true" sx={heroEmblemSx} />
+        <Stack sx={heroContentSx}>
+          <Typography variant="overline" sx={heroEyebrowSx}>Склад форменного имущества</Typography>
+          <Typography component="h1" sx={heroTitleSx}>Всё необходимое для службы — в одном месте</Typography>
+          <Typography sx={heroDescriptionSx}>Посмотрите каталог, выберите свой размер и отправьте заявку на получение имущества.</Typography>
+          <Button component={Link} to="/catalog" variant="contained" color="secondary" endIcon={<ArrowForwardIcon />} sx={heroButtonSx}>
             Перейти в каталог
-          </Link>
-        </div>
-      </section>
+          </Button>
+        </Stack>
+      </Box>
 
       <CategoryNavigation />
 
-      <section className="section-block">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">Каталог</p>
-            <h2>Позиции имущества</h2>
-          </div>
-          <Link className="section-heading__link" to="/catalog">
-            Весь каталог →
-          </Link>
-        </div>
+      <Stack component="section" sx={homeSectionSx}>
+        <SectionHeading
+          eyebrow="Каталог"
+          title="Позиции имущества"
+          level={2}
+          action={<Button component={Link} to="/catalog" endIcon={<ArrowForwardIcon />} sx={sectionLinkSx}>Весь каталог</Button>}
+        />
         <ProductFeed products={featured} />
-      </section>
+      </Stack>
 
-      <section className="section-block">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">Подборка</p>
-            <h2>Пример готового комплекта</h2>
-          </div>
-        </div>
+      <Stack component="section" sx={homeSectionSx}>
+        <SectionHeading eyebrow="Подборка" title="Пример готового комплекта" level={2} />
         <OutfitFeed />
-      </section>
-    </div>
+      </Stack>
+    </PageStack>
   );
 }

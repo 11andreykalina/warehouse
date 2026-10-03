@@ -1,13 +1,28 @@
+import { useMemo } from 'react';
+import { CssBaseline, ThemeProvider as MuiThemeProvider } from '@mui/material';
 import { RouterProvider } from 'react-router-dom';
 
-import { ThemeProvider } from '@/features/theme-toggle';
+import { ThemeProvider as FeatureThemeProvider, useTheme } from '@/features/theme-toggle';
 import { router } from './providers/router';
+import { createMuiTheme } from './styles/muiTheme';
+
+function AppContent() {
+  const { theme } = useTheme();
+  const muiTheme = useMemo(() => createMuiTheme(theme), [theme]);
+
+  return (
+    <MuiThemeProvider theme={muiTheme}>
+      <CssBaseline />
+      <RouterProvider router={router} />
+    </MuiThemeProvider>
+  );
+}
 
 function App() {
   return (
-    <ThemeProvider>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <FeatureThemeProvider>
+      <AppContent />
+    </FeatureThemeProvider>
   );
 }
 

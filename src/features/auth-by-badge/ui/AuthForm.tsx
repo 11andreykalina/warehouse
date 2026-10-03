@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Alert, Stack } from '@mui/material';
 
 import { mockUser } from '@/entities/user';
 import { Button, Input } from '@/shared/ui';
 import { setAuthenticated } from '../model/auth';
+import { authFormSx } from './AuthForm.styles';
 
 export function AuthForm() {
   const navigate = useNavigate();
@@ -24,28 +26,11 @@ export function AuthForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form-stack">
-      <label className="form-field">
-        <span>Номер жетона</span>
-        <Input
-          autoComplete="username"
-          required
-          value={badgeNumber}
-          onChange={(event) => setBadgeNumber(event.target.value)}
-        />
-      </label>
-      <label className="form-field">
-        <span>Пароль</span>
-        <Input
-          type="password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </label>
-      {error ? <p className="form-error" role="alert">{error}</p> : null}
-      <Button type="submit">Войти</Button>
-    </form>
+    <Stack component="form" onSubmit={handleSubmit} spacing={2} sx={authFormSx}>
+      <Input label="Номер жетона" autoComplete="username" required value={badgeNumber} onChange={(event) => setBadgeNumber(event.target.value)} />
+      <Input label="Пароль" type="password" autoComplete="current-password" required value={password} onChange={(event) => setPassword(event.target.value)} />
+      {error ? <Alert role="alert" severity="error">{error}</Alert> : null}
+      <Button type="submit" fullWidth>Войти</Button>
+    </Stack>
   );
 }

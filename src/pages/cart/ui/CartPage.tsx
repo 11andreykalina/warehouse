@@ -1,9 +1,12 @@
 import { useNavigate } from 'react-router-dom';
+import { Box, Stack, Typography } from '@mui/material';
 
 import { useCartItems } from '@/entities/cart';
 import type { Order } from '@/entities/order';
 import { CreateOrderButton } from '@/features/create-order';
+import { PageStack, SectionHeading } from '@/shared/ui';
 import { CartItems } from '@/widgets/cart-items';
+import { cartPageSectionSx, cartSummarySx } from './CartPage.styles';
 
 export function CartPage() {
   const navigate = useNavigate();
@@ -15,24 +18,19 @@ export function CartPage() {
   };
 
   return (
-    <div className="page-stack">
-      <section className="section-block">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">Заявка на получение</p>
-            <h1>Выбранные позиции</h1>
-          </div>
-        </div>
+    <PageStack>
+      <Stack component="section" sx={cartPageSectionSx}>
+        <SectionHeading eyebrow="Заявка на получение" title="Выбранные позиции" />
         <CartItems />
         {items.length > 0 ? (
-          <div className="cart-summary">
-            <span className="cart-summary__text">
+          <Box sx={cartSummarySx}>
+            <Typography variant="body2" color="text.secondary">
               Позиций: {items.length}, всего единиц: {totalQuantity}
-            </span>
+            </Typography>
             <CreateOrderButton onSubmitted={handleSubmitted} />
-          </div>
+          </Box>
         ) : null}
-      </section>
-    </div>
+      </Stack>
+    </PageStack>
   );
 }

@@ -1,4 +1,7 @@
+import { Chip, Paper, Stack, Typography } from '@mui/material';
+
 import type { Order } from '../model/types';
+import { orderCardHeaderSx, orderCardSx, orderItemsSx, orderTitleSx } from './OrderCard.styles';
 
 export function OrderCard({
   order,
@@ -15,25 +18,21 @@ export function OrderCard({
         : 'Выдана';
 
   return (
-    <article className="order-card">
-      <div className="order-card__header">
-        <strong>Заявка {order.id.slice(-8)}</strong>
-        <span className={`status-tag ${order.status === 'submitted' ? 'status-tag--submitted' : ''}`}>
-          {status}
-        </span>
-      </div>
-      <ul className="order-card__items">
+    <Paper component="article" sx={orderCardSx}>
+      <Stack direction="row" sx={orderCardHeaderSx}>
+        <Typography variant="subtitle1" sx={orderTitleSx}>Заявка {order.id.slice(-8)}</Typography>
+        <Chip size="small" color={order.status === 'submitted' ? 'primary' : 'default'} label={status} />
+      </Stack>
+      <Stack component="ul" spacing={0.5} sx={orderItemsSx}>
         {order.items.map((item) => {
           return (
-            <li key={`${item.productId}-${item.size}`}>
+            <Typography component="li" variant="body2" key={`${item.productId}-${item.size}`}>
               {productName(item.productId) ?? 'Позиция каталога'} — размер {item.size}, {item.quantity} шт.
-            </li>
+            </Typography>
           );
         })}
-      </ul>
-      <div className="order-card__meta">
-        <span>Создана {new Date(order.createdAt).toLocaleDateString('ru-RU')}</span>
-      </div>
-    </article>
+      </Stack>
+      <Typography variant="caption" color="text.secondary">Создана {new Date(order.createdAt).toLocaleDateString('ru-RU')}</Typography>
+    </Paper>
   );
 }

@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { Alert, Stack } from '@mui/material';
 
 import { clearCart, useCartItems } from '@/entities/cart';
 import { createOrder } from '@/entities/order';
 import { Button } from '@/shared/ui';
 import type { Order } from '@/entities/order';
+import { createOrderStackSx } from './CreateOrderButton.styles';
 
 export function CreateOrderButton({ onSubmitted }: { onSubmitted: (order: Order) => void }) {
   const items = useCartItems();
@@ -26,11 +28,11 @@ export function CreateOrderButton({ onSubmitted }: { onSubmitted: (order: Order)
   };
 
   return (
-    <div className="form-stack">
+    <Stack spacing={1.5} sx={createOrderStackSx}>
       <Button type="button" variant="primary" disabled={items.length === 0} onClick={handleSubmit}>
         Отправить заявку
       </Button>
-      {error ? <p className="form-error" role="alert">{error}</p> : null}
-    </div>
+      {error ? <Alert role="alert" severity="error">{error}</Alert> : null}
+    </Stack>
   );
 }

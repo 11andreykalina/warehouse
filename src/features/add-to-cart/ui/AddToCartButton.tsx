@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { Alert, Stack } from '@mui/material';
 
 import { addToCart } from '@/entities/cart';
 import { Button } from '@/shared/ui';
+import { addToCartStackSx } from './AddToCartButton.styles';
 
 export function AddToCartButton({
   productId,
@@ -27,20 +29,16 @@ export function AddToCartButton({
   };
 
   return (
-    <div className="add-to-request">
+    <Stack spacing={1} sx={addToCartStackSx}>
       <Button type="button" variant="primary" disabled={disabled} onClick={handleAdd}>
         Добавить в заявку
       </Button>
       {added ? (
-        <span className="add-to-request__confirmation" role="status">
-          Позиция добавлена
-        </span>
+        <Alert role="status" severity="success" variant="outlined">Позиция добавлена</Alert>
       ) : null}
       {error ? (
-        <span className="form-error" role="alert">
-          {error}
-        </span>
+        <Alert role="alert" severity="error">{error}</Alert>
       ) : null}
-    </div>
+    </Stack>
   );
 }
