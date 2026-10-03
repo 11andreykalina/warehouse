@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import AddShoppingCartOutlined from '@mui/icons-material/AddShoppingCartOutlined';
 import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Snackbar, Stack, TextField, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
-import { addItemsToCart } from '@/entities/cart';
+import { cartItemsAdded } from '@/entities/cart';
 import type { Product } from '@/entities/product';
 import {
   addOutfitButtonSx,
@@ -21,6 +22,7 @@ export function AddOutfitToCart({
   products: Product[];
   disabled?: boolean;
 }) {
+  const dispatch = useDispatch();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>({});
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -34,7 +36,11 @@ export function AddOutfitToCart({
   const handleAdd = () => {
     if (!hasAllSizes) return;
 
-    addItemsToCart(products.map((product) => ({ productId: product.id, size: selectedSizes[product.id] })));
+    dispatch(
+      cartItemsAdded(
+        products.map((product) => ({ productId: product.id, size: selectedSizes[product.id] })),
+      ),
+    );
     setDialogOpen(false);
     setNotificationOpen(true);
   };

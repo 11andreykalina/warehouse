@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { Alert, Stack } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
-import { clearCart, useCartItems } from '@/entities/cart';
-import { createOrder } from '@/entities/order';
+import { cartCleared, useCartItems } from '@/entities/cart';
+import { createOrder, orderAdded } from '@/entities/order';
 import { Button } from '@/shared/ui';
 import type { Order } from '@/entities/order';
 import { createOrderStackSx } from './CreateOrderButton.styles';
 
 export function CreateOrderButton({ onSubmitted }: { onSubmitted: (order: Order) => void }) {
+  const dispatch = useDispatch();
   const items = useCartItems();
   const [error, setError] = useState('');
 
@@ -19,7 +21,8 @@ export function CreateOrderButton({ onSubmitted }: { onSubmitted: (order: Order)
 
     try {
       const order = createOrder(items);
-      clearCart();
+      dispatch(orderAdded(order));
+      dispatch(cartCleared());
       onSubmitted(order);
     } catch (submitError) {
       console.error('Could not submit issue request.', submitError);

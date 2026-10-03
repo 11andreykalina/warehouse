@@ -1,3 +1,10 @@
-export type { Product, ProductSeason } from './model/types';
+export type {
+  Product,
+  ProductEntitlement,
+  ProductSeason,
+  WearPeriodUnit,
+} from './model/types';
 export { mockProducts } from './model/mock';
+export { getApplicableProductEntitlements } from './model/eligibility';
+export { formatProductEntitlement, formatWearPeriod } from './model/labels';
 export { ProductCard } from './ui/ProductCard';

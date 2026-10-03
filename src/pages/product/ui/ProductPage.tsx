@@ -3,9 +3,10 @@ import { Link, useParams } from 'react-router-dom';
 import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 
 import { mockCategories } from '@/entities/category';
-import { mockProducts, type Product } from '@/entities/product';
+import { formatProductEntitlement, mockProducts, type Product } from '@/entities/product';
 import { AddToCartButton } from '@/features/add-to-cart';
 import { ProductSizeSelector } from '@/features/select-product-size';
+import { uniformGenderLabels, uniformServiceLabels } from '@/shared/model';
 import { EmptyState, ImageWithFallback, PageStack } from '@/shared/ui';
 import { productDescriptionSx, productDetailsSx, productImageFrameSx, productPageSx, productTitleSx } from './ProductPage.styles';
 
@@ -29,6 +30,15 @@ function ProductDetails({ product }: { product: Product }) {
           <Typography component="h1" sx={productTitleSx}>{product.name}</Typography>
         </Stack>
         <Typography sx={productDescriptionSx}>{product.description}</Typography>
+        <Typography variant="body2" color="text.secondary">
+          {uniformGenderLabels[product.gender]} · {product.services.map((service) => uniformServiceLabels[service]).join(', ')}
+        </Typography>
+        {product.entitlements.map((entitlement) => (
+          <Typography key={`${entitlement.norm}-${entitlement.quantity}`} variant="body2" color="text.secondary">
+            {formatProductEntitlement(entitlement)}
+            {entitlement.note ? ` · ${entitlement.note}` : ''}
+          </Typography>
+        ))}
         {product.availableSizes.length > 0 ? (
           <ProductSizeSelector
             sizes={product.availableSizes}

@@ -1,10 +1,15 @@
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Box, IconButton, Paper, Stack, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
 import { mockCategories } from '@/entities/category';
 import { mockProducts } from '@/entities/product';
-import { removeFromCart, updateCartItemQuantity, useCartItems } from '@/entities/cart';
+import {
+  cartItemQuantityUpdated,
+  cartItemRemoved,
+  useCartItems,
+} from '@/entities/cart';
 import { Button, ImageWithFallback } from '@/shared/ui';
 import {
   cartItemActionsSx,
@@ -19,6 +24,7 @@ import {
 } from './CartItems.styles';
 
 export function CartItems() {
+  const dispatch = useDispatch();
   const items = useCartItems();
 
   if (items.length === 0) {
@@ -57,7 +63,15 @@ export function CartItems() {
                 <IconButton
                   size="small"
                   aria-label={`Уменьшить количество позиции ${product?.name ?? item.productId}`}
-                  onClick={() => updateCartItemQuantity(item.productId, item.size, item.quantity - 1)}
+                  onClick={() =>
+                    dispatch(
+                      cartItemQuantityUpdated({
+                        productId: item.productId,
+                        size: item.size,
+                        quantity: item.quantity - 1,
+                      }),
+                    )
+                  }
                 >
                   <RemoveIcon fontSize="small" />
                 </IconButton>
@@ -65,12 +79,24 @@ export function CartItems() {
                 <IconButton
                   size="small"
                   aria-label={`Увеличить количество позиции ${product?.name ?? item.productId}`}
-                  onClick={() => updateCartItemQuantity(item.productId, item.size, item.quantity + 1)}
+                  onClick={() =>
+                    dispatch(
+                      cartItemQuantityUpdated({
+                        productId: item.productId,
+                        size: item.size,
+                        quantity: item.quantity + 1,
+                      }),
+                    )
+                  }
                 >
                   <AddIcon fontSize="small" />
                 </IconButton>
               </Stack>
-              <Button type="button" variant="text" onClick={() => removeFromCart(item.productId, item.size)}>
+              <Button
+                type="button"
+                variant="text"
+                onClick={() => dispatch(cartItemRemoved({ productId: item.productId, size: item.size }))}
+              >
                 Удалить
               </Button>
             </Box>

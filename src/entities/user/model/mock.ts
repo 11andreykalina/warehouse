@@ -13,6 +13,10 @@ export const mockUser: User = {
     rank: 'старший лейтенант полиции',
     position: 'эксперт-криминалист',
     department: 'ОМВД России',
+    uniformService: 'investigation',
+    rankGroup: 'senior-middle',
+    uniformDuties: [],
+    uniformConditions: [],
     serviceStartDate: '2021-09-01',
   },
   measurements: {

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Box } from '@mui/material';
 import { Outlet, useLocation } from 'react-router-dom';
 
@@ -16,7 +17,9 @@ export function AppLayout() {
       <AppHeader />
       <Box component="main" sx={pageShellSx}>
         {!isHomePage ? <PageBackButton fallbackTo={fallbackTo} /> : null}
-        <Outlet />
+        <Suspense fallback={<Box role="status" sx={{ minHeight: '40vh' }} />}>
+          <Outlet />
+        </Suspense>
       </Box>
       <BottomNavigation />
     </Box>

@@ -1,3 +1,19 @@
 export type { WardrobeItem } from './model/types';
-export { mockWardrobeItems } from './model/mock';
+export {
+  expiredWardrobeItemsArchived,
+  getWardrobeItems,
+  wardrobeItemArchived,
+  wardrobeItemsAdded,
+  wardrobeLoadFailed,
+  wardrobeReducer,
+  wardrobeRestored,
+  useWardrobeItems,
+} from './model/store';
+export {
+  addDaysToDate,
+  getDaysForPeriod,
+  getDaysUntil,
+  getLocalDate,
+  isDateOnly,
+} from './model/expiration';
 export { WardrobeItemCard } from './ui/WardrobeItemCard';

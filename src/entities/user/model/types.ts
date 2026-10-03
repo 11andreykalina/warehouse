@@ -1,4 +1,12 @@
-export type Gender = "male" | "female";
+import type {
+    UniformCondition,
+    UniformDuty,
+    UniformGender,
+    UniformRankGroup,
+    UniformService,
+} from '@/shared/model';
+
+export type Gender = Exclude<UniformGender, 'unisex'>;
 
 export interface UserIdentity {
     firstName: string;
@@ -12,6 +20,10 @@ export interface UserService {
     position: string;
     department: string;
     serviceStartDate?: string;
+    uniformService: Exclude<UniformService, 'general'>;
+    rankGroup: UniformRankGroup;
+    uniformDuties: UniformDuty[];
+    uniformConditions: UniformCondition[];
 }
 
 export interface UserMeasurements {

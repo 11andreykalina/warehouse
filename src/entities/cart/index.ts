@@ -1,10 +1,12 @@
 export type { CartItem } from './model/types';
 export {
-  addToCart,
-  addItemsToCart,
-  clearCart,
+  cartCleared,
+  cartItemAdded,
+  cartItemsAdded,
+  cartItemQuantityUpdated,
+  cartItemRemoved,
+  cartRestored,
+  cartReducer,
   getCartItems,
-  removeFromCart,
-  updateCartItemQuantity,
   useCartItems,
 } from './model/store';

@@ -1,4 +1,4 @@
-import { Chip, Paper, Stack, Typography } from '@mui/material';
+import { Button, Chip, Paper, Stack, Typography } from '@mui/material';
 
 import type { Order } from '../model/types';
 import { orderCardHeaderSx, orderCardSx, orderItemsSx, orderTitleSx } from './OrderCard.styles';
@@ -6,9 +6,11 @@ import { orderCardHeaderSx, orderCardSx, orderItemsSx, orderTitleSx } from './Or
 export function OrderCard({
   order,
   productName,
+  onReceive,
 }: {
   order: Order;
   productName: (productId: string) => string | undefined;
+  onReceive?: (order: Order) => void;
 }) {
   const status =
     order.status === 'submitted'
@@ -33,6 +35,11 @@ export function OrderCard({
         })}
       </Stack>
       <Typography variant="caption" color="text.secondary">Создана {new Date(order.createdAt).toLocaleDateString('ru-RU')}</Typography>
+      {order.status !== 'issued' && onReceive ? (
+        <Button size="small" variant="outlined" onClick={() => onReceive(order)}>
+          Подтвердить получение со склада
+        </Button>
+      ) : null}
     </Paper>
   );
 }
