@@ -26,7 +26,7 @@ export function HomePage() {
   return (
     <PageStack sx={homeStackSx}>
       <Box component="section" sx={heroSx}>
-        <Box component="img" src="/images/mvd-emblem.svg" alt="" aria-hidden="true" sx={heroEmblemSx} />
+        <Box component="img" src="/images/branding/mvd-emblem.svg" alt="" aria-hidden="true" sx={heroEmblemSx} />
         <Stack sx={heroContentSx}>
           <Typography variant="overline" sx={heroEyebrowSx}>Склад форменного имущества</Typography>
           <Typography component="h1" sx={heroTitleSx}>Всё необходимое для службы — в одном месте</Typography>
@@ -50,8 +50,13 @@ export function HomePage() {
       </Stack>
 
       <Stack component="section" sx={homeSectionSx}>
-        <SectionHeading eyebrow="Подборка" title="Пример готового комплекта" level={2} />
-        <OutfitFeed />
+        <SectionHeading
+          eyebrow="Подборка"
+          title="Готовые комплекты"
+          level={2}
+          action={<Button component={Link} to="/outfits" endIcon={<ArrowForwardIcon />} sx={sectionLinkSx}>Все комплекты</Button>}
+        />
+        <OutfitFeed horizontal />
       </Stack>
     </PageStack>
   );

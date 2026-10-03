@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Link, useParams } from 'react-router-dom';
 import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 
 import { mockCategories } from '@/entities/category';
@@ -8,22 +7,7 @@ import { mockProducts, type Product } from '@/entities/product';
 import { AddToCartButton } from '@/features/add-to-cart';
 import { ProductSizeSelector } from '@/features/select-product-size';
 import { EmptyState, ImageWithFallback, PageStack } from '@/shared/ui';
-import { productBackButtonSx, productDescriptionSx, productDetailsSx, productImageFrameSx, productPageSx, productTitleSx } from './ProductPage.styles';
-
-function getReturnTo(state: unknown) {
-  if (
-    typeof state === 'object' &&
-    state !== null &&
-    'returnTo' in state &&
-    typeof state.returnTo === 'string' &&
-    state.returnTo.startsWith('/') &&
-    !state.returnTo.startsWith('//')
-  ) {
-    return state.returnTo;
-  }
-
-  return '/catalog';
-}
+import { productDescriptionSx, productDetailsSx, productImageFrameSx, productPageSx, productTitleSx } from './ProductPage.styles';
 
 function ProductDetails({ product }: { product: Product }) {
   const [selectedSize, setSelectedSize] = useState('');
@@ -61,7 +45,6 @@ function ProductDetails({ product }: { product: Product }) {
 }
 
 export function ProductPage() {
-  const location = useLocation();
   const { id } = useParams();
   const product = mockProducts.find((item) => item.id === id);
 
@@ -69,16 +52,13 @@ export function ProductPage() {
     return (
       <Stack spacing={2}>
         <EmptyState title="Позиция не найдена" description="Возможно, её больше нет в каталоге." />
-        <Button component={Link} to="/catalog" variant="outlined" sx={productBackButtonSx}>Вернуться в каталог</Button>
+        <Button component={Link} to="/catalog" variant="outlined">Вернуться в каталог</Button>
       </Stack>
     );
   }
 
   return (
     <PageStack>
-      <Button component={Link} to={getReturnTo(location.state)} variant="outlined" startIcon={<ArrowBackIcon />} sx={productBackButtonSx}>
-        Назад
-      </Button>
       <ProductDetails key={product.id} product={product} />
     </PageStack>
   );

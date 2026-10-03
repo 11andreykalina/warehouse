@@ -31,6 +31,4 @@ export const productDetailsSx: SxProps<Theme> = {
 
 export const productDescriptionSx: SxProps<Theme> = { color: 'text.secondary', lineHeight: 1.65 };
 
-export const productBackButtonSx: SxProps<Theme> = { alignSelf: 'flex-start' };
-
 export const productTitleSx: SxProps<Theme> = { fontSize: { xs: 27, md: 36 }, fontWeight: 700 };

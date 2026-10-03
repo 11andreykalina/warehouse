@@ -2,13 +2,14 @@ import { Paper, Stack, Typography } from '@mui/material';
 
 import { AuthForm } from '@/features/auth-by-badge';
 import { ThemeToggle } from '@/features/theme-toggle';
-import { SectionHeading } from '@/shared/ui';
+import { PageBackButton, SectionHeading } from '@/shared/ui';
 import { loginCardSx, loginHintSx, loginPageSx, loginThemeControlSx } from './LoginPage.styles';
 
 export function LoginPage() {
   return (
     <Stack component="main" sx={loginPageSx}>
       <Stack sx={loginThemeControlSx}>
+        <PageBackButton />
         <ThemeToggle />
       </Stack>
       <Paper component="section" sx={loginCardSx}>

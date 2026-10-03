@@ -10,6 +10,7 @@ import { appBarSx, brandMarkSx, brandSx, brandTextSx, cartBadgeSx, navButtonSx, 
 const navigationItems = [
   { path: '/', label: 'Главная' },
   { path: '/catalog', label: 'Каталог' },
+  { path: '/outfits', label: 'Комплекты' },
   { path: '/search', label: 'Поиск' },
   { path: '/wardrobe', label: 'Мой гардероб' },
   { path: '/orders', label: 'Мои заявки' },

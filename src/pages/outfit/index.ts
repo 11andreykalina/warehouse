@@ -1,0 +1,1 @@
+export { OutfitPage } from './ui/OutfitPage';

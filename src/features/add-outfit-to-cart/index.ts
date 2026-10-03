@@ -1,0 +1,1 @@
+export { AddOutfitToCart } from './ui/AddOutfitToCart';

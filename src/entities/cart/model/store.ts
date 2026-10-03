@@ -83,6 +83,22 @@ export function addToCart(productId: string, size: string) {
   saveCart(items);
 }
 
+export function addItemsToCart(newItems: Array<Pick<CartItem, 'productId' | 'size'>>) {
+  const items = getCartItems();
+
+  for (const newItem of newItems) {
+    const existing = items.find((item) => item.productId === newItem.productId && item.size === newItem.size);
+
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      items.push({ ...newItem, quantity: 1 });
+    }
+  }
+
+  saveCart(items);
+}
+
 export function updateCartItemQuantity(productId: string, size: string, quantity: number) {
   const updated = getCartItems()
     .map((item) =>

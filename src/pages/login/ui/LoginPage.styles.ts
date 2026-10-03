@@ -6,7 +6,12 @@ export const loginPageSx: SxProps<Theme> = {
   pt: { xs: 3, md: 5 },
 };
 
-export const loginThemeControlSx: SxProps<Theme> = { display: 'flex', justifyContent: 'flex-end', mb: 1.5 };
+export const loginThemeControlSx: SxProps<Theme> = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  mb: 1.5,
+};
 
 export const loginCardSx: SxProps<Theme> = {
   width: 'min(100%, 440px)',
