@@ -2,7 +2,6 @@ export type { WardrobeItem } from './model/types';
 export {
   expiredWardrobeItemsArchived,
   getWardrobeItems,
-  wardrobeItemArchived,
   wardrobeItemsAdded,
   wardrobeLoadFailed,
   wardrobeReducer,

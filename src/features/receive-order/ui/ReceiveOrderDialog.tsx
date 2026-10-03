@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 import { orderMarkedIssued, useOrders, type Order } from '@/entities/order';
@@ -10,9 +10,10 @@ import {
   getLocalDate,
   wardrobeItemsAdded,
 } from '@/entities/wardrobe-item';
+import type { UniformEligibilityProfile } from '@/shared/model';
 import { receiveOrder } from '../model/receiveOrder';
 
-const entitlementProfile = {
+const entitlementProfile: UniformEligibilityProfile = {
   gender: mockUser.measurements.gender ?? 'male',
   rankGroup: mockUser.service.rankGroup,
   service: mockUser.service.uniformService,
@@ -31,28 +32,15 @@ export function ReceiveOrderDialog({
 }) {
   const dispatch = useDispatch();
   const orders = useOrders();
-  const [wearPeriods, setWearPeriods] = useState(() => {
-    const issuedAt = getLocalDate();
-    return order.items.map((item) => {
-      const product = mockProducts.find((candidate) => candidate.id === item.productId);
-      const entitlement = product
-        ? getApplicableProductEntitlements(product, entitlementProfile)[0]
-        : undefined;
-      return entitlement
-        ? String(getDaysForPeriod(issuedAt, entitlement.period))
-        : '';
-    });
-  });
   const [error, setError] = useState('');
-
-  const validPeriods = wearPeriods.every((value) => {
-    const days = Number(value);
-    return Number.isInteger(days) && days > 0;
+  const missingWearPeriod = order.items.some((item) => {
+    const product = mockProducts.find((candidate) => candidate.id === item.productId);
+    return !product || getApplicableProductEntitlements(product, entitlementProfile).length === 0;
   });
 
   const handleConfirm = () => {
-    if (!validPeriods) {
-      setError('Укажите срок носки в целых днях для каждой позиции.');
+    if (missingWearPeriod) {
+      setError('Для одной или нескольких позиций не настроен подтверждённый срок носки. Обратитесь к администратору каталога.');
       return;
     }
 
@@ -62,12 +50,16 @@ export function ReceiveOrderDialog({
         throw new Error('The order no longer exists or has already been issued.');
       }
 
-      dispatch(wardrobeItemsAdded(receiveOrder(currentOrder, wearPeriods.map(Number))));
+      dispatch(wardrobeItemsAdded(receiveOrder(currentOrder, entitlementProfile)));
       dispatch(orderMarkedIssued(currentOrder.id));
       onReceived();
     } catch (receiveError) {
       console.error('Could not register order receipt.', receiveError);
-      setError('Не удалось записать получение. Проверьте данные и повторите попытку.');
+      setError(
+        receiveError instanceof Error && receiveError.message.startsWith('No verified wear period')
+          ? 'Для одной или нескольких позиций не настроен подтверждённый срок носки. Обратитесь к администратору каталога.'
+          : 'Не удалось записать получение. Повторите попытку.',
+      );
     }
   };
 
@@ -77,9 +69,9 @@ export function ReceiveOrderDialog({
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           <Typography variant="body2" color="text.secondary">
-            После подтверждения вещи попадут в гардероб. Указанный в каталоге срок по вашей норме подставлен в днях; проверьте его по фактической выдаче.
+            Срок носки установлен по норме снабжения и не редактируется здесь. С даты получения начнётся обратный отсчёт; по его окончании вещь автоматически попадёт в архив.
           </Typography>
-          {order.items.map((item, index) => {
+          {order.items.map((item) => {
             const product = mockProducts.find((candidate) => candidate.id === item.productId);
             const productName = product?.name ?? 'Позиция каталога';
             const entitlement = product
@@ -92,21 +84,13 @@ export function ReceiveOrderDialog({
                 </Typography>
                 {entitlement ? (
                   <Typography variant="caption" color="text.secondary">
-                    По профилю: {formatProductEntitlement(entitlement)}
+                    Установленный срок: {getDaysForPeriod(getLocalDate(), entitlement.period)} дн. · {formatProductEntitlement(entitlement)}
                   </Typography>
-                ) : null}
-                <TextField
-                  label="Срок носки, дней"
-                  type="number"
-                  value={wearPeriods[index]}
-                  onChange={(event) => {
-                    const next = [...wearPeriods];
-                    next[index] = event.target.value;
-                    setWearPeriods(next);
-                  }}
-                  slotProps={{ htmlInput: { min: 1, step: 1 } }}
-                  size="small"
-                />
+                ) : (
+                  <Typography variant="caption" color="error">
+                    Подтверждённый срок носки для позиции не настроен.
+                  </Typography>
+                )}
               </Stack>
             );
           })}
@@ -115,7 +99,7 @@ export function ReceiveOrderDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Отмена</Button>
-        <Button variant="contained" onClick={handleConfirm} disabled={!validPeriods}>
+        <Button variant="contained" onClick={handleConfirm} disabled={missingWearPeriod}>
           Перенести в гардероб
         </Button>
       </DialogActions>

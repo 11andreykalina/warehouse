@@ -1,15 +1,23 @@
 import type { Order } from '@/entities/order';
 import { mockCategories } from '@/entities/category';
-import { mockProducts } from '@/entities/product';
-import { addDaysToDate, getLocalDate, type WardrobeItem } from '@/entities/wardrobe-item';
+import {
+  getApplicableProductEntitlements,
+  mockProducts,
+} from '@/entities/product';
+import type { UniformEligibilityProfile } from '@/shared/model';
+import {
+  addDaysToDate,
+  getDaysForPeriod,
+  getLocalDate,
+  type WardrobeItem,
+} from '@/entities/wardrobe-item';
 
-export function receiveOrder(order: Order, wearPeriods: number[]): Omit<WardrobeItem, 'id'>[] {
-  if (order.status === 'issued' || wearPeriods.length !== order.items.length) {
-    throw new Error('The order is already issued or its wear periods are incomplete.');
-  }
-
-  if (!wearPeriods.every((days) => Number.isInteger(days) && days > 0)) {
-    throw new Error('Every issued item must have a positive whole-number wear period.');
+export function receiveOrder(
+  order: Order,
+  profile: UniformEligibilityProfile,
+): Omit<WardrobeItem, 'id'>[] {
+  if (order.status === 'issued') {
+    throw new Error('The order is already issued.');
   }
 
   const issuedAt = getLocalDate();
@@ -19,7 +27,13 @@ export function receiveOrder(order: Order, wearPeriods: number[]): Omit<Wardrobe
       throw new Error(`Product ${orderItem.productId} is missing from the catalog.`);
     }
 
-    const expiresAt = addDaysToDate(issuedAt, wearPeriods[itemIndex]);
+    const entitlement = getApplicableProductEntitlements(product, profile)[0];
+    if (!entitlement) {
+      throw new Error(`No verified wear period is configured for ${product.name}.`);
+    }
+
+    const wearPeriodDays = getDaysForPeriod(issuedAt, entitlement.period);
+    const expiresAt = addDaysToDate(issuedAt, wearPeriodDays);
     const category =
       mockCategories.find((candidate) => candidate.id === product.categoryId)?.name ??
       'Форменное имущество';
@@ -32,7 +46,7 @@ export function receiveOrder(order: Order, wearPeriods: number[]): Omit<Wardrobe
       category,
       size: orderItem.size,
       issuedAt,
-      wearPeriodDays: wearPeriods[itemIndex],
+      wearPeriodDays,
       expiresAt,
       status: 'active' as const,
       sourceOrderId: order.id,

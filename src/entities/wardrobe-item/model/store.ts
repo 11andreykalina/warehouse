@@ -143,14 +143,6 @@ const wardrobeSlice = createSlice({
         state.error = '';
       },
     },
-    wardrobeItemArchived(state, action: PayloadAction<string>) {
-      const item = state.items.find((candidate) => candidate.id === action.payload);
-      if (!item || item.status === 'archived') return;
-
-      item.status = 'archived';
-      item.archivedAt = getLocalDate();
-      item.archiveReason = 'manual';
-    },
     expiredWardrobeItemsArchived(state, action: PayloadAction<string>) {
       for (const item of state.items) {
         if (item.status === 'active' && item.expiresAt <= action.payload) {
@@ -171,7 +163,6 @@ const wardrobeSlice = createSlice({
 
 export const {
   wardrobeItemsAdded,
-  wardrobeItemArchived,
   expiredWardrobeItemsArchived,
   wardrobeLoadFailed,
   wardrobeRestored,

@@ -1,4 +1,5 @@
 import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import type { WardrobeItem } from '../model/types';
 import { getDaysUntil } from '../model/expiration';
@@ -25,10 +26,8 @@ function getSeasonLabel(season: WardrobeItem['season']) {
 
 export function WardrobeItemCard({
   item,
-  onArchive,
 }: {
   item: WardrobeItem;
-  onArchive?: (itemId: string) => void;
 }) {
   const daysLeft = item.status === 'active' ? getDaysUntil(item.expiresAt) : null;
 
@@ -51,17 +50,24 @@ export function WardrobeItemCard({
             Осталось {daysLeft} дн. · до {formatDate(item.expiresAt)}
           </Typography>
         ) : (
-          <Typography variant="body2" color="text.secondary">
-            {item.archiveReason === 'manual'
-              ? `В архиве с ${formatDate(item.archivedAt ?? item.expiresAt)} · срок носки до ${formatDate(item.expiresAt)}`
-              : `Срок носки истёк ${formatDate(item.expiresAt)}`}
-          </Typography>
+          <>
+            <Typography variant="body2" color="text.secondary">
+              {item.archiveReason === 'manual'
+                ? `В архиве с ${formatDate(item.archivedAt ?? item.expiresAt)} · срок носки до ${formatDate(item.expiresAt)}`
+                : `Срок носки истёк ${formatDate(item.expiresAt)}.`}
+            </Typography>
+            {item.archiveReason === 'expired' ? (
+              <>
+                <Typography variant="body2">
+                  Можно оформить заявку на новую вещь в каталоге.
+                </Typography>
+                <Button component={Link} to="/catalog" size="small">
+                  Перейти в каталог
+                </Button>
+              </>
+            ) : null}
+          </>
         )}
-        {item.status === 'active' && onArchive ? (
-          <Button size="small" color="inherit" onClick={() => onArchive(item.id)}>
-            Переместить в архив
-          </Button>
-        ) : null}
       </CardContent>
     </Card>
   );

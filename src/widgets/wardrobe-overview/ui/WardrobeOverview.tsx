@@ -3,12 +3,10 @@ import { useDispatch } from 'react-redux';
 import {
   Alert,
   Button,
-  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControlLabel,
   MenuItem,
   Stack,
   Tab,
@@ -18,14 +16,18 @@ import {
 } from '@mui/material';
 
 import { mockCategories } from '@/entities/category';
-import { getApplicableProductEntitlements, mockProducts } from '@/entities/product';
+import {
+  getApplicableProductEntitlements,
+  formatProductEntitlement,
+  mockProducts,
+  type ProductEntitlement,
+} from '@/entities/product';
 import { mockUser } from '@/entities/user';
 import {
   addDaysToDate,
   getDaysForPeriod,
   getLocalDate,
   isDateOnly,
-  wardrobeItemArchived,
   wardrobeItemsAdded,
   useWardrobeItems,
   WardrobeItemCard,
@@ -42,15 +44,9 @@ const entitlementProfile = {
   conditions: mockUser.service.uniformConditions,
 };
 
-function getSuggestedWearPeriod(productId: string, issueDate: string) {
+function getWearEntitlement(productId: string): ProductEntitlement | undefined {
   const product = mockProducts.find((candidate) => candidate.id === productId);
-  const entitlement = product
-    ? getApplicableProductEntitlements(product, entitlementProfile)[0]
-    : undefined;
-
-  return product && entitlement && isDateOnly(issueDate)
-    ? String(getDaysForPeriod(issueDate, entitlement.period))
-    : '';
+  return product ? getApplicableProductEntitlements(product, entitlementProfile)[0] : undefined;
 }
 
 export function WardrobeOverview() {
@@ -61,43 +57,39 @@ export function WardrobeOverview() {
   const [productId, setProductId] = useState(mockProducts[0]?.id ?? '');
   const [size, setSize] = useState('');
   const [issuedAt, setIssuedAt] = useState(getLocalDate());
-  const [wearPeriodDays, setWearPeriodDays] = useState(() =>
-    getSuggestedWearPeriod(mockProducts[0]?.id ?? '', getLocalDate()),
-  );
-  const [alreadyExpired, setAlreadyExpired] = useState(false);
   const [actionError, setActionError] = useState('');
   const product = mockProducts.find((candidate) => candidate.id === productId);
+  const entitlement = getWearEntitlement(productId);
+  const wearPeriodDays =
+    entitlement && isDateOnly(issuedAt)
+      ? getDaysForPeriod(issuedAt, entitlement.period)
+      : undefined;
 
   const activeItems = useMemo(() => items.filter((item) => item.status === 'active'), [items]);
   const archivedItems = useMemo(() => items.filter((item) => item.status === 'archived'), [items]);
   const visibleItems = tab === 'active' ? activeItems : archivedItems;
-  const parsedDays = Number(wearPeriodDays);
   const validForm =
     product !== undefined &&
     product.availableSizes.includes(size) &&
     isDateOnly(issuedAt) &&
-    Number.isInteger(parsedDays) &&
-    parsedDays > 0;
+    wearPeriodDays !== undefined;
 
   const resetForm = () => {
     setProductId(mockProducts[0]?.id ?? '');
     setSize('');
     setIssuedAt(getLocalDate());
-    setWearPeriodDays(getSuggestedWearPeriod(mockProducts[0]?.id ?? '', getLocalDate()));
-    setAlreadyExpired(false);
     setActionError('');
   };
 
   const handleAddItem = () => {
-    if (!validForm || !product) {
-      setActionError('Выберите позицию и размер, укажите дату получения и срок носки в целых днях.');
+    if (!validForm || !product || wearPeriodDays === undefined) {
+      setActionError('Выберите позицию с настроенным нормативным сроком, размер и дату получения.');
       return;
     }
 
     try {
-      const expiresAt = addDaysToDate(issuedAt, parsedDays);
-      const today = getLocalDate();
-      const expired = alreadyExpired || expiresAt <= today;
+      const expiresAt = addDaysToDate(issuedAt, wearPeriodDays);
+      const expired = expiresAt <= getLocalDate();
       dispatch(wardrobeItemsAdded([
         {
           productId: product.id,
@@ -107,15 +99,9 @@ export function WardrobeOverview() {
           category: mockCategories.find((category) => category.id === product.categoryId)?.name ?? 'Форменное имущество',
           size,
           issuedAt,
-          wearPeriodDays: parsedDays,
+          wearPeriodDays,
           expiresAt,
           status: expired ? 'archived' : 'active',
-          ...(expired
-            ? {
-                archivedAt: today,
-                archiveReason: 'expired' as const,
-              }
-            : {}),
         },
       ]));
       setDialogOpen(false);
@@ -123,16 +109,6 @@ export function WardrobeOverview() {
     } catch (submitError) {
       console.error('Could not add an item to the wardrobe.', submitError);
       setActionError('Не удалось сохранить вещь. Проверьте свободное место в хранилище браузера и повторите попытку.');
-    }
-  };
-
-  const handleArchive = (itemId: string) => {
-    try {
-      dispatch(wardrobeItemArchived(itemId));
-      setActionError('');
-    } catch (archiveError) {
-      console.error('Could not archive wardrobe item.', archiveError);
-      setActionError('Не удалось переместить вещь в архив.');
     }
   };
 
@@ -164,7 +140,6 @@ export function WardrobeOverview() {
             <WardrobeItemCard
               key={item.id}
               item={item}
-              onArchive={tab === 'active' ? handleArchive : undefined}
             />
           ))}
         </FeedGrid>
@@ -173,8 +148,8 @@ export function WardrobeOverview() {
           title={tab === 'active' ? 'Гардероб пока пуст' : 'Архив пока пуст'}
           description={
             tab === 'active'
-              ? 'Добавьте вещь после получения со склада и укажите срок её носки.'
-              : 'Здесь будут вещи с истёкшим сроком носки и те, которые перемещены в архив вручную.'
+              ? 'Добавьте полученную вещь. Срок носки будет рассчитан по применимой норме.'
+              : 'Здесь будут вещи, для которых истёк установленный нормативом срок носки.'
           }
         />
       )}
@@ -184,7 +159,7 @@ export function WardrobeOverview() {
         <DialogContent>
           <Stack spacing={2} sx={{ pt: 1 }}>
             <Typography variant="body2" color="text.secondary">
-              Запишите новую выдачу или ранее полученную вещь. Если по профилю есть норма для позиции, срок предложен в днях; истёкшая вещь автоматически попадёт в архив.
+              Запишите ранее полученную вещь. Срок носки определяется нормой снабжения; от указанной даты получения будет рассчитан обратный отсчёт.
             </Typography>
             <TextField
               select
@@ -195,7 +170,6 @@ export function WardrobeOverview() {
                 if (nextProduct) {
                   setProductId(nextProduct.id);
                   setSize(nextProduct.availableSizes[0] ?? '');
-                  setWearPeriodDays(getSuggestedWearPeriod(nextProduct.id, issuedAt));
                 }
               }}
             >
@@ -219,39 +193,27 @@ export function WardrobeOverview() {
               type="date"
               value={issuedAt}
               onChange={(event) => {
-                const nextIssueDate = event.target.value;
-                setIssuedAt(nextIssueDate);
-                setWearPeriodDays(getSuggestedWearPeriod(productId, nextIssueDate));
+                setIssuedAt(event.target.value);
               }}
               slotProps={{ inputLabel: { shrink: true } }}
             />
-            <TextField
-              label="Срок носки, дней"
-              type="number"
-              value={wearPeriodDays}
-              onChange={(event) => setWearPeriodDays(event.target.value)}
-              slotProps={{ htmlInput: { min: 1, step: 1 } }}
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={alreadyExpired}
-                  onChange={(event) => setAlreadyExpired(event.target.checked)}
-                />
-              }
-              label="Отметить срок носки истёкшим"
-            />
-            {validForm && !alreadyExpired ? (
+            {entitlement && wearPeriodDays !== undefined ? (
               <Typography variant="caption" color="text.secondary">
-                Дата окончания срока носки: {new Date(`${addDaysToDate(issuedAt, parsedDays)}T00:00:00`).toLocaleDateString('ru-RU')}
+                По норме: {wearPeriodDays} дн. · {formatProductEntitlement(entitlement)}. Дата окончания срока носки: {new Date(`${addDaysToDate(issuedAt, wearPeriodDays)}T00:00:00`).toLocaleDateString('ru-RU')}
               </Typography>
-            ) : null}
+            ) : (
+              <Alert severity="warning">
+                Для этой позиции нет подтверждённого нормативного срока. Нельзя добавить её в гардероб, пока каталог не будет дополнен.
+              </Alert>
+            )}
             {actionError ? <Alert severity="error">{actionError}</Alert> : null}
           </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)}>Отмена</Button>
-          <Button variant="contained" onClick={handleAddItem}>Сохранить в гардероб</Button>
+          <Button variant="contained" onClick={handleAddItem} disabled={!validForm}>
+            Сохранить в гардероб
+          </Button>
         </DialogActions>
       </Dialog>
     </Stack>
