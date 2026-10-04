@@ -1,7 +1,7 @@
 import type { Order } from '@/entities/order';
 import { mockCategories } from '@/entities/category';
 import {
-  getApplicableProductEntitlements,
+  getProductWearEntitlement,
   mockProducts,
 } from '@/entities/product';
 import type { UniformEligibilityProfile } from '@/shared/model';
@@ -27,10 +27,7 @@ export function receiveOrder(
       throw new Error(`Product ${orderItem.productId} is missing from the catalog.`);
     }
 
-    const entitlement = getApplicableProductEntitlements(product, profile)[0];
-    if (!entitlement) {
-      throw new Error(`No verified wear period is configured for ${product.name}.`);
-    }
+    const entitlement = getProductWearEntitlement(product, profile);
 
     const wearPeriodDays = getDaysForPeriod(issuedAt, entitlement.period);
     const expiresAt = addDaysToDate(issuedAt, wearPeriodDays);

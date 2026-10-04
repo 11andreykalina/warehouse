@@ -20,7 +20,7 @@ export const mockOutfits: Outfit[] = [
   {
     id: 'outfit-summer-long-sleeve-001',
     name: 'Летняя форма с длинным рукавом',
-    image: '',
+    image: '/images/outfits/male-trousers-dark-blue.jpg',
     season: 'summer',
     purpose: 'daily',
     service: 'general',

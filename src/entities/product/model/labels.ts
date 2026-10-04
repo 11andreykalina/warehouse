@@ -27,5 +27,9 @@ export function formatWearPeriod(period: ProductEntitlement['period']): string {
 }
 
 export function formatProductEntitlement(entitlement: ProductEntitlement): string {
+  if (entitlement.isDemoDefault) {
+    return `Демо-срок (не норматив) · ${formatWearPeriod(entitlement.period)} · ${entitlement.quantity}`;
+  }
+
   return `Норма № ${entitlement.norm} · ${formatWearPeriod(entitlement.period)} · ${entitlement.quantity}`;
 }

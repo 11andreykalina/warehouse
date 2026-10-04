@@ -14,7 +14,7 @@ export function getApplicableProductEntitlements(
 
   const applicableNorms = getApplicableUniformNorms(profile);
 
-  return product.entitlements
+  const entitlements = product.entitlements
     .filter(
       (entitlement) =>
         applicableNorms.includes(entitlement.norm) &&
@@ -46,4 +46,24 @@ export function getApplicableProductEntitlements(
         note: override?.note ?? entitlement.note,
       };
     });
+
+  return entitlements;
+}
+
+export function getProductWearEntitlement(
+  product: Product,
+  profile: UniformEligibilityProfile,
+): ProductEntitlement {
+  const [entitlement] = getApplicableProductEntitlements(product, profile);
+  if (entitlement) {
+    return entitlement;
+  }
+
+  return {
+    norm: getApplicableUniformNorms(profile)[0],
+    period: { value: 3, unit: 'years' },
+    quantity: '1 штука',
+    isDemoDefault: true,
+    note: 'Временный демонстрационный срок: точный норматив для этой позиции не проверен.',
+  };
 }

@@ -3,7 +3,7 @@ import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack
 import { useDispatch } from 'react-redux';
 
 import { orderMarkedIssued, useOrders, type Order } from '@/entities/order';
-import { formatProductEntitlement, getApplicableProductEntitlements, mockProducts } from '@/entities/product';
+import { formatProductEntitlement, getProductWearEntitlement, mockProducts } from '@/entities/product';
 import { mockUser } from '@/entities/user';
 import {
   getDaysForPeriod,
@@ -33,17 +33,8 @@ export function ReceiveOrderDialog({
   const dispatch = useDispatch();
   const orders = useOrders();
   const [error, setError] = useState('');
-  const missingWearPeriod = order.items.some((item) => {
-    const product = mockProducts.find((candidate) => candidate.id === item.productId);
-    return !product || getApplicableProductEntitlements(product, entitlementProfile).length === 0;
-  });
 
   const handleConfirm = () => {
-    if (missingWearPeriod) {
-      setError('Для одной или нескольких позиций не настроен подтверждённый срок носки. Обратитесь к администратору каталога.');
-      return;
-    }
-
     try {
       const currentOrder = orders.find((candidate) => candidate.id === order.id);
       if (!currentOrder || currentOrder.status === 'issued') {
@@ -55,11 +46,7 @@ export function ReceiveOrderDialog({
       onReceived();
     } catch (receiveError) {
       console.error('Could not register order receipt.', receiveError);
-      setError(
-        receiveError instanceof Error && receiveError.message.startsWith('No verified wear period')
-          ? 'Для одной или нескольких позиций не настроен подтверждённый срок носки. Обратитесь к администратору каталога.'
-          : 'Не удалось записать получение. Повторите попытку.',
-      );
+      setError('Не удалось записать получение. Проверьте заявку и свободное место в хранилище браузера, затем повторите попытку.');
     }
   };
 
@@ -69,13 +56,13 @@ export function ReceiveOrderDialog({
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           <Typography variant="body2" color="text.secondary">
-            Срок носки установлен по норме снабжения и не редактируется здесь. С даты получения начнётся обратный отсчёт; по его окончании вещь автоматически попадёт в архив.
+            Срок носки рассчитывается автоматически и не редактируется здесь. Для позиций с внесённой нормой применяется её срок; для остальных используется временный демонстрационный срок 3 года. С даты получения начнётся обратный отсчёт, после которого вещь автоматически попадёт в архив.
           </Typography>
           {order.items.map((item) => {
             const product = mockProducts.find((candidate) => candidate.id === item.productId);
             const productName = product?.name ?? 'Позиция каталога';
             const entitlement = product
-              ? getApplicableProductEntitlements(product, entitlementProfile)[0]
+              ? getProductWearEntitlement(product, entitlementProfile)
               : undefined;
             return (
               <Stack key={`${item.productId}-${item.size}`} spacing={0.5}>
@@ -84,13 +71,9 @@ export function ReceiveOrderDialog({
                 </Typography>
                 {entitlement ? (
                   <Typography variant="caption" color="text.secondary">
-                    Установленный срок: {getDaysForPeriod(getLocalDate(), entitlement.period)} дн. · {formatProductEntitlement(entitlement)}
+                    Срок: {getDaysForPeriod(getLocalDate(), entitlement.period)} дн. · {formatProductEntitlement(entitlement)}
                   </Typography>
-                ) : (
-                  <Typography variant="caption" color="error">
-                    Подтверждённый срок носки для позиции не настроен.
-                  </Typography>
-                )}
+                ) : null}
               </Stack>
             );
           })}
@@ -99,7 +82,7 @@ export function ReceiveOrderDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Отмена</Button>
-        <Button variant="contained" onClick={handleConfirm} disabled={missingWearPeriod}>
+        <Button variant="contained" onClick={handleConfirm}>
           Перенести в гардероб
         </Button>
       </DialogActions>

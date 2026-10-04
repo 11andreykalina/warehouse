@@ -15,8 +15,8 @@ export function createMuiTheme(theme: ThemeMode) {
         paper: isDark ? '#182439' : '#ffffff',
       },
       text: {
-        primary: isDark ? '#e8edf5' : '#17243a',
-        secondary: isDark ? '#a8b4c5' : '#68758a',
+        primary: isDark ? '#e8edf5' : '#0b0f17',
+        secondary: isDark ? '#a8b4c5' : '#0b0f17',
       },
       divider: isDark ? '#2d3b51' : '#e0e5ec',
       error: { main: isDark ? '#ed7180' : '#bd2738' },

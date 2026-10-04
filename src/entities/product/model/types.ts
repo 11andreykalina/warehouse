@@ -16,6 +16,7 @@ export interface ProductEntitlement {
         unit: WearPeriodUnit;
     };
     quantity: string;
+    isDemoDefault?: boolean;
     periodAdjustments?: Array<{
         norm: UniformNorm;
         years: number;

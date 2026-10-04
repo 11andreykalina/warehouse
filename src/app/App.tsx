@@ -3,6 +3,7 @@ import { CssBaseline, ThemeProvider as MuiThemeProvider } from '@mui/material';
 import { RouterProvider } from 'react-router-dom';
 
 import { ThemeProvider as FeatureThemeProvider, useTheme } from '@/features/theme-toggle';
+import { ScrollToTopButton } from '@/shared/ui';
 import { router } from './providers/router';
 import { createMuiTheme } from './styles/muiTheme';
 
@@ -14,6 +15,7 @@ function AppContent() {
     <MuiThemeProvider theme={muiTheme}>
       <CssBaseline />
       <RouterProvider router={router} />
+      <ScrollToTopButton />
     </MuiThemeProvider>
   );
 }

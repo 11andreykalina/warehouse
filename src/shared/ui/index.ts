@@ -5,4 +5,5 @@ export { ImageWithFallback } from './ImageWithFallback/ImageWithFallback';
 export { Input } from './Input/Input';
 export { PageStack } from './PageStack';
 export { PageBackButton } from './PageBackButton';
+export { ScrollToTopButton } from './ScrollToTopButton';
 export { SectionHeading } from './SectionHeading';
