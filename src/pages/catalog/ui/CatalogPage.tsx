@@ -5,6 +5,7 @@ import {
   Checkbox,
   FormControlLabel,
   MenuItem,
+  Paper,
   Stack,
   Switch,
   TextField,
@@ -112,148 +113,175 @@ export function CatalogPage() {
 
   return (
     <PageStack>
-      <Stack component="section" spacing={2.5}>
-        <SectionHeading eyebrow="Каталог" title="Форменное имущество" description="Выберите категорию, сезон и размер позиции." />
-        <CategoryFilter categories={mockCategories} selected={selectedCategory} onSelect={handleSelectCategory} />
-        <SeasonFilter selected={season} onSelect={setSeason} />
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
-          <TextField
-            select
-            label="Служба"
-            size="small"
-            value={service}
-            onChange={(event) => {
-              if (isServiceFilter(event.target.value)) {
-                setService(event.target.value);
-                setDuties([]);
-                setConditions([]);
-              }
-            }}
-          >
-            <MenuItem value="all">Все службы</MenuItem>
-            {uniformServices.map((serviceId) => (
-              <MenuItem key={serviceId} value={serviceId}>{uniformServiceLabels[serviceId]}</MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            select
-            label="Пол"
-            size="small"
-            value={gender}
-            onChange={(event) => {
-              if (isGenderFilter(event.target.value)) {
-                setGender(event.target.value);
-              }
-            }}
-          >
-            <MenuItem value="all">Любой</MenuItem>
-            {Object.entries(uniformGenderLabels).map(([genderId, label]) => (
-              <MenuItem key={genderId} value={genderId}>{label}</MenuItem>
-            ))}
-          </TextField>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={profileOnly}
-                onChange={(event) => setProfileOnly(event.target.checked)}
-              />
-            }
-            label="Показать положенное по нормам"
+      <Paper
+        component="section"
+        sx={{
+          p: { xs: 2, sm: 2.5, md: 3 },
+          borderRadius: 3,
+          border: 1,
+          borderColor: 'divider',
+          background: 'linear-gradient(180deg, rgba(17, 24, 39, 0.9), rgba(13, 20, 31, 0.88))',
+          boxShadow: '0 18px 36px rgba(5, 12, 22, 0.24)',
+        }}
+      >
+        <Stack spacing={2.5}>
+          <SectionHeading
+            eyebrow="Каталог"
+            title="Форменное имущество"
+            description="Выберите категорию, сезон и размер позиции."
           />
-        </Stack>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
-          <TextField
-            select
-            label="Категория состава"
-            size="small"
-            value={rankGroup}
-            onChange={(event) => {
-              if (isRankGroup(event.target.value)) {
-                setRankGroup(event.target.value);
-              }
-            }}
-          >
-            {uniformRankGroups.map((group) => (
-              <MenuItem key={group} value={group}>{uniformRankGroupLabels[group]}</MenuItem>
-            ))}
-          </TextField>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={duties.includes('external-service')}
-                onChange={(event) =>
-                  setDuties((current) =>
-                    event.target.checked
-                      ? [...current, 'external-service']
-                      : current.filter((value) => value !== 'external-service'),
-                  )
+          <CategoryFilter categories={mockCategories} selected={selectedCategory} onSelect={handleSelectCategory} />
+          <SeasonFilter selected={season} onSelect={setSeason} />
+
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ flexWrap: 'wrap' }}>
+            <TextField
+              select
+              label="Служба"
+              size="small"
+              value={service}
+              sx={{ minWidth: { xs: '100%', sm: 180 } }}
+              onChange={(event) => {
+                if (isServiceFilter(event.target.value)) {
+                  setService(event.target.value);
+                  setDuties([]);
+                  setConditions([]);
                 }
-              />
-            }
-            label={uniformDutyLabels['external-service']}
-          />
-          {profileService === 'dps'
-            ? (['traffic-supervision', 'motorcycle'] as const).map((duty) => (
+              }}
+            >
+              <MenuItem value="all">Все службы</MenuItem>
+              {uniformServices.map((serviceId) => (
+                <MenuItem key={serviceId} value={serviceId}>{uniformServiceLabels[serviceId]}</MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              select
+              label="Пол"
+              size="small"
+              value={gender}
+              sx={{ minWidth: { xs: '100%', sm: 180 } }}
+              onChange={(event) => {
+                if (isGenderFilter(event.target.value)) {
+                  setGender(event.target.value);
+                }
+              }}
+            >
+              <MenuItem value="all">Любой</MenuItem>
+              {Object.entries(uniformGenderLabels).map(([genderId, label]) => (
+                <MenuItem key={genderId} value={genderId}>{label}</MenuItem>
+              ))}
+            </TextField>
+            <FormControlLabel
+              sx={{ ml: 0, mr: 0, color: 'text.secondary' }}
+              control={
+                <Switch
+                  checked={profileOnly}
+                  onChange={(event) => setProfileOnly(event.target.checked)}
+                />
+              }
+              label="Показать положенное по нормам"
+            />
+          </Stack>
+
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ flexWrap: 'wrap' }}>
+            <TextField
+              select
+              label="Категория состава"
+              size="small"
+              value={rankGroup}
+              sx={{ minWidth: { xs: '100%', sm: 220 } }}
+              onChange={(event) => {
+                if (isRankGroup(event.target.value)) {
+                  setRankGroup(event.target.value);
+                }
+              }}
+            >
+              {uniformRankGroups.map((group) => (
+                <MenuItem key={group} value={group}>{uniformRankGroupLabels[group]}</MenuItem>
+              ))}
+            </TextField>
+            <FormControlLabel
+              sx={{ ml: 0, mr: 0, color: 'text.secondary' }}
+              control={
+                <Checkbox
+                  checked={duties.includes('external-service')}
+                  onChange={(event) =>
+                    setDuties((current) =>
+                      event.target.checked
+                        ? [...current, 'external-service']
+                        : current.filter((value) => value !== 'external-service'),
+                    )
+                  }
+                />
+              }
+              label={uniformDutyLabels['external-service']}
+            />
+            {profileService === 'dps'
+              ? (['traffic-supervision', 'motorcycle'] as const).map((duty) => (
+                  <FormControlLabel
+                    key={duty}
+                    sx={{ ml: 0, mr: 0, color: 'text.secondary' }}
+                    control={
+                      <Checkbox
+                        checked={duties.includes(duty)}
+                        onChange={(event) =>
+                          setDuties((current) =>
+                            event.target.checked
+                              ? [...current, duty]
+                              : current.filter((value) => value !== duty),
+                          )
+                        }
+                      />
+                    }
+                    label={uniformDutyLabels[duty]}
+                  />
+                ))
+              : null}
+            {profileService === 'pps' ? (
+              <>
                 <FormControlLabel
-                  key={duty}
+                  sx={{ ml: 0, mr: 0, color: 'text.secondary' }}
                   control={
                     <Checkbox
-                      checked={duties.includes(duty)}
+                      checked={duties.includes('pps-line')}
                       onChange={(event) =>
                         setDuties((current) =>
                           event.target.checked
-                            ? [...current, duty]
-                            : current.filter((value) => value !== duty),
+                            ? [...current, 'pps-line']
+                            : current.filter((value) => value !== 'pps-line'),
                         )
                       }
                     />
                   }
-                  label={uniformDutyLabels[duty]}
+                  label={uniformDutyLabels['pps-line']}
                 />
-              ))
-            : null}
-          {profileService === 'pps' ? (
-            <>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={duties.includes('pps-line')}
-                    onChange={(event) =>
-                      setDuties((current) =>
-                        event.target.checked
-                          ? [...current, 'pps-line']
-                          : current.filter((value) => value !== 'pps-line'),
-                      )
+                {uniformConditions.map((condition) => (
+                  <FormControlLabel
+                    key={condition}
+                    sx={{ ml: 0, mr: 0, color: 'text.secondary' }}
+                    control={
+                      <Checkbox
+                        checked={conditions.includes(condition)}
+                        onChange={(event) =>
+                          setConditions((current) =>
+                            event.target.checked
+                              ? [...current, condition]
+                              : current.filter((value) => value !== condition),
+                          )
+                        }
+                      />
                     }
+                    label={uniformConditionLabels[condition]}
                   />
-                }
-                label={uniformDutyLabels['pps-line']}
-              />
-              {uniformConditions.map((condition) => (
-                <FormControlLabel
-                  key={condition}
-                  control={
-                    <Checkbox
-                      checked={conditions.includes(condition)}
-                      onChange={(event) =>
-                        setConditions((current) =>
-                          event.target.checked
-                            ? [...current, condition]
-                            : current.filter((value) => value !== condition),
-                        )
-                      }
-                    />
-                  }
-                  label={uniformConditionLabels[condition]}
-                />
-              ))}
-            </>
-          ) : null}
+                ))}
+              </>
+            ) : null}
+          </Stack>
+
+          <Alert severity="info" sx={{ borderRadius: 2, backgroundColor: 'rgba(142, 175, 224, 0.08)', border: 1, borderColor: 'primary.main' }}>
+            Каталог открыт целиком. Подбор по нормам учитывает пол, категорию состава и специальные условия; для следствия отдельной нормы нет. Позиции без проверенной привязки к норме доступны в общем каталоге, но не попадут в профильную выборку.
+          </Alert>
         </Stack>
-        <Alert severity="info">
-          Каталог открыт целиком. Подбор по нормам учитывает пол, категорию состава и специальные условия; для следствия отдельной нормы нет. Позиции без проверенной привязки к норме доступны в общем каталоге, но не попадут в профильную выборку.
-        </Alert>
-      </Stack>
+      </Paper>
 
       <Stack component="section" spacing={2}>
         <Typography variant="body2" color="text.secondary">Найдено позиций: {filteredProducts.length}</Typography>

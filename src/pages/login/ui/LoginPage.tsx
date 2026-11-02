@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Button, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 
 import { AuthForm } from '@/features/auth-by-badge';
 import { ThemeToggle } from '@/features/theme-toggle';
@@ -14,9 +14,13 @@ export function LoginPage() {
         <ThemeToggle />
       </Stack>
       <Paper component="section" sx={loginCardSx}>
-        <Stack spacing={2}>
-          <SectionHeading eyebrow="Демо-режим" title="Вход в систему" />
-          <Typography color="text.secondary">Проверка входа использует только демонстрационные данные проекта.</Typography>
+        <Stack spacing={2.25}>
+          <Box sx={{ textAlign: 'center', mb: 1 }}>
+            <Typography variant="overline" sx={{ letterSpacing: 1.5, color: 'text.secondary', fontWeight: 700 }}>
+              ДЕМО-РЕЖИМ
+            </Typography>
+          </Box>
+          <SectionHeading eyebrow="" title="Вход в систему" description="Проверка входа использует только демонстрационные данные проекта." />
           <AuthForm mode="login" />
           <Typography variant="body2" sx={loginHintSx}>Для демо: жетон 123456, пароль 123456.</Typography>
           <Button component={Link} to="/register" variant="outlined" fullWidth>
