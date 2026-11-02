@@ -13,6 +13,7 @@ import {
   OutfitsRoute,
   ProductRoute,
   ProfileRoute,
+  RegisterRoute,
   SearchRoute,
   WardrobeRoute,
 } from './LazyPages';
@@ -38,6 +39,14 @@ export const router = createBrowserRouter([
     element: (
       <Suspense fallback={<Box role="status" sx={{ minHeight: '40vh' }} />}>
         <LoginRoute />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/register',
+    element: (
+      <Suspense fallback={<Box role="status" sx={{ minHeight: '40vh' }} />}>
+        <RegisterRoute />
       </Suspense>
     ),
   },

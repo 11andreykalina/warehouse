@@ -21,6 +21,9 @@ const ProductPage = lazy(() =>
 const ProfilePage = lazy(() =>
   import('@/pages/profile').then((module) => ({ default: module.ProfilePage })),
 );
+const RegisterPage = lazy(() =>
+  import('@/pages/register').then((module) => ({ default: module.RegisterPage })),
+);
 const SearchPage = lazy(() =>
   import('@/pages/search').then((module) => ({ default: module.SearchPage })),
 );
@@ -62,6 +65,10 @@ export function ProductRoute() {
 
 export function ProfileRoute() {
   return <ProfilePage />;
+}
+
+export function RegisterRoute() {
+  return <RegisterPage />;
 }
 
 export function SearchRoute() {

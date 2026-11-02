@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Stack, Typography } from '@mui/material';
+import { useSearchParams } from 'react-router-dom';
 
 import { SearchProducts } from '@/features/search-products';
 import { mockProducts } from '@/entities/product';
@@ -7,7 +8,8 @@ import { EmptyState, PageStack, SectionHeading } from '@/shared/ui';
 import { ProductFeed } from '@/widgets/product-feed';
 
 export function SearchPage() {
-  const [query, setQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('q') ?? '';
   const normalizedQuery = query.trim().toLocaleLowerCase('ru-RU');
 
   const results = useMemo(() => {
@@ -20,11 +22,16 @@ export function SearchPage() {
     );
   }, [normalizedQuery]);
 
+  const handleSearchChange = (nextQuery: string) => {
+    const trimmedQuery = nextQuery.trim();
+    setSearchParams(trimmedQuery ? { q: trimmedQuery } : {});
+  };
+
   return (
     <PageStack>
       <Stack component="section" spacing={2.5}>
         <SectionHeading eyebrow="Поиск по каталогу" title="Найдите нужную позицию" />
-        <SearchProducts value={query} onChange={setQuery} />
+        <SearchProducts value={query} onChange={handleSearchChange} />
       </Stack>
       <Stack component="section" spacing={2}>
         <Typography variant="body2" color="text.secondary">

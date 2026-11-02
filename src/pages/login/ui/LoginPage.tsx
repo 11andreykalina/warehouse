@@ -1,4 +1,5 @@
-import { Paper, Stack, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Button, Paper, Stack, Typography } from '@mui/material';
 
 import { AuthForm } from '@/features/auth-by-badge';
 import { ThemeToggle } from '@/features/theme-toggle';
@@ -16,8 +17,11 @@ export function LoginPage() {
         <Stack spacing={2}>
           <SectionHeading eyebrow="Демо-режим" title="Вход в систему" />
           <Typography color="text.secondary">Проверка входа использует только демонстрационные данные проекта.</Typography>
-        <AuthForm />
+          <AuthForm mode="login" />
           <Typography variant="body2" sx={loginHintSx}>Для демо: жетон 123456, пароль 123456.</Typography>
+          <Button component={Link} to="/register" variant="outlined" fullWidth>
+            Создать новый аккаунт
+          </Button>
         </Stack>
       </Paper>
     </Stack>

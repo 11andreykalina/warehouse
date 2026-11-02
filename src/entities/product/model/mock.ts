@@ -263,7 +263,7 @@ const catalogProducts: CatalogProduct[] = [
     categoryId: 'outerwear',
     subsCategoryId: 'summer-outerwear',
     season: 'summer',
-    availableSizes: ['42', '44', '46', '48', '50', '52'],
+    availableSizes: ['42', '44', '46', '48', '50', '82'],
     gender: 'female',
     entitlements: [],
   },
