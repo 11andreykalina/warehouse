@@ -11,10 +11,6 @@ export const loginPageSx: SxProps<Theme> = {
 };
 
 export const loginThemeControlSx: SxProps<Theme> = (theme) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: 1,
   width: 'min(100%, 440px)',
   mx: 'auto',
   p: 0.75,
@@ -26,6 +22,15 @@ export const loginThemeControlSx: SxProps<Theme> = (theme) => ({
   backdropFilter: 'blur(8px)',
   zIndex: 1,
 });
+
+export const loginTitleRowSx: SxProps<Theme> = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+  gap: 1,
+  minHeight: 40,
+};
 
 export const loginCardSx: SxProps<Theme> = (theme) => ({
   width: 'min(100%, 440px)',
