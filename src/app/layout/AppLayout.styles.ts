@@ -20,6 +20,8 @@ export const pageShellSx: SxProps<Theme> = {
 };
 
 export const searchBarSx: SxProps<Theme> = {
+  flex: 1,
+  minWidth: 0,
   width: '100%',
   mb: { xs: 2.5, md: 3 },
   '& .MuiPaper-root': {
