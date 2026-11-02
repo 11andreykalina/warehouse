@@ -1,4 +1,4 @@
-export const uniformServices = ['general', 'dps', 'pps', 'investigation'] as const;
+export const uniformServices = ['general', 'dps', 'pps', 'investigation', 'expert', 'oyr', 'yyp'] as const;
 export const uniformRankGroups = ['highest', 'senior-middle', 'junior-rank-file'] as const;
 export const uniformDuties = [
   'external-service',
@@ -44,6 +44,9 @@ export const uniformServiceLabels: Record<UniformService, string> = {
   dps: 'ДПС',
   pps: 'ППС',
   investigation: 'Следствие',
+  expert: 'Эксперт',
+  oyr: 'Уголовный розыск',
+  yyp: 'Участковый уполномоченный полиции',
 };
 
 export const uniformGenderLabels: Record<UniformGender, string> = {

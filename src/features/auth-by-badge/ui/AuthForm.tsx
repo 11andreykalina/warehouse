@@ -58,6 +58,12 @@ export function AuthForm({ mode = 'login' }: AuthFormProps) {
   const handleLoginSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (!badgeNumber.trim() || !password) {
+      setError('Введите номер жетона и пароль.');
+      setSuccessMessage('');
+      return;
+    }
+
     const foundUser = findRegisteredUser(badgeNumber.trim(), password);
     if (!foundUser) {
       setError('Неверный номер жетона или пароль.');
@@ -81,12 +87,16 @@ export function AuthForm({ mode = 'login' }: AuthFormProps) {
       badgeNumber.trim(),
       phone.trim(),
       service,
+      department.trim(),
+      locationName.trim(),
       rank.trim(),
       gender,
+      password,
+      confirmPassword,
     ];
 
     if (requiredFields.some((field) => !field)) {
-      setError('Заполните обязательные поля: фамилия, имя, дата рождения, номер жетона, служба, номер телефона, звание и пол.');
+      setError('Заполните обязательные поля: фамилия, имя, дата рождения, номер жетона, служба, подразделение, наименование места службы, номер телефона, звание, пол и пароль.');
       setSuccessMessage('');
       return;
     }
