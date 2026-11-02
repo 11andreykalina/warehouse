@@ -3,6 +3,8 @@ import type { User } from './types';
 export const mockUser: User = {
   id: 'user-001',
   badgeNumber: '123456',
+  phone: '+7 (863) 000-00-00',
+  email: 'andrey.kalinin@rosleshoz.mvd',
   identity: {
     firstName: 'Андрей',
     lastName: 'Калинин',
@@ -12,7 +14,8 @@ export const mockUser: User = {
   service: {
     rank: 'старший лейтенант полиции',
     position: 'эксперт-криминалист',
-    department: 'ОМВД России',
+    department: 'ОМВД России по г. Шахты',
+    locationName: 'Отдел МВД России по Константиновскому району',
     uniformService: 'investigation',
     rankGroup: 'senior-middle',
     uniformDuties: [],

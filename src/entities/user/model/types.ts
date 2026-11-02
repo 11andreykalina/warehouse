@@ -17,8 +17,9 @@ export interface UserIdentity {
 
 export interface UserService {
     rank?: string;
-    position: string;
+    position?: string;
     department: string;
+    locationName?: string;
     serviceStartDate?: string;
     uniformService: Exclude<UniformService, 'general'>;
     rankGroup: UniformRankGroup;
@@ -38,6 +39,8 @@ export interface UserMeasurements {
 export interface User {
     id: string;
     badgeNumber: string;
+    phone: string;
+    email?: string;
 
     identity: UserIdentity;
     service: UserService;
