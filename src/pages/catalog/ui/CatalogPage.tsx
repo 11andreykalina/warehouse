@@ -133,7 +133,7 @@ export function CatalogPage() {
           <CategoryFilter categories={mockCategories} selected={selectedCategory} onSelect={handleSelectCategory} />
           <SeasonFilter selected={season} onSelect={setSeason} />
 
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ flexWrap: 'wrap' }}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ flexWrap: 'wrap', alignItems: 'center' }}>
             <TextField
               select
               label="Служба"
@@ -171,7 +171,7 @@ export function CatalogPage() {
               ))}
             </TextField>
             <FormControlLabel
-              sx={{ ml: 0, mr: 0, color: 'text.secondary' }}
+              sx={{ m: 0, color: 'text.secondary' }}
               control={
                 <Switch
                   checked={profileOnly}
@@ -182,7 +182,7 @@ export function CatalogPage() {
             />
           </Stack>
 
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ flexWrap: 'wrap' }}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ flexWrap: 'wrap', alignItems: 'center' }}>
             <TextField
               select
               label="Категория состава"
@@ -200,7 +200,7 @@ export function CatalogPage() {
               ))}
             </TextField>
             <FormControlLabel
-              sx={{ ml: 0, mr: 0, color: 'text.secondary' }}
+              sx={{ m: 0, color: 'text.secondary' }}
               control={
                 <Checkbox
                   checked={duties.includes('external-service')}
@@ -219,7 +219,7 @@ export function CatalogPage() {
               ? (['traffic-supervision', 'motorcycle'] as const).map((duty) => (
                   <FormControlLabel
                     key={duty}
-                    sx={{ ml: 0, mr: 0, color: 'text.secondary' }}
+                    sx={{ m: 0, color: 'text.secondary' }}
                     control={
                       <Checkbox
                         checked={duties.includes(duty)}
@@ -239,7 +239,7 @@ export function CatalogPage() {
             {profileService === 'pps' ? (
               <>
                 <FormControlLabel
-                  sx={{ ml: 0, mr: 0, color: 'text.secondary' }}
+                  sx={{ m: 0, color: 'text.secondary' }}
                   control={
                     <Checkbox
                       checked={duties.includes('pps-line')}
@@ -257,7 +257,7 @@ export function CatalogPage() {
                 {uniformConditions.map((condition) => (
                   <FormControlLabel
                     key={condition}
-                    sx={{ ml: 0, mr: 0, color: 'text.secondary' }}
+                    sx={{ m: 0, color: 'text.secondary' }}
                     control={
                       <Checkbox
                         checked={conditions.includes(condition)}

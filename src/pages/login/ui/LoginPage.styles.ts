@@ -14,7 +14,7 @@ export const loginThemeControlSx: SxProps<Theme> = (theme) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  mb: 1.5,
+  gap: 1,
   width: 'min(100%, 440px)',
   mx: 'auto',
   p: 0.75,

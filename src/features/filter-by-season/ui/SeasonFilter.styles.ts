@@ -1,9 +1,11 @@
 import type { SxProps, Theme } from '@mui/material';
 
 export const seasonToggleGroupSx: SxProps<Theme> = {
+  width: '100%',
   display: 'flex',
   flexWrap: 'wrap',
-  gap: 1,
+  rowGap: 1,
+  columnGap: 1,
   '& .MuiToggleButtonGroup-grouped': {
     margin: 0,
     border: '1px solid',
@@ -13,6 +15,7 @@ export const seasonToggleGroupSx: SxProps<Theme> = {
     '&:not(:first-of-type)': { borderLeft: '1px solid' },
   },
   '& .MuiToggleButton-root': {
+    flex: '0 0 auto',
     px: 1.8,
     py: 0.9,
     color: 'text.secondary',
@@ -20,6 +23,7 @@ export const seasonToggleGroupSx: SxProps<Theme> = {
     fontWeight: 600,
     textTransform: 'none',
     borderRadius: 1.5,
+    whiteSpace: 'nowrap',
     transition: 'all 0.2s ease',
     '&:hover': { backgroundColor: 'rgba(142, 175, 224, 0.08)', color: 'text.primary' },
     '&.Mui-selected': {

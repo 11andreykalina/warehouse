@@ -1,7 +1,6 @@
 import type { SxProps, Theme } from '@mui/material';
 
 export const pageBackButtonSx: SxProps<Theme> = (theme) => ({
-  mb: 0,
   alignSelf: 'flex-start',
   minWidth: 0,
   px: 1.25,
