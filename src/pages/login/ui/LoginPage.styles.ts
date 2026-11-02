@@ -29,7 +29,7 @@ export const loginTitleRowSx: SxProps<Theme> = {
   justifyContent: 'space-between',
   width: '100%',
   gap: 1,
-  minHeight: 40,
+  minHeight: 56,
 };
 
 export const loginCardSx: SxProps<Theme> = (theme) => ({

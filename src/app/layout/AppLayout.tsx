@@ -25,7 +25,7 @@ export function AppLayout() {
     <Box sx={appShellSx}>
       <AppHeader />
       <Box component="main" sx={pageShellSx}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, width: '100%' }}>
+        <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 1.5, width: '100%' }}>
           {!isHomePage ? <PageBackButton fallbackTo={fallbackTo} /> : null}
           <Box component="form" onSubmit={handleSubmit} sx={searchBarSx}>
             <Paper elevation={0} sx={{ borderRadius: 2, border: 1, borderColor: 'divider', backgroundColor: 'background.paper' }}>
