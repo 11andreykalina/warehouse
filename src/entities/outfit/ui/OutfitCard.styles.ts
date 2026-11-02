@@ -1,11 +1,21 @@
 import type { SxProps, Theme } from '@mui/material';
 
-export const outfitCardSx: SxProps<Theme> = { overflow: 'hidden', borderRadius: 1.5 };
+export const outfitCardSx: SxProps<Theme> = {
+  width: '100%',
+  height: '100%',
+  overflow: 'hidden',
+  borderRadius: 1.5,
+  border: 1,
+  borderColor: 'divider',
+  boxShadow: 'none',
+};
 
 export const outfitCardActionSx: SxProps<Theme> = {
   display: 'flex',
+  height: '100%',
   flexDirection: 'column',
   textAlign: 'left',
+  cursor: 'pointer',
 };
 
 export const outfitImageFrameSx: SxProps<Theme> = {
@@ -34,7 +44,12 @@ export const outfitActionLabelSx: SxProps<Theme> = {
   mt: 1,
 };
 
-export const outfitContentSx: SxProps<Theme> = { display: 'flex', flexDirection: 'column', gap: 0.5, p: 2 };
+export const outfitContentSx: SxProps<Theme> = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 0.5,
+  p: { xs: 1.25, sm: 1.5, md: 2 },
+};
 
 export const outfitNameSx: SxProps<Theme> = { fontWeight: 650 };
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Alert, MenuItem, Stack, Typography } from '@mui/material';
+import { Alert, MenuItem, Stack, TextField, Typography } from '@mui/material';
 
 import { Button, Input } from '@/shared/ui';
 import {
@@ -161,11 +161,14 @@ export function AuthForm({ mode = 'login' }: AuthFormProps) {
           <Input label="Фамилия" required value={lastName} onChange={(event) => setLastName(event.target.value)} />
           <Input label="Имя" required value={firstName} onChange={(event) => setFirstName(event.target.value)} />
           <Input label="Отчество" value={middleName} onChange={(event) => setMiddleName(event.target.value)} />
-          <Input
+          <TextField
+            fullWidth
+            size="small"
             label="Дата рождения"
             type="date"
             required
             value={birthDate}
+            slotProps={{ inputLabel: { shrink: true } }}
             onChange={(event) => setBirthDate(event.target.value)}
           />
           <Input label="Номер жетона" autoComplete="username" required value={badgeNumber} onChange={(event) => setBadgeNumber(event.target.value)} />

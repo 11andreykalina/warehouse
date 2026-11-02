@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert, MenuItem, Stack } from '@mui/material';
+import { Alert, MenuItem, Stack, TextField } from '@mui/material';
 
 import { mockUser, UserCard, type User } from '@/entities/user';
 import { getCurrentUser, saveCurrentUser } from '@/features/auth-by-badge/model/auth';
@@ -104,7 +104,14 @@ export function ProfilePage() {
           <Input label="Фамилия" value={user.identity.lastName} onChange={(event) => handleIdentityChange('lastName', event.target.value)} />
           <Input label="Имя" value={user.identity.firstName} onChange={(event) => handleIdentityChange('firstName', event.target.value)} />
           <Input label="Отчество" value={user.identity.middleName ?? ''} onChange={(event) => handleIdentityChange('middleName', event.target.value)} />
-          <Input label="Дата рождения" value={user.identity.birthDate ?? ''} disabled />
+          <TextField
+            fullWidth
+            size="small"
+            label="Дата рождения"
+            value={user.identity.birthDate ?? ''}
+            slotProps={{ inputLabel: { shrink: !!user.identity.birthDate } }}
+            disabled
+          />
           <Input label="Номер жетона" value={user.badgeNumber} onChange={(event) => handleFieldChange('badgeNumber', event.target.value)} />
           <Input label="Номер телефона" value={user.phone} onChange={(event) => handleFieldChange('phone', event.target.value)} />
           <Input select label="Служба" value={user.service.uniformService} onChange={(event) => setUser((currentUser) => ({ ...currentUser, service: { ...currentUser.service, uniformService: event.target.value as Exclude<UniformService, 'general'> } }))}>
