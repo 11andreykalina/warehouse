@@ -133,13 +133,17 @@ export function CatalogPage() {
           <CategoryFilter categories={mockCategories} selected={selectedCategory} onSelect={handleSelectCategory} />
           <SeasonFilter selected={season} onSelect={setSeason} />
 
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ flexWrap: 'wrap', alignItems: 'center' }}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={1.5}
+            sx={{ width: '100%', flexWrap: 'wrap', alignItems: { xs: 'stretch', sm: 'center' } }}
+          >
             <TextField
               select
               label="Служба"
               size="small"
               value={service}
-              sx={{ minWidth: { xs: '100%', sm: 180 } }}
+              sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { xs: 0, sm: 180 } }}
               onChange={(event) => {
                 if (isServiceFilter(event.target.value)) {
                   setService(event.target.value);
@@ -158,7 +162,7 @@ export function CatalogPage() {
               label="Пол"
               size="small"
               value={gender}
-              sx={{ minWidth: { xs: '100%', sm: 180 } }}
+              sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { xs: 0, sm: 180 } }}
               onChange={(event) => {
                 if (isGenderFilter(event.target.value)) {
                   setGender(event.target.value);
@@ -182,13 +186,17 @@ export function CatalogPage() {
             />
           </Stack>
 
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ flexWrap: 'wrap', alignItems: 'center' }}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={1.5}
+            sx={{ width: '100%', flexWrap: 'wrap', alignItems: { xs: 'stretch', sm: 'center' } }}
+          >
             <TextField
               select
               label="Категория состава"
               size="small"
               value={rankGroup}
-              sx={{ minWidth: { xs: '100%', sm: 220 } }}
+              sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { xs: 0, sm: 220 } }}
               onChange={(event) => {
                 if (isRankGroup(event.target.value)) {
                   setRankGroup(event.target.value);

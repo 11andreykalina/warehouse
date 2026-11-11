@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { THEME_STORAGE_KEY, ThemeContext, type Theme } from './themeContext';
 
 function getInitialTheme(): Theme {
-  return localStorage.getItem(THEME_STORAGE_KEY) === 'dark' ? 'dark' : 'light';
+  return localStorage.getItem(THEME_STORAGE_KEY) === 'light' ? 'light' : 'dark';
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
