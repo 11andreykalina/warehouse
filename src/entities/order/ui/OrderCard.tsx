@@ -22,7 +22,7 @@ export function OrderCard({
   return (
     <Paper component="article" sx={orderCardSx}>
       <Stack direction="row" sx={orderCardHeaderSx}>
-        <Typography variant="subtitle1" sx={orderTitleSx}>Заявка {order.id.slice(-8)}</Typography>
+        <Typography variant="subtitle1" sx={orderTitleSx}>Корзина {order.id.slice(-8)}</Typography>
         <Chip size="small" color={order.status === 'submitted' ? 'primary' : 'default'} label={status} />
       </Stack>
       <Stack component="ul" spacing={0.5} sx={orderItemsSx}>

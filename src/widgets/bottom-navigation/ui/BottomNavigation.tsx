@@ -12,7 +12,7 @@ import { bottomNavigationSx, bottomPaperSx } from './BottomNavigation.styles';
 const navigationItems = [
   { path: '/', label: 'Главная', icon: <HomeOutlined /> },
   { path: '/catalog', label: 'Каталог', icon: <CategoryOutlined /> },
-  { path: '/cart', label: 'Заявка', icon: <ShoppingCartOutlined /> },
+  { path: '/cart', label: 'Корзина', icon: <ShoppingCartOutlined /> },
   { path: '/wardrobe', label: 'Гардероб', icon: <CheckroomOutlined /> },
   { path: '/orders', label: 'Заявки', icon: <ReceiptLongOutlined /> },
   { path: '/profile', label: 'Профиль', icon: <PersonOutlined /> },
