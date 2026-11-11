@@ -4,12 +4,16 @@ import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 import { AuthForm } from '@/features/auth-by-badge';
 import { ThemeToggle } from '@/features/theme-toggle';
 import { PageBackButton, SectionHeading } from '@/shared/ui';
-import { loginCardSx, loginHintSx, loginPageSx, loginThemeControlSx, loginTitleRowSx } from './LoginPage.styles';
+import { loginCardSx, loginHintSx, loginPageSx,  loginTitleRowSx } from './LoginPage.styles';
 
 export function LoginPage() {
   return (
     <Stack component="main" sx={loginPageSx}>
-      <Stack sx={loginThemeControlSx}>
+      
+        
+
+
+      <Paper component="section" sx={loginCardSx}>
         <Box sx={loginTitleRowSx}>
           <PageBackButton />
           <Typography variant="overline" sx={{ letterSpacing: 1.5, color: 'text.secondary', fontWeight: 700, lineHeight: 1.2, whiteSpace: 'nowrap' }}>
@@ -17,9 +21,6 @@ export function LoginPage() {
           </Typography>
           <ThemeToggle />
         </Box>
-      </Stack>
-
-      <Paper component="section" sx={loginCardSx}>
         <Stack spacing={2.25}>
           <SectionHeading eyebrow="" title="Вход в систему" description="Проверка входа использует только демонстрационные данные проекта." />
           <AuthForm mode="login" />
