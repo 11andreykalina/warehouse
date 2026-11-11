@@ -18,7 +18,8 @@ import {
   WardrobeRoute,
 } from './LazyPages';
 
-export const router = createBrowserRouter([
+export const router = createBrowserRouter(
+  [
   {
     element: <AppLayout />,
     children: [
@@ -50,4 +51,6 @@ export const router = createBrowserRouter([
       </Suspense>
     ),
   },
-]);
+  ],
+  { basename: import.meta.env.BASE_URL.replace(/\/$/, '') || '/' },
+);

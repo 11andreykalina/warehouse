@@ -3,6 +3,7 @@ import type { SxProps, Theme } from '@mui/material';
 export const appShellSx: SxProps<Theme> = (theme) => ({
   display: 'flex',
   minHeight: '100vh',
+  '@supports (height: 100dvh)': { minHeight: '100dvh' },
   flexDirection: 'column',
   background:
     theme.palette.mode === 'dark'

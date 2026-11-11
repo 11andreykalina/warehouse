@@ -1,10 +1,11 @@
 import type { Outfit } from './types';
+import { getPublicAssetUrl } from '@/shared/lib';
 
 export const mockOutfits: Outfit[] = [
   {
     id: 'outfit-summer-daily-001',
     name: 'Повседневная летняя форма',
-    image: '/images/outfits/summer-daily.jpeg',
+    image: getPublicAssetUrl('/images/outfits/summer-daily.jpeg'),
     season: 'summer',
     purpose: 'daily',
     service: 'general',
@@ -20,7 +21,7 @@ export const mockOutfits: Outfit[] = [
   {
     id: 'outfit-summer-long-sleeve-001',
     name: 'Летняя форма с длинным рукавом',
-    image: '/images/outfits/male-trousers-dark-blue.jpg',
+    image: getPublicAssetUrl('/images/outfits/male-trousers-dark-blue.jpg'),
     season: 'summer',
     purpose: 'daily',
     service: 'general',

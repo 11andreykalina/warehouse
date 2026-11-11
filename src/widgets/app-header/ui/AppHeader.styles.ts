@@ -5,6 +5,7 @@ export const appBarSx = (theme: Theme) => ({
   top: 0,
   zIndex: 1100,
   borderTop: '3px solid',
+  paddingTop: 'env(safe-area-inset-top)',
   borderColor: 'secondary.main',
   backgroundColor: theme.palette.mode === 'dark' ? '#0b1423' : '#102545',
   color: 'common.white',

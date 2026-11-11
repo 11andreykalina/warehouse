@@ -3,6 +3,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Box, Button, Stack, Typography } from '@mui/material';
 
 import { mockProducts } from '@/entities/product';
+import { getPublicAssetUrl } from '@/shared/lib';
 import { PageStack, SectionHeading } from '@/shared/ui';
 import { CategoryNavigation } from '@/widgets/category-navigation';
 import { OutfitFeed } from '@/widgets/outfit-feed';
@@ -26,7 +27,7 @@ export function HomePage() {
   return (
     <PageStack sx={homeStackSx}>
       <Box component="section" sx={heroSx}>
-        <Box component="img" src="/images/branding/mvd-emblem.svg" alt="" aria-hidden="true" sx={heroEmblemSx} />
+        <Box component="img" src={getPublicAssetUrl('/images/branding/mvd-emblem.svg')} alt="" aria-hidden="true" sx={heroEmblemSx} />
         <Stack sx={heroContentSx}>
           <Typography variant="overline" sx={heroEyebrowSx}>Склад форменного имущества</Typography>
           <Typography component="h1" sx={heroTitleSx}>Всё необходимое для службы — в одном месте</Typography>
