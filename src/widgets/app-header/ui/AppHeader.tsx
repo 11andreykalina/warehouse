@@ -59,7 +59,7 @@ export function AppHeader() {
               </Button>
             ))}
             <Button component={Link} to="/cart" sx={navButtonSx}>
-              <Badge badgeContent={cartCount} color="secondary" sx={cartBadgeSx}>Заявка</Badge>
+              <Badge badgeContent={cartCount} color="secondary" sx={cartBadgeSx}>Корзина</Badge>
             </Button>
             {authenticated ? (
               <Button color="inherit" onClick={handleLogout} sx={navButtonSx}>
