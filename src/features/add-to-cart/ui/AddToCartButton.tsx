@@ -1,9 +1,7 @@
-import { useState } from 'react';
 import { Alert, Stack } from '@mui/material';
-import { useDispatch } from 'react-redux';
 
-import { cartItemAdded } from '@/entities/cart';
 import { Button } from '@/shared/ui';
+import { useAddToCart } from '../model/useAddToCart';
 import { addToCartStackSx } from './AddToCartButton.styles';
 
 export function AddToCartButton({
@@ -15,20 +13,7 @@ export function AddToCartButton({
   size: string;
   disabled?: boolean;
 }) {
-  const dispatch = useDispatch();
-  const [added, setAdded] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleAdd = () => {
-    try {
-      dispatch(cartItemAdded({ productId, size }));
-      setAdded(true);
-      setError('');
-    } catch (addError) {
-      console.error('Could not add the item to the issue request.', addError);
-      setError('Не удалось добавить позицию. Попробуйте ещё раз.');
-    }
-  };
+  const { added, error, handleAdd } = useAddToCart(productId, size);
 
   return (
     <Stack spacing={1} sx={addToCartStackSx}>

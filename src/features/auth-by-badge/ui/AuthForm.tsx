@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Alert, MenuItem, Stack, TextField, Typography } from '@mui/material';
 
 import { Button, Input } from '@/shared/ui';
@@ -10,12 +9,7 @@ import {
   type UniformGender,
   type UniformService,
 } from '@/shared/model';
-import {
-  findRegisteredUser,
-  registerMockUser,
-  saveCurrentUser,
-  setAuthenticated,
-} from '../model/auth';
+import { useAuthForm } from '../model/useAuthForm';
 import { authFormSx } from './AuthForm.styles';
 
 type AuthFormProps = {
@@ -34,161 +28,33 @@ const defaultLocations = [
 ];
 
 export function AuthForm({ mode = 'login' }: AuthFormProps) {
-  const navigate = useNavigate();
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [middleName, setMiddleName] = useState('');
-  const [birthDate, setBirthDate] = useState('');
-  const [badgeNumber, setBadgeNumber] = useState('');
-  const [phone, setPhone] = useState('');
-  const [service, setService] = useState<Exclude<UniformService, 'general'>>('investigation');
-  const [department, setDepartment] = useState('ОМВД России по г. Шахты');
-  const [locationName, setLocationName] = useState(defaultLocations[0]);
-  const [rank, setRank] = useState('');
-  const [gender, setGender] = useState<Exclude<UniformGender, 'unisex'>>('male');
-  const [clothingSize, setClothingSize] = useState('');
-  const [shoeSize, setShoeSize] = useState('');
-  const [headSize, setHeadSize] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-
-  const handleLoginSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!badgeNumber.trim() || !password) {
-      setError('Введите номер жетона и пароль.');
-      setSuccessMessage('');
-      return;
-    }
-
-    const foundUser = findRegisteredUser(badgeNumber.trim(), password);
-    if (!foundUser) {
-      setError('Неверный номер жетона или пароль.');
-      setSuccessMessage('');
-      return;
-    }
-
-    saveCurrentUser(foundUser);
-    setAuthenticated();
-    setError('');
-    navigate('/');
-  };
-
-  const handleRegisterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const requiredFields = [
-      lastName.trim(),
-      firstName.trim(),
-      birthDate,
-      badgeNumber.trim(),
-      phone.trim(),
-      service,
-      department.trim(),
-      locationName.trim(),
-      rank.trim(),
-      gender,
-      password,
-      confirmPassword,
-    ];
-
-    if (requiredFields.some((field) => !field)) {
-      setError('Заполните обязательные поля: фамилия, имя, дата рождения, номер жетона, служба, подразделение, наименование места службы, номер телефона, звание, пол и пароль.');
-      setSuccessMessage('');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError('Пароли не совпадают.');
-      setSuccessMessage('');
-      return;
-    }
-
-    try {
-      registerMockUser({
-        id: `user-${Date.now()}`,
-        badgeNumber: badgeNumber.trim(),
-        phone: phone.trim(),
-        email: email.trim() || undefined,
-        password,
-        identity: {
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          middleName: middleName.trim() || undefined,
-          birthDate,
-        },
-        service: {
-          rank: rank.trim(),
-          department: department.trim(),
-          locationName: locationName.trim(),
-          position: 'Сотрудник',
-          uniformService: service,
-          rankGroup: 'senior-middle',
-          uniformDuties: [],
-          uniformConditions: [],
-        },
-        measurements: {
-          gender,
-          clothingSize: clothingSize.trim() || undefined,
-          shoeSize: shoeSize.trim() || undefined,
-          headSize: headSize.trim() || undefined,
-        },
-      });
-      setError('');
-      setSuccessMessage('Регистрация успешно создана. Теперь можно войти в систему.');
-      setFirstName('');
-      setLastName('');
-      setMiddleName('');
-      setBirthDate('');
-      setBadgeNumber('');
-      setPhone('');
-      setDepartment('ОМВД России по г. Шахты');
-      setLocationName(defaultLocations[0]);
-      setRank('');
-      setGender('male');
-      setClothingSize('');
-      setShoeSize('');
-      setHeadSize('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      navigate('/login');
-    } catch (submitError) {
-      setSuccessMessage('');
-      setError(submitError instanceof Error ? submitError.message : 'Не удалось сохранить регистрацию.');
-    }
-  };
-
-  const handleSubmit = mode === 'register' ? handleRegisterSubmit : handleLoginSubmit;
+  const { values, updateField, handleSubmit, error, successMessage } = useAuthForm(mode);
 
   return (
     <Stack component="form" onSubmit={handleSubmit} spacing={2} sx={authFormSx}>
       {mode === 'register' ? (
         <>
-          <Input label="Фамилия" required value={lastName} onChange={(event) => setLastName(event.target.value)} />
-          <Input label="Имя" required value={firstName} onChange={(event) => setFirstName(event.target.value)} />
-          <Input label="Отчество" value={middleName} onChange={(event) => setMiddleName(event.target.value)} />
+          <Input label="Фамилия" required value={values.lastName} onChange={(event) => updateField('lastName', event.target.value)} />
+          <Input label="Имя" required value={values.firstName} onChange={(event) => updateField('firstName', event.target.value)} />
+          <Input label="Отчество" value={values.middleName} onChange={(event) => updateField('middleName', event.target.value)} />
           <TextField
             fullWidth
             size="small"
             label="Дата рождения"
             type="date"
             required
-            value={birthDate}
+            value={values.birthDate}
             slotProps={{ inputLabel: { shrink: true } }}
-            onChange={(event) => setBirthDate(event.target.value)}
+            onChange={(event) => updateField('birthDate', event.target.value)}
           />
-          <Input label="Номер жетона" autoComplete="username" required value={badgeNumber} onChange={(event) => setBadgeNumber(event.target.value)} />
-          <Input label="Номер телефона" required value={phone} onChange={(event) => setPhone(event.target.value)} />
+          <Input label="Номер жетона" autoComplete="username" required value={values.badgeNumber} onChange={(event) => updateField('badgeNumber', event.target.value)} />
+          <Input label="Номер телефона" required value={values.phone} onChange={(event) => updateField('phone', event.target.value)} />
           <Input
             select
             label="Служба"
             required
-            value={service}
-            onChange={(event) => setService(event.target.value as Exclude<UniformService, 'general'>)}
+            value={values.service}
+            onChange={(event) => updateField('service', event.target.value as Exclude<UniformService, 'general'>)}
           >
             {registrationServices.map((uniformService) => (
               <MenuItem key={uniformService} value={uniformService}>
@@ -196,13 +62,13 @@ export function AuthForm({ mode = 'login' }: AuthFormProps) {
               </MenuItem>
             ))}
           </Input>
-          <Input label="Подразделение" required value={department} onChange={(event) => setDepartment(event.target.value)} />
+          <Input label="Подразделение" required value={values.department} onChange={(event) => updateField('department', event.target.value)} />
           <Input
             select
             label="Наименование места службы"
             required
-            value={locationName}
-            onChange={(event) => setLocationName(event.target.value)}
+            value={values.locationName}
+            onChange={(event) => updateField('locationName', event.target.value)}
           >
             {defaultLocations.map((location) => (
               <MenuItem key={location} value={location}>
@@ -210,13 +76,13 @@ export function AuthForm({ mode = 'login' }: AuthFormProps) {
               </MenuItem>
             ))}
           </Input>
-          <Input label="Звание" required value={rank} onChange={(event) => setRank(event.target.value)} />
+          <Input label="Звание" required value={values.rank} onChange={(event) => updateField('rank', event.target.value)} />
           <Input
             select
             label="Пол"
             required
-            value={gender}
-            onChange={(event) => setGender(event.target.value as Exclude<UniformGender, 'unisex'>)}
+            value={values.gender}
+            onChange={(event) => updateField('gender', event.target.value as Exclude<UniformGender, 'unisex'>)}
           >
             {Object.entries(uniformGenderLabels)
               .filter(([value]) => value !== 'unisex')
@@ -224,17 +90,17 @@ export function AuthForm({ mode = 'login' }: AuthFormProps) {
                 <MenuItem key={value} value={value}>{label}</MenuItem>
               ))}
           </Input>
-          <Input label="Размер одежды" value={clothingSize} onChange={(event) => setClothingSize(event.target.value)} />
-          <Input label="Размер обуви" value={shoeSize} onChange={(event) => setShoeSize(event.target.value)} />
-          <Input label="Размер головного убора" value={headSize} onChange={(event) => setHeadSize(event.target.value)} />
-          <Input label="Email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+          <Input label="Размер одежды" value={values.clothingSize} onChange={(event) => updateField('clothingSize', event.target.value)} />
+          <Input label="Размер обуви" value={values.shoeSize} onChange={(event) => updateField('shoeSize', event.target.value)} />
+          <Input label="Размер головного убора" value={values.headSize} onChange={(event) => updateField('headSize', event.target.value)} />
+          <Input label="Email" type="email" autoComplete="email" value={values.email} onChange={(event) => updateField('email', event.target.value)} />
         </>
       ) : (
-        <Input label="Номер жетона" autoComplete="username" required value={badgeNumber} onChange={(event) => setBadgeNumber(event.target.value)} />
+        <Input label="Номер жетона" autoComplete="username" required value={values.badgeNumber} onChange={(event) => updateField('badgeNumber', event.target.value)} />
       )}
-      <Input label="Пароль" type="password" autoComplete={mode === 'register' ? 'new-password' : 'current-password'} required value={password} onChange={(event) => setPassword(event.target.value)} />
+      <Input label="Пароль" type="password" autoComplete={mode === 'register' ? 'new-password' : 'current-password'} required value={values.password} onChange={(event) => updateField('password', event.target.value)} />
       {mode === 'register' ? (
-        <Input label="Подтверждение пароля" type="password" autoComplete="new-password" required value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} />
+        <Input label="Подтверждение пароля" type="password" autoComplete="new-password" required value={values.confirmPassword} onChange={(event) => updateField('confirmPassword', event.target.value)} />
       ) : null}
       {error ? <Alert role="alert" severity="error">{error}</Alert> : null}
       {successMessage ? <Alert severity="success">{successMessage}</Alert> : null}

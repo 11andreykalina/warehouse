@@ -1,34 +1,12 @@
-import { useState } from 'react';
 import { Alert, Stack } from '@mui/material';
-import { useDispatch } from 'react-redux';
 
-import { cartCleared, useCartItems } from '@/entities/cart';
-import { createOrder, orderAdded } from '@/entities/order';
 import { Button } from '@/shared/ui';
 import type { Order } from '@/entities/order';
+import { useCreateOrder } from '../model/useCreateOrder';
 import { createOrderStackSx } from './CreateOrderButton.styles';
 
 export function CreateOrderButton({ onSubmitted }: { onSubmitted: (order: Order) => void }) {
-  const dispatch = useDispatch();
-  const items = useCartItems();
-  const [error, setError] = useState('');
-
-  const handleSubmit = () => {
-    if (items.length === 0) {
-      setError('Добавьте хотя бы одну позицию перед отправкой заявки.');
-      return;
-    }
-
-    try {
-      const order = createOrder(items);
-      dispatch(orderAdded(order));
-      dispatch(cartCleared());
-      onSubmitted(order);
-    } catch (submitError) {
-      console.error('Could not submit issue request.', submitError);
-      setError('Не удалось сохранить заявку. Повторите попытку.');
-    }
-  };
+  const { items, error, handleSubmit } = useCreateOrder(onSubmitted);
 
   return (
     <Stack spacing={1.5} sx={createOrderStackSx}>

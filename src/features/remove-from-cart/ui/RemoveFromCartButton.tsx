@@ -1,16 +1,14 @@
-import { useDispatch } from 'react-redux';
-
-import { cartItemRemoved } from '@/entities/cart';
 import { Button } from '@/shared/ui';
+import { useRemoveFromCart } from '../model/useRemoveFromCart';
 
 export function RemoveFromCartButton({ productId, size }: { productId: string; size: string }) {
-  const dispatch = useDispatch();
+  const handleRemove = useRemoveFromCart(productId, size);
 
   return (
     <Button
       type="button"
       variant="secondary"
-      onClick={() => dispatch(cartItemRemoved({ productId, size }))}
+      onClick={handleRemove}
     >
       Удалить
     </Button>
