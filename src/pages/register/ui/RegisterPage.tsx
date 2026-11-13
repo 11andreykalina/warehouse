@@ -3,14 +3,14 @@ import { Box, Paper, Stack, Typography } from '@mui/material';
 import { AuthForm } from '@/features/auth-by-badge';
 import { ThemeToggle } from '@/features/theme-toggle';
 import { PageBackButton, SectionHeading } from '@/shared/ui';
-import { loginCardSx, loginPageSx,loginTitleRowSx,  } from '@/pages/login/ui/LoginPage.styles';
+import { registerCardSx, registerPageSx, registerTitleRowSx } from './RegisterPage.styles';
 
 export function RegisterPage() {
   return (
-    <Stack component="main" sx={loginPageSx}>
+    <Stack component="main" sx={registerPageSx}>
     
-      <Paper component="section" sx={loginCardSx}>
-        <Box sx={loginTitleRowSx}>
+      <Paper component="section" sx={registerCardSx}>
+        <Box sx={registerTitleRowSx}>
           <PageBackButton />
           <Typography variant="overline" sx={{ letterSpacing: 1.5, color: 'text.secondary', fontWeight: 700, lineHeight: 1.2, whiteSpace: 'nowrap' }}>
             ДЕМО-Регистрация
