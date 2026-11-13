@@ -14,9 +14,6 @@ import { CategoryFilter } from '@/features/filter-by-category';
 import { SeasonFilter } from '@/features/filter-by-season';
 import { mockCategories } from '@/entities/category';
 import {
-  uniformConditionLabels,
-  uniformConditions,
-  uniformDutyLabels,
   uniformGenderLabels,
   uniformRankGroupLabels,
   uniformRankGroups,
@@ -34,20 +31,19 @@ export function CatalogPage() {
     gender,
     service,
     rankGroup,
-    duties,
-    conditions,
     profileOnly,
-    profileService,
+    dutyOptions,
+    conditionOptions,
     eligibilityProfile,
     filteredProducts,
     handleSelectCategory,
-    setSeason,
+    handleSeasonChange,
     handleServiceChange,
     handleGenderChange,
     handleRankGroupChange,
     handleDutyChange,
     handleConditionChange,
-    setProfileOnly,
+    handleProfileOnlyChange,
   } = useCatalogFilters();
 
   return (
@@ -70,7 +66,7 @@ export function CatalogPage() {
             description="Выберите категорию, сезон и размер позиции."
           />
           <CategoryFilter categories={mockCategories} selected={selectedCategory} onSelect={handleSelectCategory} />
-          <SeasonFilter selected={season} onSelect={setSeason} />
+          <SeasonFilter selected={season} onSelect={handleSeasonChange} />
 
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
@@ -108,7 +104,7 @@ export function CatalogPage() {
               control={
                 <Switch
                   checked={profileOnly}
-                  onChange={(event) => setProfileOnly(event.target.checked)}
+                  onChange={(event) => handleProfileOnlyChange(event.target.checked)}
                 />
               }
               label="Показать положенное по нормам"
@@ -132,66 +128,32 @@ export function CatalogPage() {
                 <MenuItem key={group} value={group}>{uniformRankGroupLabels[group]}</MenuItem>
               ))}
             </TextField>
-            <FormControlLabel
-              sx={{ m: 0, color: 'text.secondary' }}
-              control={
-                <Checkbox
-                  checked={duties.includes('external-service')}
-                  onChange={(event) =>
-                    handleDutyChange('external-service', event.target.checked)
-                  }
-                />
-              }
-              label={uniformDutyLabels['external-service']}
-            />
-            {profileService === 'dps'
-              ? (['traffic-supervision', 'motorcycle'] as const).map((duty) => (
-                  <FormControlLabel
-                    key={duty}
-                    sx={{ m: 0, color: 'text.secondary' }}
-                    control={
-                      <Checkbox
-                        checked={duties.includes(duty)}
-                        onChange={(event) =>
-                          handleDutyChange(duty, event.target.checked)
-                        }
-                      />
-                    }
-                    label={uniformDutyLabels[duty]}
+            {dutyOptions.map(({ duty, label, checked }) => (
+              <FormControlLabel
+                key={duty}
+                sx={{ m: 0, color: 'text.secondary' }}
+                control={
+                  <Checkbox
+                    checked={checked}
+                    onChange={(event) => handleDutyChange(duty, event.target.checked)}
                   />
-                ))
-              : null}
-            {profileService === 'pps' ? (
-              <>
-                <FormControlLabel
-                  sx={{ m: 0, color: 'text.secondary' }}
-                  control={
-                    <Checkbox
-                      checked={duties.includes('pps-line')}
-                      onChange={(event) =>
-                        handleDutyChange('pps-line', event.target.checked)
-                      }
-                    />
-                  }
-                  label={uniformDutyLabels['pps-line']}
-                />
-                {uniformConditions.map((condition) => (
-                  <FormControlLabel
-                    key={condition}
-                    sx={{ m: 0, color: 'text.secondary' }}
-                    control={
-                      <Checkbox
-                        checked={conditions.includes(condition)}
-                        onChange={(event) =>
-                          handleConditionChange(condition, event.target.checked)
-                        }
-                      />
-                    }
-                    label={uniformConditionLabels[condition]}
+                }
+                label={label}
+              />
+            ))}
+            {conditionOptions.map(({ condition, label, checked }) => (
+              <FormControlLabel
+                key={condition}
+                sx={{ m: 0, color: 'text.secondary' }}
+                control={
+                  <Checkbox
+                    checked={checked}
+                    onChange={(event) => handleConditionChange(condition, event.target.checked)}
                   />
-                ))}
-              </>
-            ) : null}
+                }
+                label={label}
+              />
+            ))}
           </Stack>
 
           <Alert severity="info" sx={{ borderRadius: 2, backgroundColor: 'rgba(142, 175, 224, 0.08)', border: 1, borderColor: 'primary.main' }}>
