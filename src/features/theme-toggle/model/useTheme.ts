@@ -9,5 +9,8 @@ export function useTheme() {
     throw new Error('useTheme must be used inside ThemeProvider.');
   }
 
-  return context;
+  return {
+    ...context,
+    nextTheme: context.theme === 'light' ? 'dark' : 'light',
+  };
 }

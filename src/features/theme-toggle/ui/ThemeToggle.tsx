@@ -6,8 +6,7 @@ import { useTheme } from '../model/useTheme';
 import { themeToggleSx } from './ThemeToggle.styles';
 
 export function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
-  const nextTheme = theme === 'light' ? 'dark' : 'light';
+  const { theme, nextTheme, toggleTheme } = useTheme();
 
   return (
     <Tooltip title={`Включить ${nextTheme === 'dark' ? 'тёмную' : 'светлую'} тему`}>

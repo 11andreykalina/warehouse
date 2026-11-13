@@ -26,5 +26,5 @@ export function useCreateOrder(onSubmitted: (order: Order) => void) {
     }
   };
 
-  return { items, error, handleSubmit };
+  return { items, error, canSubmit: items.length > 0, handleSubmit };
 }

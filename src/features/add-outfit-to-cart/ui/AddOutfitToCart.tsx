@@ -25,12 +25,13 @@ export function AddOutfitToCart({
     selectedSizes,
     notificationOpen,
     hasAllSizes,
+    isButtonDisabled,
     handleOpen,
     handleSizeChange,
     handleAdd,
     handleCloseDialog,
     handleCloseNotification,
-  } = useAddOutfitToCart(products);
+  } = useAddOutfitToCart(products, disabled);
 
   return (
     <>
@@ -39,7 +40,7 @@ export function AddOutfitToCart({
         startIcon={<AddShoppingCartOutlined />}
         onClick={handleOpen}
         sx={addOutfitButtonSx}
-        disabled={disabled || products.length === 0}
+        disabled={isButtonDisabled}
       >
         Добавить комплект в заявку
       </Button>

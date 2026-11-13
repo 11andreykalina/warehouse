@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Box, Button, Stack, Typography } from '@mui/material';
 
-import { mockProducts } from '@/entities/product';
 import { getPublicAssetUrl } from '@/shared/lib';
 import { PageStack, SectionHeading } from '@/shared/ui';
 import { CategoryNavigation } from '@/widgets/category-navigation';
 import { OutfitFeed } from '@/widgets/outfit-feed';
 import { ProductFeed } from '@/widgets/product-feed';
+import { getHomePageData } from '../model/homePage';
 import {
   heroContentSx,
   heroDescriptionSx,
@@ -22,7 +22,7 @@ import {
 } from './HomePage.styles';
 
 export function HomePage() {
-  const featured = mockProducts.slice(0, 4);
+  const { featuredProducts } = getHomePageData();
 
   return (
     <PageStack sx={homeStackSx}>
@@ -47,7 +47,7 @@ export function HomePage() {
           level={2}
           action={<Button component={Link} to="/catalog" endIcon={<ArrowForwardIcon />} sx={sectionLinkSx}>Весь каталог</Button>}
         />
-        <ProductFeed products={featured} />
+        <ProductFeed products={featuredProducts} />
       </Stack>
 
       <Stack component="section" sx={homeSectionSx}>

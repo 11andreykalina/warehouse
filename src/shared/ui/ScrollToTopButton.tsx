@@ -1,16 +1,10 @@
-import { useEffect, useState } from 'react';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Fab } from '@mui/material';
 
-export function ScrollToTopButton() {
-  const [visible, setVisible] = useState(false);
+import { useScrollToTop } from './model/useScrollToTop';
 
-  useEffect(() => {
-    const updateVisibility = () => setVisible(window.scrollY > 240);
-    updateVisibility();
-    window.addEventListener('scroll', updateVisibility, { passive: true });
-    return () => window.removeEventListener('scroll', updateVisibility);
-  }, []);
+export function ScrollToTopButton() {
+  const { visible, scrollToTop } = useScrollToTop();
 
   if (!visible) {
     return null;
@@ -22,7 +16,7 @@ export function ScrollToTopButton() {
       size="medium"
       aria-label="Наверх"
       title="Наверх"
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      onClick={scrollToTop}
       sx={{
         position: 'fixed',
         zIndex: 1100,

@@ -1,18 +1,17 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 
-import { mockCategories } from '@/entities/category';
-import { formatProductEntitlement, mockProducts, type Product } from '@/entities/product';
+import { formatProductEntitlement, type Product } from '@/entities/product';
 import { AddToCartButton } from '@/features/add-to-cart';
 import { ProductSizeSelector } from '@/features/select-product-size';
 import { uniformGenderLabels, uniformServiceLabels } from '@/shared/model';
 import { EmptyState, ImageWithFallback, PageStack } from '@/shared/ui';
+import { useProductPage } from '../model/useProductPage';
 import { useProductSelection } from '../model/useProductSelection';
 import { productDescriptionSx, productDetailsSx, productImageFrameSx, productPageSx, productTitleSx } from './ProductPage.styles';
 
-function ProductDetails({ product }: { product: Product }) {
-  const { selectedSize, setSelectedSize } = useProductSelection();
-  const category = mockCategories.find((item) => item.id === product.categoryId)?.name ?? 'Форменное имущество';
+function ProductDetails({ product, category }: { product: Product; category: string }) {
+  const { selectedSize, handleSelectSize } = useProductSelection();
 
   return (
     <Paper component="article" sx={productPageSx}>
@@ -43,7 +42,7 @@ function ProductDetails({ product }: { product: Product }) {
           <ProductSizeSelector
             sizes={product.availableSizes}
             selected={selectedSize}
-            onSelect={setSelectedSize}
+            onSelect={handleSelectSize}
           />
         ) : (
           <Typography color="error.main">Для этой позиции пока не указаны размеры.</Typography>
@@ -55,8 +54,7 @@ function ProductDetails({ product }: { product: Product }) {
 }
 
 export function ProductPage() {
-  const { id } = useParams();
-  const product = mockProducts.find((item) => item.id === id);
+  const { product, categoryName } = useProductPage();
 
   if (!product) {
     return (
@@ -69,7 +67,7 @@ export function ProductPage() {
 
   return (
     <PageStack>
-      <ProductDetails key={product.id} product={product} />
+      <ProductDetails key={product.id} product={product} category={categoryName} />
     </PageStack>
   );
 }

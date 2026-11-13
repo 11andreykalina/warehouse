@@ -3,20 +3,15 @@ import { Alert, MenuItem, Stack, TextField, Typography } from '@mui/material';
 
 import { Button, Input } from '@/shared/ui';
 import {
-  uniformGenderLabels,
   uniformServiceLabels,
-  uniformServices,
-  type UniformGender,
-  type UniformService,
 } from '@/shared/model';
+import { registrationGenders, registrationServices } from '../model/authFormOptions';
 import { useAuthForm } from '../model/useAuthForm';
 import { authFormSx } from './AuthForm.styles';
 
 type AuthFormProps = {
   mode?: 'login' | 'register';
 };
-
-const registrationServices = uniformServices.filter((service) => service !== 'general') as Exclude<UniformService, 'general'>[];
 
 const defaultLocations = [
   'Отдел МВД России по Константиновскому району',
@@ -28,7 +23,15 @@ const defaultLocations = [
 ];
 
 export function AuthForm({ mode = 'login' }: AuthFormProps) {
-  const { values, updateField, handleSubmit, error, successMessage } = useAuthForm(mode);
+  const {
+    values,
+    updateField,
+    updateService,
+    updateGender,
+    handleSubmit,
+    error,
+    successMessage,
+  } = useAuthForm(mode);
 
   return (
     <Stack component="form" onSubmit={handleSubmit} spacing={2} sx={authFormSx}>
@@ -54,7 +57,7 @@ export function AuthForm({ mode = 'login' }: AuthFormProps) {
             label="Служба"
             required
             value={values.service}
-            onChange={(event) => updateField('service', event.target.value as Exclude<UniformService, 'general'>)}
+            onChange={(event) => updateService(event.target.value)}
           >
             {registrationServices.map((uniformService) => (
               <MenuItem key={uniformService} value={uniformService}>
@@ -82,13 +85,11 @@ export function AuthForm({ mode = 'login' }: AuthFormProps) {
             label="Пол"
             required
             value={values.gender}
-            onChange={(event) => updateField('gender', event.target.value as Exclude<UniformGender, 'unisex'>)}
+            onChange={(event) => updateGender(event.target.value)}
           >
-            {Object.entries(uniformGenderLabels)
-              .filter(([value]) => value !== 'unisex')
-              .map(([value, label]) => (
-                <MenuItem key={value} value={value}>{label}</MenuItem>
-              ))}
+            {registrationGenders.map(([value, label]) => (
+              <MenuItem key={value} value={value}>{label}</MenuItem>
+            ))}
           </Input>
           <Input label="Размер одежды" value={values.clothingSize} onChange={(event) => updateField('clothingSize', event.target.value)} />
           <Input label="Размер обуви" value={values.shoeSize} onChange={(event) => updateField('shoeSize', event.target.value)} />

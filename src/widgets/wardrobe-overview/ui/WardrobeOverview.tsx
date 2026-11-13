@@ -13,6 +13,8 @@ export function WardrobeOverview() {
     activeItems,
     archivedItems,
     visibleItems,
+    emptyStateTitle,
+    emptyStateDescription,
     handleTabChange,
   } = useWardrobeOverview();
 
@@ -36,12 +38,8 @@ export function WardrobeOverview() {
         </FeedGrid>
       ) : (
         <EmptyState
-          title={tab === 'active' ? 'Гардероб пока пуст' : 'Архив пока пуст'}
-          description={
-            tab === 'active'
-              ? 'Полученные со склада вещи появятся здесь после подтверждения выдачи в разделе «Заявки».'
-              : 'Истёкшие вещи автоматически перемещаются сюда из гардероба.'
-          }
+          title={emptyStateTitle}
+          description={emptyStateDescription}
         />
       )}
     </Stack>

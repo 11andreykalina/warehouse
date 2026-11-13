@@ -1,8 +1,8 @@
 import { FeedGrid } from '@/shared/ui';
-import { mockCategories } from '@/entities/category';
 import type { Product } from '@/entities/product';
-import { getApplicableProductEntitlements, ProductCard } from '@/entities/product';
+import { ProductCard } from '@/entities/product';
 import type { UniformEligibilityProfile } from '@/shared/model';
+import { getProductFeedViewModel } from '../model/productFeed';
 
 export function ProductFeed({
   products,
@@ -11,21 +11,16 @@ export function ProductFeed({
   products: Product[];
   entitlementProfile?: UniformEligibilityProfile;
 }) {
+  const feedItems = getProductFeedViewModel(products, entitlementProfile);
+
   return (
     <FeedGrid>
-      {products.map((product) => (
+      {feedItems.map(({ product, entitlements, categoryName }) => (
         <ProductCard
           key={product.id}
           product={product}
-          entitlements={
-            entitlementProfile
-              ? getApplicableProductEntitlements(product, entitlementProfile)
-              : product.entitlements
-          }
-          categoryName={
-            mockCategories.find((category) => category.id === product.categoryId)?.name ??
-            'Форменное имущество'
-          }
+          entitlements={entitlements}
+          categoryName={categoryName}
         />
       ))}
     </FeedGrid>

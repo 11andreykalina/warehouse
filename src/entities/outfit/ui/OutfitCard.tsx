@@ -4,6 +4,7 @@ import { Card, CardActionArea, CardContent, Chip, Stack, Typography } from '@mui
 
 import type { Outfit } from '../model/types';
 import { outfitGenderLabels, outfitSeasonLabels, outfitServiceLabels } from '../model/labels';
+import { getOutfitCardSummary } from '../model/getOutfitCardSummary';
 import { ImageWithFallback } from '@/shared/ui';
 import {
   outfitCardActionSx,
@@ -17,6 +18,8 @@ import {
 } from './OutfitCard.styles';
 
 export function OutfitCard({ outfit }: { outfit: Outfit }) {
+  const summary = getOutfitCardSummary(outfit);
+
   return (
     <Card component="article" sx={outfitCardSx}>
       <CardActionArea component={Link} to={`/outfit/${outfit.id}`} sx={outfitCardActionSx}>
@@ -26,9 +29,7 @@ export function OutfitCard({ outfit }: { outfit: Outfit }) {
         <CardContent sx={outfitContentSx}>
           <Typography sx={outfitNameSx}>{outfit.name}</Typography>
           <Typography variant="body2" color="text.secondary">
-            {outfit.productIds.length > 0
-              ? `${outfit.productIds.length} позиций · ${outfit.purpose === 'daily' ? 'повседневный' : outfit.purpose === 'dress' ? 'парадный' : 'специальный'}`
-              : 'Состав комплекта готовится'}
+            {summary}
           </Typography>
           <Stack direction="row" sx={outfitMetaSx}>
             <Chip label={outfitSeasonLabels[outfit.season]} size="small" />

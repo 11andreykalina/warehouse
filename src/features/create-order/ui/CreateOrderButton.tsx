@@ -6,11 +6,11 @@ import { useCreateOrder } from '../model/useCreateOrder';
 import { createOrderStackSx } from './CreateOrderButton.styles';
 
 export function CreateOrderButton({ onSubmitted }: { onSubmitted: (order: Order) => void }) {
-  const { items, error, handleSubmit } = useCreateOrder(onSubmitted);
+  const { canSubmit, error, handleSubmit } = useCreateOrder(onSubmitted);
 
   return (
     <Stack spacing={1.5} sx={createOrderStackSx}>
-      <Button type="button" variant="primary" disabled={items.length === 0} onClick={handleSubmit}>
+      <Button type="button" variant="primary" disabled={!canSubmit} onClick={handleSubmit}>
         Отправить заявку
       </Button>
       {error ? <Alert role="alert" severity="error">{error}</Alert> : null}

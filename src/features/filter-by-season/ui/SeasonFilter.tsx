@@ -1,11 +1,21 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
+import {
+  createSeasonFilterChangeHandler,
+  seasonFilterLabels,
+  seasonFilterOptions,
+  type SeasonFilterValue,
+} from '../model/seasonFilter';
 import { seasonToggleGroupSx } from './SeasonFilter.styles';
 
-type Season = 'all' | 'summer' | 'demi-season' | 'winter';
-
-export function SeasonFilter({ selected, onSelect }: { selected: Season; onSelect: (season: Season) => void }) {
-  const options: Season[] = ['all', 'summer', 'demi-season', 'winter'];
+export function SeasonFilter({
+  selected,
+  onSelect,
+}: {
+  selected: SeasonFilterValue;
+  onSelect: (season: SeasonFilterValue) => void;
+}) {
+  const handleChange = createSeasonFilterChangeHandler(onSelect);
 
   return (
     <Box>
@@ -13,20 +23,12 @@ export function SeasonFilter({ selected, onSelect }: { selected: Season; onSelec
         aria-label="Фильтр по сезону"
         exclusive
         value={selected}
-        onChange={(_, value: Season | null) => {
-          if (value !== null) onSelect(value);
-        }}
+        onChange={handleChange}
         sx={seasonToggleGroupSx}
       >
-        {options.map((season) => (
+        {seasonFilterOptions.map((season) => (
           <ToggleButton key={season} value={season}>
-            {season === 'all'
-              ? 'Все сезоны'
-              : season === 'summer'
-                ? 'Лето'
-                : season === 'demi-season'
-                  ? 'Демисезон'
-                  : 'Зима'}
+            {seasonFilterLabels[season]}
           </ToggleButton>
         ))}
       </ToggleButtonGroup>

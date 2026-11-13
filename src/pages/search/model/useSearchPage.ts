@@ -23,5 +23,9 @@ export function useSearchPage() {
     setSearchParams(trimmedQuery ? { q: trimmedQuery } : {});
   };
 
-  return { query, normalizedQuery, results, handleSearchChange };
+  const resultsSummary = normalizedQuery
+    ? `Найдено позиций: ${results.length}`
+    : `В каталоге позиций: ${results.length}`;
+
+  return { query, results, resultsSummary, handleSearchChange };
 }

@@ -4,12 +4,13 @@ import { useDispatch } from 'react-redux';
 import { cartItemsAdded } from '@/entities/cart';
 import type { Product } from '@/entities/product';
 
-export function useAddOutfitToCart(products: Product[]) {
+export function useAddOutfitToCart(products: Product[], disabled: boolean) {
   const dispatch = useDispatch();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>({});
   const [notificationOpen, setNotificationOpen] = useState(false);
   const hasAllSizes = products.length > 0 && products.every((product) => selectedSizes[product.id]);
+  const isButtonDisabled = disabled || products.length === 0;
 
   const handleOpen = () => {
     setSelectedSizes({});
@@ -40,6 +41,7 @@ export function useAddOutfitToCart(products: Product[]) {
     selectedSizes,
     notificationOpen,
     hasAllSizes,
+    isButtonDisabled,
     handleOpen,
     handleSizeChange,
     handleAdd,

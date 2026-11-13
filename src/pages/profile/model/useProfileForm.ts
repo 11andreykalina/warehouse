@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { mockUser, type User } from '@/entities/user';
 import { getCurrentUser, saveCurrentUser } from '@/features/auth-by-badge';
-import type { UniformGender, UniformService } from '@/shared/model';
+import { profileGenderOptions, profileServiceOptions } from './profileOptions';
 
 type EditableIdentityField = 'firstName' | 'lastName' | 'middleName';
 type EditableServiceField = 'department' | 'locationName' | 'rank';
@@ -50,19 +50,28 @@ export function useProfileForm() {
     }));
   };
 
-  const handleUniformServiceChange = (uniformService: Exclude<UniformService, 'general'>) => {
+  const handleUniformServiceChange = (value: string) => {
+    const uniformService = profileServiceOptions.find(([candidate]) => candidate === value)?.[0];
+    if (!uniformService) return;
+
     setUser((currentUser) => ({
       ...currentUser,
       service: { ...currentUser.service, uniformService },
     }));
   };
 
-  const handleGenderChange = (gender: Exclude<UniformGender, 'unisex'>) => {
+  const handleGenderChange = (value: string) => {
+    const gender = profileGenderOptions.find(([candidate]) => candidate === value)?.[0];
+    if (!gender) return;
+
     setUser((currentUser) => ({
       ...currentUser,
       measurements: { ...currentUser.measurements, gender },
     }));
   };
+
+  const handleStartEdit = () => setEditMode(true);
+  const handleCancelEdit = () => setEditMode(false);
 
   const handleSave = () => {
     const nextUser: User = {
@@ -94,7 +103,8 @@ export function useProfileForm() {
     user,
     editMode,
     message,
-    setEditMode,
+    handleStartEdit,
+    handleCancelEdit,
     handleFieldChange,
     handleIdentityChange,
     handleServiceChange,

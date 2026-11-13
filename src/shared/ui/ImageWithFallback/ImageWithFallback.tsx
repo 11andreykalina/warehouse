@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material';
 
+import { useImageWithFallback } from './model/useImageWithFallback';
 import { fallbackLabelSx, fallbackMarkSx, fallbackSx, imageSx as defaultImageSx } from './ImageWithFallback.styles';
 
 type ImageWithFallbackProps = {
@@ -13,7 +13,7 @@ type ImageWithFallbackProps = {
 };
 
 export function ImageWithFallback({ src, alt, category, sx, imageSx }: ImageWithFallbackProps) {
-  const [unavailable, setUnavailable] = useState(false);
+  const { unavailable, markUnavailable } = useImageWithFallback();
   const containerSx = [fallbackSx, ...(sx ? (Array.isArray(sx) ? sx : [sx]) : [])];
   const renderedImageSx = [
     defaultImageSx,
@@ -35,7 +35,7 @@ export function ImageWithFallback({ src, alt, category, sx, imageSx }: ImageWith
       component="img"
       src={src}
       alt={alt}
-      onError={() => setUnavailable(true)}
+      onError={markUnavailable}
       sx={renderedImageSx}
     />
   );

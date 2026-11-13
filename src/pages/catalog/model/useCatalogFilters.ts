@@ -4,6 +4,9 @@ import { useSearchParams } from 'react-router-dom';
 import { getApplicableProductEntitlements, mockProducts } from '@/entities/product';
 import { mockUser } from '@/entities/user';
 import {
+  uniformConditionLabels,
+  uniformConditions,
+  uniformDutyLabels,
   uniformRankGroups,
   uniformServices,
   type UniformCondition,
@@ -50,6 +53,37 @@ export function useCatalogFilters() {
       : mockUser.measurements.gender ?? 'male';
   const profileService =
     service === 'all' ? mockUser.service.uniformService : service;
+  const dutyOptions: { duty: UniformDuty; label: string; checked: boolean }[] = [
+    {
+      duty: 'external-service',
+      label: uniformDutyLabels['external-service'],
+      checked: duties.includes('external-service'),
+    },
+  ];
+  if (profileService === 'dps') {
+    dutyOptions.push(
+      ...(['traffic-supervision', 'motorcycle'] as const).map((duty) => ({
+        duty,
+        label: uniformDutyLabels[duty],
+        checked: duties.includes(duty),
+      })),
+    );
+  }
+  if (profileService === 'pps') {
+    dutyOptions.push({
+      duty: 'pps-line',
+      label: uniformDutyLabels['pps-line'],
+      checked: duties.includes('pps-line'),
+    });
+  }
+  const conditionOptions =
+    profileService === 'pps'
+      ? uniformConditions.map((condition) => ({
+          condition,
+          label: uniformConditionLabels[condition],
+          checked: conditions.includes(condition),
+        }))
+      : [];
   const eligibilityProfile = useMemo<UniformEligibilityProfile>(
     () => ({
       gender: profileGender,
@@ -90,6 +124,9 @@ export function useCatalogFilters() {
   const handleSelectCategory = (categoryId: string | null) => {
     setSearchParams(categoryId ? { category: categoryId } : {});
   };
+
+  const handleSeasonChange = (nextSeason: Season) => setSeason(nextSeason);
+  const handleProfileOnlyChange = (checked: boolean) => setProfileOnly(checked);
 
   const handleServiceChange = (value: string) => {
     if (isServiceFilter(value)) {
@@ -137,15 +174,17 @@ export function useCatalogFilters() {
     conditions,
     profileOnly,
     profileService,
+    dutyOptions,
+    conditionOptions,
     eligibilityProfile,
     filteredProducts,
     handleSelectCategory,
-    setSeason,
+    handleSeasonChange,
     handleServiceChange,
     handleGenderChange,
     handleRankGroupChange,
     handleDutyChange,
     handleConditionChange,
-    setProfileOnly,
+    handleProfileOnlyChange,
   };
 }

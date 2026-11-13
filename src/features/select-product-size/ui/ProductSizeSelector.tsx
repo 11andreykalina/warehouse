@@ -1,5 +1,6 @@
 import { Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 
+import { createProductSizeChangeHandler } from '../model/productSizeSelector';
 import { sizeSelectorSx, sizeToggleGroupSx } from './ProductSizeSelector.styles';
 
 export function ProductSizeSelector({
@@ -11,6 +12,8 @@ export function ProductSizeSelector({
   selected: string;
   onSelect: (size: string) => void;
 }) {
+  const handleChange = createProductSizeChangeHandler(onSelect);
+
   return (
     <Stack spacing={1.25} sx={sizeSelectorSx}>
       <Typography component="p" variant="subtitle2" id="size-selector-label">
@@ -20,9 +23,7 @@ export function ProductSizeSelector({
         exclusive
         value={selected}
         aria-labelledby="size-selector-label"
-        onChange={(_, value: string | null) => {
-          if (value !== null) onSelect(value);
-        }}
+        onChange={handleChange}
         sx={sizeToggleGroupSx}
       >
         {sizes.map((size) => (

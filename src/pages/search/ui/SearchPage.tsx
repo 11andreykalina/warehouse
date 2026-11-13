@@ -6,7 +6,7 @@ import { ProductFeed } from '@/widgets/product-feed';
 import { useSearchPage } from '../model/useSearchPage';
 
 export function SearchPage() {
-  const { query, normalizedQuery, results, handleSearchChange } = useSearchPage();
+  const { query, results, resultsSummary, handleSearchChange } = useSearchPage();
 
   return (
     <PageStack>
@@ -15,9 +15,7 @@ export function SearchPage() {
         <SearchProducts value={query} onChange={handleSearchChange} />
       </Stack>
       <Stack component="section" spacing={2}>
-        <Typography variant="body2" color="text.secondary">
-          {normalizedQuery ? `Найдено позиций: ${results.length}` : `В каталоге позиций: ${results.length}`}
-        </Typography>
+        <Typography variant="body2" color="text.secondary">{resultsSummary}</Typography>
         {results.length > 0 ? (
           <ProductFeed products={results} />
         ) : (

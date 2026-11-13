@@ -8,6 +8,7 @@ import {
   saveCurrentUser,
   setAuthenticated,
 } from './auth';
+import { registrationGenders, registrationServices } from './authFormOptions';
 
 type AuthMode = 'login' | 'register';
 type AuthFormValues = {
@@ -63,6 +64,20 @@ export function useAuthForm(mode: AuthMode) {
     value: AuthFormValues[Field],
   ) => {
     setValues((current) => ({ ...current, [field]: value }));
+  };
+
+  const updateService = (value: string) => {
+    const service = registrationServices.find((candidate) => candidate === value);
+    if (service) {
+      updateField('service', service);
+    }
+  };
+
+  const updateGender = (value: string) => {
+    const gender = registrationGenders.find(([candidate]) => candidate === value)?.[0];
+    if (gender) {
+      updateField('gender', gender);
+    }
   };
 
   const handleLoginSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -177,5 +192,5 @@ export function useAuthForm(mode: AuthMode) {
 
   const handleSubmit = mode === 'register' ? handleRegisterSubmit : handleLoginSubmit;
 
-  return { values, updateField, handleSubmit, error, successMessage };
+  return { values, updateField, updateService, updateGender, handleSubmit, error, successMessage };
 }

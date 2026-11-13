@@ -1,8 +1,9 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Box, Button, Card, CardActionArea, CardContent, Chip, Stack, Typography } from '@mui/material';
 
 import type { Product, ProductEntitlement } from '../model/types';
 import { formatProductEntitlement } from '../model/labels';
+import { useProductCardNavigation } from '../model/useProductCardNavigation';
 import { ImageWithFallback } from '@/shared/ui';
 import { uniformGenderLabels, uniformServiceLabels } from '@/shared/model';
 import {
@@ -26,9 +27,7 @@ export function ProductCard({
   categoryName: string;
   entitlements?: ProductEntitlement[];
 }) {
-  const location = useLocation();
-  const returnTo = `${location.pathname}${location.search}${location.hash}`;
-  const state = { returnTo };
+  const { state } = useProductCardNavigation();
 
   return (
     <Card component="article" sx={productCardSx}>

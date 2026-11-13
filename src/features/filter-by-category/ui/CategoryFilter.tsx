@@ -1,5 +1,6 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
+import { createCategoryFilterChangeHandler } from '../model/categoryFilter';
 import type { Category } from '@/entities/category';
 import { categoryToggleGroupSx } from './CategoryFilter.styles';
 
@@ -12,15 +13,15 @@ export function CategoryFilter({
   selected: string | null;
   onSelect: (id: string | null) => void;
 }) {
+  const handleChange = createCategoryFilterChangeHandler(onSelect);
+
   return (
     <Box>
       <ToggleButtonGroup
         aria-label="Фильтр по категории"
         exclusive
         value={selected ?? ''}
-        onChange={(_, value: string | null) => {
-          if (value !== null) onSelect(value || null);
-        }}
+        onChange={handleChange}
         sx={categoryToggleGroupSx}
       >
         <ToggleButton value="">Все</ToggleButton>
