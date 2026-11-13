@@ -1,16 +1,9 @@
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Box, IconButton, Paper, Stack, Typography } from '@mui/material';
-import { useDispatch } from 'react-redux';
 
-import { mockCategories } from '@/entities/category';
-import { mockProducts } from '@/entities/product';
-import {
-  cartItemQuantityUpdated,
-  cartItemRemoved,
-  useCartItems,
-} from '@/entities/cart';
 import { Button, ImageWithFallback } from '@/shared/ui';
+import { useCartItemsModel } from '../model/useCartItemsModel';
 import {
   cartItemActionsSx,
   cartItemDetailsSx,
@@ -24,10 +17,9 @@ import {
 } from './CartItems.styles';
 
 export function CartItems() {
-  const dispatch = useDispatch();
-  const items = useCartItems();
+  const { entries } = useCartItemsModel();
 
-  if (items.length === 0) {
+  if (entries.length === 0) {
     return (
       <Paper sx={emptyCartSx}>
         <Typography variant="h6" gutterBottom>Заявка пока пуста</Typography>
@@ -38,71 +30,44 @@ export function CartItems() {
 
   return (
     <Stack sx={cartListSx}>
-      {items.map((item) => {
-        const product = mockProducts.find((entry) => entry.id === item.productId);
-        const category = product
-          ? mockCategories.find((entry) => entry.id === product.categoryId)?.name ?? 'Форменное имущество'
-          : 'Позиция каталога';
-
-        return (
-          <Paper key={`${item.productId}-${item.size}`} sx={cartItemSx}>
-            <Box sx={cartItemImageSx}>
-              <ImageWithFallback
-                src={product?.image ?? ''}
-                alt={product?.name ?? 'Позиция больше недоступна'}
-                category={category}
-                sx={cartItemImageSx}
-              />
-            </Box>
-            <Stack sx={cartItemDetailsSx}>
-              <Typography sx={cartProductNameSx}>{product?.name ?? 'Позиция больше недоступна в каталоге'}</Typography>
-              <Typography variant="body2" color="text.secondary">Размер: {item.size}</Typography>
-            </Stack>
-            <Box sx={cartItemActionsSx}>
-              <Stack direction="row" spacing={0.5} aria-label={`Количество: ${item.quantity}`} sx={quantityControlSx}>
-                <IconButton
-                  size="small"
-                  aria-label={`Уменьшить количество позиции ${product?.name ?? item.productId}`}
-                  onClick={() =>
-                    dispatch(
-                      cartItemQuantityUpdated({
-                        productId: item.productId,
-                        size: item.size,
-                        quantity: item.quantity - 1,
-                      }),
-                    )
-                  }
-                >
-                  <RemoveIcon fontSize="small" />
-                </IconButton>
-                <Typography aria-live="polite" sx={cartQuantitySx}>{item.quantity}</Typography>
-                <IconButton
-                  size="small"
-                  aria-label={`Увеличить количество позиции ${product?.name ?? item.productId}`}
-                  onClick={() =>
-                    dispatch(
-                      cartItemQuantityUpdated({
-                        productId: item.productId,
-                        size: item.size,
-                        quantity: item.quantity + 1,
-                      }),
-                    )
-                  }
-                >
-                  <AddIcon fontSize="small" />
-                </IconButton>
-              </Stack>
-              <Button
-                type="button"
-                variant="text"
-                onClick={() => dispatch(cartItemRemoved({ productId: item.productId, size: item.size }))}
+      {entries.map((item) => (
+        <Paper key={`${item.productId}-${item.size}`} sx={cartItemSx}>
+          <Box sx={cartItemImageSx}>
+            <ImageWithFallback
+              src={item.product?.image ?? ''}
+              alt={item.product?.name ?? 'Позиция больше недоступна'}
+              category={item.categoryName}
+              sx={cartItemImageSx}
+            />
+          </Box>
+          <Stack sx={cartItemDetailsSx}>
+            <Typography sx={cartProductNameSx}>{item.product?.name ?? 'Позиция больше недоступна в каталоге'}</Typography>
+            <Typography variant="body2" color="text.secondary">Размер: {item.size}</Typography>
+          </Stack>
+          <Box sx={cartItemActionsSx}>
+            <Stack direction="row" spacing={0.5} aria-label={`Количество: ${item.quantity}`} sx={quantityControlSx}>
+              <IconButton
+                size="small"
+                aria-label={`Уменьшить количество позиции ${item.product?.name ?? item.productId}`}
+                onClick={item.decrease}
               >
-                Удалить
-              </Button>
-            </Box>
-          </Paper>
-        );
-      })}
+                <RemoveIcon fontSize="small" />
+              </IconButton>
+              <Typography aria-live="polite" sx={cartQuantitySx}>{item.quantity}</Typography>
+              <IconButton
+                size="small"
+                aria-label={`Увеличить количество позиции ${item.product?.name ?? item.productId}`}
+                onClick={item.increase}
+              >
+                <AddIcon fontSize="small" />
+              </IconButton>
+            </Stack>
+            <Button type="button" variant="text" onClick={item.remove}>
+              Удалить
+            </Button>
+          </Box>
+        </Paper>
+      ))}
     </Stack>
   );
 }

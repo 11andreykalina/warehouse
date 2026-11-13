@@ -1,4 +1,3 @@
-import { useLocation, useNavigate } from 'react-router-dom';
 import { BottomNavigation as MuiBottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 import CategoryOutlined from '@mui/icons-material/CategoryOutlined';
 import CheckroomOutlined from '@mui/icons-material/CheckroomOutlined';
@@ -7,6 +6,7 @@ import PersonOutlined from '@mui/icons-material/PersonOutlined';
 import ReceiptLongOutlined from '@mui/icons-material/ReceiptLongOutlined';
 import ShoppingCartOutlined from '@mui/icons-material/ShoppingCartOutlined';
 
+import { useBottomNavigation } from '../model/useBottomNavigation';
 import { bottomNavigationSx, bottomPaperSx } from './BottomNavigation.styles';
 
 const navigationItems = [
@@ -19,16 +19,14 @@ const navigationItems = [
 ];
 
 export function BottomNavigation() {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const selectedPath = navigationItems.find(({ path }) => path === '/' ? pathname === '/' : pathname.startsWith(path))?.path ?? false;
+  const { selectedPath, handleChange } = useBottomNavigation(navigationItems);
 
   return (
     <Paper component="nav" aria-label="Нижняя навигация" sx={bottomPaperSx}>
       <MuiBottomNavigation
         showLabels
         value={selectedPath}
-        onChange={(_, path: string) => navigate(path)}
+        onChange={handleChange}
         sx={bottomNavigationSx}
       >
         {navigationItems.map(({ path, label, icon }) => (

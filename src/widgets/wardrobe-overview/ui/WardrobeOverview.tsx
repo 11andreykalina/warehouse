@@ -1,28 +1,27 @@
-import { useMemo, useState } from 'react';
 import { Alert, Stack, Tab, Tabs } from '@mui/material';
 
 import {
-  useWardrobeItems,
   WardrobeItemCard,
 } from '@/entities/wardrobe-item';
 import { EmptyState, FeedGrid } from '@/shared/ui';
-
-type WardrobeTab = 'active' | 'archived';
+import { useWardrobeOverview } from '../model/useWardrobeOverview';
 
 export function WardrobeOverview() {
-  const { items, error: storageError } = useWardrobeItems();
-  const [tab, setTab] = useState<WardrobeTab>('active');
-
-  const activeItems = useMemo(() => items.filter((item) => item.status === 'active'), [items]);
-  const archivedItems = useMemo(() => items.filter((item) => item.status === 'archived'), [items]);
-  const visibleItems = tab === 'active' ? activeItems : archivedItems;
+  const {
+    tab,
+    storageError,
+    activeItems,
+    archivedItems,
+    visibleItems,
+    handleTabChange,
+  } = useWardrobeOverview();
 
   return (
     <Stack spacing={2}>
       {storageError ? <Alert severity="error">{storageError}</Alert> : null}
       <Tabs
         value={tab}
-        onChange={(_, value: WardrobeTab) => setTab(value)}
+        onChange={handleTabChange}
         aria-label="Разделы гардероба"
       >
         <Tab value="active" label={`В гардеробе (${activeItems.length})`} />

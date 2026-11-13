@@ -1,10 +1,8 @@
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AppBar, Badge, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Toolbar, Typography } from '@mui/material';
 
-import { getAuthenticated, logout } from '@/features/auth-by-badge';
 import { ThemeToggle } from '@/features/theme-toggle';
-import { useCartItems } from '@/entities/cart';
+import { useAppHeader } from '../model/useAppHeader';
 import { appBarSx, brandMarkSx, brandSx, brandTextSx, cartBadgeSx, navButtonSx, navSx, toolbarSx } from './AppHeader.styles';
 
 const navigationItems = [
@@ -18,23 +16,15 @@ const navigationItems = [
 ];
 
 export function AppHeader() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [authenticated, setAuthenticated] = useState(getAuthenticated);
-  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
-  const cartItems = useCartItems();
-  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-
-  const handleLogout = () => {
-    setLogoutDialogOpen(true);
-  };
-
-  const confirmLogout = () => {
-    logout();
-    setAuthenticated(false);
-    setLogoutDialogOpen(false);
-    navigate('/');
-  };
+  const {
+    pathname,
+    authenticated,
+    cartCount,
+    logoutDialogOpen,
+    handleLogout,
+    handleCancelLogout,
+    handleConfirmLogout,
+  } = useAppHeader();
 
   return (
     <>
@@ -52,7 +42,7 @@ export function AppHeader() {
                 key={path}
                 component={Link}
                 to={path}
-                aria-current={location.pathname === path ? 'page' : undefined}
+                aria-current={pathname === path ? 'page' : undefined}
                 sx={navButtonSx}
               >
                 {label}
@@ -75,14 +65,14 @@ export function AppHeader() {
         </Toolbar>
       </AppBar>
 
-      <Dialog open={logoutDialogOpen} onClose={() => setLogoutDialogOpen(false)}>
+      <Dialog open={logoutDialogOpen} onClose={handleCancelLogout}>
         <DialogTitle>Подтверждение выхода</DialogTitle>
         <DialogContent>
           <DialogContentText>Вы действительно хотите выйти из системы?</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setLogoutDialogOpen(false)}>Отмена</Button>
-          <Button color="error" variant="contained" onClick={confirmLogout}>
+          <Button onClick={handleCancelLogout}>Отмена</Button>
+          <Button color="error" variant="contained" onClick={handleConfirmLogout}>
             Выйти
           </Button>
         </DialogActions>
