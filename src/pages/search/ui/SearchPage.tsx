@@ -1,31 +1,12 @@
-import { useMemo } from 'react';
 import { Stack, Typography } from '@mui/material';
-import { useSearchParams } from 'react-router-dom';
 
 import { SearchProducts } from '@/features/search-products';
-import { mockProducts } from '@/entities/product';
 import { EmptyState, PageStack, SectionHeading } from '@/shared/ui';
 import { ProductFeed } from '@/widgets/product-feed';
+import { useSearchPage } from '../model/useSearchPage';
 
 export function SearchPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get('q') ?? '';
-  const normalizedQuery = query.trim().toLocaleLowerCase('ru-RU');
-
-  const results = useMemo(() => {
-    if (!normalizedQuery) {
-      return mockProducts;
-    }
-
-    return mockProducts.filter((product) =>
-      `${product.name} ${product.description}`.toLocaleLowerCase('ru-RU').includes(normalizedQuery),
-    );
-  }, [normalizedQuery]);
-
-  const handleSearchChange = (nextQuery: string) => {
-    const trimmedQuery = nextQuery.trim();
-    setSearchParams(trimmedQuery ? { q: trimmedQuery } : {});
-  };
+  const { query, normalizedQuery, results, handleSearchChange } = useSearchPage();
 
   return (
     <PageStack>

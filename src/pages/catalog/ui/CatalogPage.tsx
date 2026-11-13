@@ -1,5 +1,3 @@
-import { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import {
   Alert,
   Checkbox,
@@ -15,8 +13,6 @@ import {
 import { CategoryFilter } from '@/features/filter-by-category';
 import { SeasonFilter } from '@/features/filter-by-season';
 import { mockCategories } from '@/entities/category';
-import { getApplicableProductEntitlements, mockProducts } from '@/entities/product';
-import { mockUser } from '@/entities/user';
 import {
   uniformConditionLabels,
   uniformConditions,
@@ -26,90 +22,33 @@ import {
   uniformRankGroups,
   uniformServiceLabels,
   uniformServices,
-  type UniformCondition,
-  type UniformDuty,
-  type UniformEligibilityProfile,
-  type UniformGender,
-  type UniformRankGroup,
-  type UniformService,
 } from '@/shared/model';
 import { EmptyState, PageStack, SectionHeading } from '@/shared/ui';
 import { ProductFeed } from '@/widgets/product-feed';
-
-type Season = 'all' | 'summer' | 'demi-season' | 'winter';
-type GenderFilter = 'all' | UniformGender;
-type ServiceFilter = 'all' | UniformService;
-const serviceFilters: ServiceFilter[] = ['all', ...uniformServices];
-const genderFilters: GenderFilter[] = ['all', 'male', 'female', 'unisex'];
-
-function isServiceFilter(value: string): value is ServiceFilter {
-  return serviceFilters.some((service) => service === value);
-}
-
-function isGenderFilter(value: string): value is GenderFilter {
-  return genderFilters.some((gender) => gender === value);
-}
-
-function isRankGroup(value: string): value is UniformRankGroup {
-  return uniformRankGroups.some((group) => group === value);
-}
+import { useCatalogFilters } from '../model/useCatalogFilters';
 
 export function CatalogPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const selectedCategory = searchParams.get('category');
-  const [season, setSeason] = useState<Season>('all');
-  const [gender, setGender] = useState<GenderFilter>('all');
-  const [service, setService] = useState<ServiceFilter>('all');
-  const [rankGroup, setRankGroup] = useState(mockUser.service.rankGroup);
-  const [duties, setDuties] = useState<UniformDuty[]>(mockUser.service.uniformDuties);
-  const [conditions, setConditions] = useState<UniformCondition[]>(mockUser.service.uniformConditions);
-  const [profileOnly, setProfileOnly] = useState(false);
-  const profileGender =
-    gender === 'male' || gender === 'female'
-      ? gender
-      : mockUser.measurements.gender ?? 'male';
-  const profileService =
-    service === 'all' ? mockUser.service.uniformService : service;
-  const eligibilityProfile = useMemo<UniformEligibilityProfile>(
-    () => ({
-      gender: profileGender,
-      rankGroup,
-      service: profileService,
-      duties,
-      conditions,
-    }),
-    [conditions, duties, profileGender, profileService, rankGroup],
-  );
-
-  const filteredProducts = useMemo(
-    () =>
-      mockProducts.filter((product) => {
-        const categoryMatches = selectedCategory ? product.categoryId === selectedCategory : true;
-        const seasonMatches =
-          season === 'all' || product.season === season || product.season === 'all-season';
-        const genderMatches =
-          gender === 'all' || product.gender === gender || product.gender === 'unisex';
-        const serviceMatches =
-          service === 'all' ||
-          product.services.includes('general') ||
-          product.services.includes(service);
-        const matchesProfile =
-          getApplicableProductEntitlements(product, eligibilityProfile).length > 0;
-
-        return (
-          categoryMatches &&
-          seasonMatches &&
-          genderMatches &&
-          serviceMatches &&
-          (!profileOnly || matchesProfile)
-        );
-      }),
-    [eligibilityProfile, gender, profileOnly, season, selectedCategory, service],
-  );
-
-  const handleSelectCategory = (categoryId: string | null) => {
-    setSearchParams(categoryId ? { category: categoryId } : {});
-  };
+  const {
+    selectedCategory,
+    season,
+    gender,
+    service,
+    rankGroup,
+    duties,
+    conditions,
+    profileOnly,
+    profileService,
+    eligibilityProfile,
+    filteredProducts,
+    handleSelectCategory,
+    setSeason,
+    handleServiceChange,
+    handleGenderChange,
+    handleRankGroupChange,
+    handleDutyChange,
+    handleConditionChange,
+    setProfileOnly,
+  } = useCatalogFilters();
 
   return (
     <PageStack>
@@ -144,13 +83,7 @@ export function CatalogPage() {
               size="small"
               value={service}
               sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { xs: 0, sm: 180 } }}
-              onChange={(event) => {
-                if (isServiceFilter(event.target.value)) {
-                  setService(event.target.value);
-                  setDuties([]);
-                  setConditions([]);
-                }
-              }}
+              onChange={(event) => handleServiceChange(event.target.value)}
             >
               <MenuItem value="all">Все службы</MenuItem>
               {uniformServices.map((serviceId) => (
@@ -163,11 +96,7 @@ export function CatalogPage() {
               size="small"
               value={gender}
               sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { xs: 0, sm: 180 } }}
-              onChange={(event) => {
-                if (isGenderFilter(event.target.value)) {
-                  setGender(event.target.value);
-                }
-              }}
+              onChange={(event) => handleGenderChange(event.target.value)}
             >
               <MenuItem value="all">Любой</MenuItem>
               {Object.entries(uniformGenderLabels).map(([genderId, label]) => (
@@ -197,11 +126,7 @@ export function CatalogPage() {
               size="small"
               value={rankGroup}
               sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { xs: 0, sm: 220 } }}
-              onChange={(event) => {
-                if (isRankGroup(event.target.value)) {
-                  setRankGroup(event.target.value);
-                }
-              }}
+              onChange={(event) => handleRankGroupChange(event.target.value)}
             >
               {uniformRankGroups.map((group) => (
                 <MenuItem key={group} value={group}>{uniformRankGroupLabels[group]}</MenuItem>
@@ -213,11 +138,7 @@ export function CatalogPage() {
                 <Checkbox
                   checked={duties.includes('external-service')}
                   onChange={(event) =>
-                    setDuties((current) =>
-                      event.target.checked
-                        ? [...current, 'external-service']
-                        : current.filter((value) => value !== 'external-service'),
-                    )
+                    handleDutyChange('external-service', event.target.checked)
                   }
                 />
               }
@@ -232,11 +153,7 @@ export function CatalogPage() {
                       <Checkbox
                         checked={duties.includes(duty)}
                         onChange={(event) =>
-                          setDuties((current) =>
-                            event.target.checked
-                              ? [...current, duty]
-                              : current.filter((value) => value !== duty),
-                          )
+                          handleDutyChange(duty, event.target.checked)
                         }
                       />
                     }
@@ -252,11 +169,7 @@ export function CatalogPage() {
                     <Checkbox
                       checked={duties.includes('pps-line')}
                       onChange={(event) =>
-                        setDuties((current) =>
-                          event.target.checked
-                            ? [...current, 'pps-line']
-                            : current.filter((value) => value !== 'pps-line'),
-                        )
+                        handleDutyChange('pps-line', event.target.checked)
                       }
                     />
                   }
@@ -270,11 +183,7 @@ export function CatalogPage() {
                       <Checkbox
                         checked={conditions.includes(condition)}
                         onChange={(event) =>
-                          setConditions((current) =>
-                            event.target.checked
-                              ? [...current, condition]
-                              : current.filter((value) => value !== condition),
-                          )
+                          handleConditionChange(condition, event.target.checked)
                         }
                       />
                     }

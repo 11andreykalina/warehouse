@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import { Alert, MenuItem, Stack, TextField } from '@mui/material';
 
-import { mockUser, UserCard, type User } from '@/entities/user';
-import { getCurrentUser, saveCurrentUser } from '@/features/auth-by-badge/model/auth';
+import { UserCard } from '@/entities/user';
 import { Button, Input, PageStack, SectionHeading } from '@/shared/ui';
 import {
   uniformGenderLabels,
@@ -11,6 +9,7 @@ import {
   type UniformGender,
   type UniformService,
 } from '@/shared/model';
+import { useProfileForm } from '../model/useProfileForm';
 import { profileActionSx } from './ProfilePage.styles';
 
 const defaultLocations = [
@@ -23,72 +22,19 @@ const defaultLocations = [
 ];
 
 export function ProfilePage() {
-  const [user, setUser] = useState<User>(() => getCurrentUser());
-  const [editMode, setEditMode] = useState(false);
-  const [message, setMessage] = useState('');
-
-  const handleFieldChange = (field: keyof User, value: string) => {
-    setUser((currentUser) => ({
-      ...currentUser,
-      [field]: value,
-    }));
-  };
-
-  const handleIdentityChange = (field: 'firstName' | 'lastName' | 'middleName', value: string) => {
-    setUser((currentUser) => ({
-      ...currentUser,
-      identity: {
-        ...currentUser.identity,
-        [field]: value,
-      },
-    }));
-  };
-
-  const handleServiceChange = (field: 'department' | 'locationName' | 'rank', value: string) => {
-    setUser((currentUser) => ({
-      ...currentUser,
-      service: {
-        ...currentUser.service,
-        [field]: value,
-      },
-    }));
-  };
-
-  const handleMeasurementChange = (field: 'clothingSize' | 'shoeSize' | 'headSize', value: string) => {
-    setUser((currentUser) => ({
-      ...currentUser,
-      measurements: {
-        ...currentUser.measurements,
-        [field]: value || undefined,
-      },
-    }));
-  };
-
-  const handleSave = () => {
-    const nextUser: User = {
-      ...user,
-      id: user.id || mockUser.id,
-      badgeNumber: user.badgeNumber.trim(),
-      phone: user.phone.trim(),
-      identity: {
-        ...user.identity,
-        firstName: user.identity.firstName.trim(),
-        lastName: user.identity.lastName.trim(),
-        middleName: user.identity.middleName?.trim() || undefined,
-      },
-      service: {
-        ...user.service,
-        department: user.service.department.trim(),
-        locationName: user.service.locationName?.trim() || undefined,
-        rank: user.service.rank?.trim(),
-      },
-    };
-
-    saveCurrentUser(nextUser);
-    setUser(nextUser);
-    setEditMode(false);
-    setMessage('Профиль успешно обновлён.');
-  };
+  const {
+    user,
+    editMode,
+    message,
+    setEditMode,
+    handleFieldChange,
+    handleIdentityChange,
+    handleServiceChange,
+    handleMeasurementChange,
+    handleUniformServiceChange,
+    handleGenderChange,
+    handleSave,
+  } = useProfileForm();
 
   return (
     <PageStack>
@@ -114,7 +60,7 @@ export function ProfilePage() {
           />
           <Input label="Номер жетона" value={user.badgeNumber} onChange={(event) => handleFieldChange('badgeNumber', event.target.value)} />
           <Input label="Номер телефона" value={user.phone} onChange={(event) => handleFieldChange('phone', event.target.value)} />
-          <Input select label="Служба" value={user.service.uniformService} onChange={(event) => setUser((currentUser) => ({ ...currentUser, service: { ...currentUser.service, uniformService: event.target.value as Exclude<UniformService, 'general'> } }))}>
+          <Input select label="Служба" value={user.service.uniformService} onChange={(event) => handleUniformServiceChange(event.target.value as Exclude<UniformService, 'general'>)}>
             {uniformServices.filter((service) => service !== 'general').map((service) => (
               <MenuItem key={service} value={service}>{uniformServiceLabels[service]}</MenuItem>
             ))}
@@ -126,7 +72,7 @@ export function ProfilePage() {
             ))}
           </Input>
           <Input label="Звание" value={user.service.rank ?? ''} onChange={(event) => handleServiceChange('rank', event.target.value)} />
-          <Input select label="Пол" value={user.measurements.gender ?? 'male'} onChange={(event) => setUser((currentUser) => ({ ...currentUser, measurements: { ...currentUser.measurements, gender: event.target.value as Exclude<UniformGender, 'unisex'> } }))}>
+          <Input select label="Пол" value={user.measurements.gender ?? 'male'} onChange={(event) => handleGenderChange(event.target.value as Exclude<UniformGender, 'unisex'>)}>
             {Object.entries(uniformGenderLabels)
               .filter(([value]) => value !== 'unisex')
               .map(([value, label]) => (

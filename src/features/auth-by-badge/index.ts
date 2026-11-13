@@ -1,2 +1,2 @@
 export { AuthForm } from './ui/AuthForm';
-export { getAuthenticated, logout } from './model/auth';
+export { getAuthenticated, getCurrentUser, logout, saveCurrentUser } from './model/auth';

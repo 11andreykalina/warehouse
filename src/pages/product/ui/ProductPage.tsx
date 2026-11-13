@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 
@@ -8,10 +7,11 @@ import { AddToCartButton } from '@/features/add-to-cart';
 import { ProductSizeSelector } from '@/features/select-product-size';
 import { uniformGenderLabels, uniformServiceLabels } from '@/shared/model';
 import { EmptyState, ImageWithFallback, PageStack } from '@/shared/ui';
+import { useProductSelection } from '../model/useProductSelection';
 import { productDescriptionSx, productDetailsSx, productImageFrameSx, productPageSx, productTitleSx } from './ProductPage.styles';
 
 function ProductDetails({ product }: { product: Product }) {
-  const [selectedSize, setSelectedSize] = useState('');
+  const { selectedSize, setSelectedSize } = useProductSelection();
   const category = mockCategories.find((item) => item.id === product.categoryId)?.name ?? 'Форменное имущество';
 
   return (
